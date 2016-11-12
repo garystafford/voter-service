@@ -22,7 +22,7 @@ java -jar build/libs/voter-service-0.1.0.jar
 Out of the box, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
 - Purge and Add New Sample Data (GET): <http://localhost:8099/seeder>
-- List Candidates (GET): <http://localhost:8099/votes>
+- List Candidates (GET): <http://localhost:8099/choices>
 - Submit Vote (POST): <http://localhost:8099/votes>
 - View Voting Results (GET): <http://localhost:8099/results>
 - View Winner (GET): <http://localhost:8099/winner>
