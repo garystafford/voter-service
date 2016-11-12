@@ -117,6 +117,22 @@ wget --method POST \
 }
 ```
 
+`http POST http://localhost:8099/votes vote="Hillary Clinton"`
+
+```json
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost:8099/votes/58279bda909a021142712fe7"
+        },
+        "vote": {
+            "href": "http://localhost:8099/votes/58279bda909a021142712fe7"
+        }
+    },
+    "vote": "Hillary Clinton"
+}
+```
+
 ## Build Artifact
 
 This project is continuously built and tested on every code check-in to GitHub. If all tests pass, the resulting Spring Boot JAR is stored in the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository.
