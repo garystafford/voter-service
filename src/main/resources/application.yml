@@ -32,7 +32,7 @@ logging:
 ---
 
 spring:
-  profiles: production
+  profiles: docker-production
   data:
     mongodb:
       host: mongodb

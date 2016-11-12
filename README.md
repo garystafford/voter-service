@@ -31,11 +31,15 @@ Out of the box, the service runs on `localhost`, port `8099`. By default, the se
 - Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints include: `/mappings`, `/env`, `/configprops`, etc.
 - Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` include: DELETE, PATCH, PUT, page sort, size, etc.
 
-## POST Vote:
+## How to POST Vote:
 
 - HTTPie: `http POST localhost:8099/votes vote="Hillary Clinton"`
 - cURL: `curl -X POST -H "Content-Type: application/json" -d '{ "vote": "Hillary Clinton" }' "http://localhost:8099/votes"`
 - wget: `wget --method POST --header 'content-type: application/json' --body-data '{ "vote": "Hillary Clinton" }' --output-document - http://localhost:8099/votes`
+
+## Build Artifact
+
+This project is continuously built and tested on every code check-in to GitHub. If all tests pass, the resulting Spring Boot JAR is stored in the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository.
 
 ## README
 
