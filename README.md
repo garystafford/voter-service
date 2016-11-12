@@ -12,10 +12,10 @@ A simple Spring Boot RESTful microservice, backed by MongoDB.
 To clone, build, test, and run the Voter Spring Boot service locally, requires MongoDB to be pre-installed and running on port `27017`.
 
 ```bash
-git clone https://github.com/garystafford/voter-service.git && \
-    cd voter-service
-./gradlew clean cleanTest build && \
-    java -jar build/libs/voter-service-0.1.0.jar
+git clone https://github.com/garystafford/voter-service.git
+cd voter-service
+./gradlew clean cleanTest build
+java -jar build/libs/voter-service-0.1.0.jar
 ```
 
 ## Primary Service Endpoints
