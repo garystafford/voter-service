@@ -7,12 +7,13 @@ import java.util.List;
 final class VoteList {
 
     static List<String> votes = Arrays.asList(
-      "Hillary Clinton",
-      "Donald Trump",
-      "Chris Keniston",
-      "Jill Stein",
-      "Gary Johnson",
-      "Darrell Castle"
+            "Hillary Clinton",
+            "Donald Trump",
+            "Chris Keniston",
+            "Jill Stein",
+            "Gary Johnson",
+            "Darrell Castle",
+            "Hillary Clinton"
     );
 
     static List<String> getVotes() {

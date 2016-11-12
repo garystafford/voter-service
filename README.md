@@ -19,22 +19,22 @@ git clone https://github.com/garystafford/voter-service.git && \
 ```
 
 ## Primary Service Endpoints
-Out of the box, the service runs on `localhost`, port `8091`. By default, the service looks for MongoDB on `localhost`, port `27017`.
+Out of the box, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
-- Purge and Add New Sample Data (GET): <http://localhost:8091/seeder>
-- List Candidates (GET): <http://localhost:8091/votes>
-- Submit Vote (POST): <http://localhost:8091/votes>
-- View Voting Results (GET): <http://localhost:8091/results>
-- View Winner (GET): <http://localhost:8091/favorite>
-- Service Health (GET): <http://localhost:8091/health>
-- Service Metrics (GET): <http://localhost:8091/metrics>
+- Purge and Add New Sample Data (GET): <http://localhost:8099/seeder>
+- List Candidates (GET): <http://localhost:8099/votes>
+- Submit Vote (POST): <http://localhost:8099/votes>
+- View Voting Results (GET): <http://localhost:8099/results>
+- View Winner (GET): <http://localhost:8099/favorite>
+- Service Health (GET): <http://localhost:8099/health>
+- Service Metrics (GET): <http://localhost:8099/metrics>
 - Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints include: `/mappings`, `/env`, `/configprops`, etc.
 - Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` include: DELETE, PATCH, PUT, page sort, size, etc.
 
 ## POST Vote:
-- HTTPie: `http POST localhost:8091/votes vote=Hillary%20Clinton`
-- cURL: `curl -X POST -H "Content-Type: application/json" -d '{ "vote": "Hillary%20Clinton" }' "http://localhost:8091/votes"`
-- wget: `wget --method POST --header 'content-type: application/json' --body-data '{ "vote": "Hillary%20Clinton" }' --output-document - http://localhost:8091/votes`
+- HTTPie: `http POST localhost:8099/votes vote="Hillary Clinton"`
+- cURL: `curl -X POST -H "Content-Type: application/json" -d '{ "vote": "Hillary Clinton" }' "http://localhost:8099/votes"`
+- wget: `wget --method POST --header 'content-type: application/json' --body-data '{ "vote": "Hillary Clinton" }' --output-document - http://localhost:8099/votes`
 
 ## README
 - [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
