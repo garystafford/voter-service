@@ -36,6 +36,7 @@ public class VoteSeedData {
             new Vote("Hillary Clinton"),
             new Vote("Hillary Clinton"),
             new Vote("Hillary Clinton"),
+            new Vote("Hillary Clinton"),
             new Vote("Jill Stein"),
             new Vote("Jill Stein"),
             new Vote("Jill Stein"),

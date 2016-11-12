@@ -47,7 +47,7 @@ public class VoteController {
         return new ResponseEntity<>(Collections.singletonMap("results", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/favorite", method = RequestMethod.GET)
+    @RequestMapping(value = "/winner", method = RequestMethod.GET)
     public ResponseEntity<VoteCount> getFavorite() {
 
         Aggregation aggregation = Aggregation.newAggregation(

@@ -68,9 +68,9 @@ public class VoteControllerTest {
     @Test
     public void getFavoriteReturnsMaxCountVote() throws Exception {
         String expectedVote = "Hillary Clinton";
-        int expectedCount = 13;
+        int expectedCount = 14;
         ResponseEntity<VoteCount> responseEntity =
-                this.restTemplate.getForEntity("/favorite", VoteCount.class);
+                this.restTemplate.getForEntity("/winner", VoteCount.class);
         VoteCount voteCount = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getVote()).isEqualTo(expectedVote);
