@@ -25,7 +25,7 @@ Out of the box, the service runs on `localhost`, port `8099`. By default, the se
 - List Candidates (GET): <http://localhost:8099/votes>
 - Submit Vote (POST): <http://localhost:8099/votes>
 - View Voting Results (GET): <http://localhost:8099/results>
-- View Winner (GET): <http://localhost:8099/favorite>
+- View Winner (GET): <http://localhost:8099/winner>
 - Service Health (GET): <http://localhost:8099/health>
 - Service Metrics (GET): <http://localhost:8099/metrics>
 - Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints include: `/mappings`, `/env`, `/configprops`, etc.
