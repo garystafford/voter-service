@@ -1,0 +1,16 @@
+language: java
+jdk: oraclejdk8
+services:
+- mongodb
+before_install:
+- chmod +x gradlew
+before_deploy:
+- chmod ugo+x deploy_travisci.sh
+before_script:
+- sleep 15
+script:
+- "./gradlew clean cleanTest build --console=rich"
+- sh ./deploy_travisci.sh
+env:
+  global:
+  - GH_COLOR_ARTIFACT_REPO: github.com/garystafford/voter-service-artifacts.git
