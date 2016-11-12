@@ -60,7 +60,9 @@ wget --method POST \
 
 ## Sample Output
 
-`http://localhost:8099/choices`
+Using [HTTPie](https://httpie.org/) command line HTTP client.
+
+`http http://localhost:8099/choices`
 
 ```json
 {
@@ -75,7 +77,7 @@ wget --method POST \
 }
 ```
 
-`http://localhost:8099/results`
+`http http://localhost:8099/results`
 
 ```json
 {
@@ -108,7 +110,7 @@ wget --method POST \
 }
 ```
 
-`http://localhost:8099/winner`
+`http http://localhost:8099/winner`
 
 ```json
 {
