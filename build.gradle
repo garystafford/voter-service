@@ -25,7 +25,7 @@ springBoot {
     buildInfo()
 }
 
-def application_name = 'voter'
+def application_name = 'voter-service'
 def artifact_version = '0.1.0'
 
 jar {
