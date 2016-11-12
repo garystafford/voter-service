@@ -37,6 +37,65 @@ Out of the box, the service runs on `localhost`, port `8099`. By default, the se
 - cURL: `curl -X POST -H "Content-Type: application/json" -d '{ "vote": "Hillary Clinton" }' "http://localhost:8099/votes"`
 - wget: `wget --method POST --header 'content-type: application/json' --body-data '{ "vote": "Hillary Clinton" }' --output-document - http://localhost:8099/votes`
 
+## Sample Output
+
+`http://localhost:8099/choices`
+
+```json
+{
+    "choices": [
+        "Chris Keniston",
+        "Darrell Castle",
+        "Donald Trump",
+        "Gary Johnson",
+        "Hillary Clinton",
+        "Jill Stein"
+    ]
+}
+```
+
+`http://localhost:8099/results`
+
+```json
+{
+    "results": [
+        {
+            "count": 3,
+            "vote": "Chris Keniston"
+        },
+        {
+            "count": 2,
+            "vote": "Darrell Castle"
+        },
+        {
+            "count": 8,
+            "vote": "Donald Trump"
+        },
+        {
+            "count": 4,
+            "vote": "Gary Johnson"
+        },
+        {
+            "count": 14,
+            "vote": "Hillary Clinton"
+        },
+        {
+            "count": 5,
+            "vote": "Jill Stein"
+        }
+    ]
+}
+```
+
+`http://localhost:8099/winner`
+
+```json
+{
+    "count": 14,
+    "vote": "Hillary Clinton"
+}
+```
+
 ## Build Artifact
 
 This project is continuously built and tested on every code check-in to GitHub. If all tests pass, the resulting Spring Boot JAR is stored in the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository.
