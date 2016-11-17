@@ -139,6 +139,8 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 
 This project is continuously built and tested on every code check-in to GitHub. If all tests pass, the resulting Spring Boot JAR is stored in the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository.
 
+![Vote Continuous Integration Pipeline](Voter-CI.png)
+
 ## Spring Profiles
 
 The service has three Spring Profiles, located here, `src/main/resources/application.yml`, which are: `default` (`localhost`), `aws-production`, and `docker-production`.
