@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-final class VoteList {
+final class CandidateList {
 
-    static List<String> votes = Arrays.asList(
+    static List<String> candidates = Arrays.asList(
             "Hillary Clinton",
             "Donald Trump",
             "Chris Keniston",
@@ -16,9 +16,9 @@ final class VoteList {
             "Hillary Clinton"
     );
 
-    static List<String> getVotes() {
-        List<String> voteSorted = votes.subList(1, votes.size());
-        Collections.sort(voteSorted);
-        return voteSorted;
+    static List<String> getCandidates() {
+        List<String> candidatesSorted = candidates.subList(1, candidates.size());
+        Collections.sort(candidatesSorted);
+        return candidatesSorted;
     }
 }

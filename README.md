@@ -4,11 +4,11 @@
 
 ## Introduction
 
-A simple Spring Boot RESTful microservice, backed by MongoDB.
+A simple Spring Boot RESTful API microservice, backed by MongoDB. The Voter service exposes several HTTP endpoints, listed below. Calling those endpoints, end-users can review candidates, submit a vote, view voting results, and view the winner. End-users can also create random voting data for simulations.
 
 ## Quick Start
 
-Requires MongoDB to be pre-installed and running locally, on port `27017`. To clone, build, test, and run the Voter Spring Boot service, locally:
+The VOter service requires MongoDB to be pre-installed and running locally, on port `27017`. To clone, build, test, and run the Voter service, locally:
 
 ```bash
 git clone https://github.com/garystafford/voter-service.git
@@ -21,8 +21,8 @@ java -jar build/libs/voter-service-0.1.0.jar
 
 Out of the box, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
-- Purge and Add New Sample Data (GET): <http://localhost:8099/seeder>
-- List Candidates (GET): <http://localhost:8099/choices>
+- Create Random Sample Data (GET): <http://localhost:8099/simulation>
+- List Candidates (GET): <http://localhost:8099/candidates>
 - Submit Vote (POST): <http://localhost:8099/votes>
 - View Voting Results (GET): <http://localhost:8099/results>
 - View Winner (GET): <http://localhost:8099/winner>
@@ -62,11 +62,11 @@ wget --method POST \
 
 Using [HTTPie](https://httpie.org/) command line HTTP client.
 
-`http http://localhost:8099/choices`
+`http http://localhost:8099/candidates`
 
 ```json
 {
-    "choices": [
+    "candidates": [
         "Chris Keniston",
         "Darrell Castle",
         "Donald Trump",
@@ -99,7 +99,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
             "vote": "Gary Johnson"
         },
         {
-            "count": 14,
+            "count": 10,
             "vote": "Hillary Clinton"
         },
         {
@@ -114,12 +114,12 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 
 ```json
 {
-    "count": 14,
+    "count": 10,
     "vote": "Hillary Clinton"
 }
 ```
 
-`http POST http://localhost:8099/votes vote="Hillary Clinton"`
+`http POST http://localhost:8099/votes vote="Jill Stein"`
 
 ```json
 {
@@ -131,21 +131,22 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
             "href": "http://localhost:8099/votes/58279bda909a021142712fe7"
         }
     },
-    "vote": "Hillary Clinton"
+    "vote": "Jill Stein"
 }
 ```
 
 ## Build Artifact
 
-This project is continuously built and tested on every code check-in to GitHub. If all tests pass, the resulting Spring Boot JAR is stored in the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository.
+The project's source code is continuously built and tested on every code check-in to GitHub. If all unit tests pass, the resulting Spring Boot JAR is stored in the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository.
 
 ![Vote Continuous Integration Pipeline](Voter-CI.png)
 
 ## Spring Profiles
 
-The service has three Spring Profiles, located here, `src/main/resources/application.yml`, which are: `default` (`localhost`), `aws-production`, and `docker-production`.
+The service has three Spring Profiles, located here: `src/main/resources/application.yml`. They are `default` (`localhost`), `aws-production`, and `docker-production`.
 
 ## README
 
 - [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
 - [Spring Boot Testing](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-testing)
+- [Installing Spring Boot applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html#deployment-install)

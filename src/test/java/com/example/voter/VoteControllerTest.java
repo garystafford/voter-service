@@ -22,16 +22,27 @@ public class VoteControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private VoteController voteController;
+
     @Before
     public void setup() {
-        this.restTemplate.getForEntity("/seeder", String.class);
+        // sample test data
+        Map candidates = new HashMap();
+        candidates.put("Chris Keniston", "3");
+        candidates.put("Darrell Castle", "2");
+        candidates.put("Donald Trump", "8");
+        candidates.put("Gary Johnson", "3");
+        candidates.put("Hillary Clinton", "14");
+        candidates.put("Jill Stein", "5");
+        voteController.seedData(candidates);
     }
 
     @Test
     public void getVotesReturnsListOfVoteChoices() throws Exception {
         String expectedVoteList =
-                "{\"choices\":[\"Chris Keniston\",\"Darrell Castle\",\"Donald Trump\",\"Gary Johnson\",\"Hillary Clinton\",\"Jill Stein\"]}";
-        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("/choices", String.class);
+                "{\"candidates\":[\"Chris Keniston\",\"Darrell Castle\",\"Donald Trump\",\"Gary Johnson\",\"Hillary Clinton\",\"Jill Stein\"]}";
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("/candidates", String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).isEqualTo(expectedVoteList);
 
@@ -48,7 +59,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getCountsReturnsVoteCounts() throws Exception {
+    public void getResultsReturnsVoteCounts() throws Exception {
         String expectedVote = "Chris Keniston";
         int expectedCount = 3;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
@@ -66,7 +77,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getFavoriteReturnsMaxCountVote() throws Exception {
+    public void getWinnerReturnsMaxCountVote() throws Exception {
         String expectedVote = "Hillary Clinton";
         int expectedCount = 14;
         ResponseEntity<VoteCount> responseEntity =

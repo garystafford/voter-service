@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +27,10 @@ public class VoteController {
     @Autowired
     private VoteRepository voteRepository;
 
-    @RequestMapping(value = "/choices", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<String>>> getChoices() {
-        List<String> results = VoteList.getVotes();
-        return new ResponseEntity<>(Collections.singletonMap("choices", results), HttpStatus.OK);
+    @RequestMapping(value = "/candidates", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<String>>> getCandidates() {
+        List<String> results = CandidateList.getCandidates();
+        return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/results", method = RequestMethod.GET)
@@ -48,7 +49,7 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/winner", method = RequestMethod.GET)
-    public ResponseEntity<VoteCount> getFavorite() {
+    public ResponseEntity<VoteCount> getWinner() {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
@@ -64,12 +65,24 @@ public class VoteController {
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 
-    @RequestMapping(value = "/seeder", method = RequestMethod.GET)
-    public ResponseEntity<List<Vote>> seedSampleData() {
+    @RequestMapping(value = "/simulation", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> seedData() {
 
         voteRepository.deleteAll();
-        List<Vote> voteSeedData = VoteSeedData.getVotes();
-        voteRepository.save(voteSeedData);
-        return ResponseEntity.status(HttpStatus.OK).body(null); // return 200 without payload
+        VoteSeedData voteSeedData = new VoteSeedData();
+        voteSeedData.setRandomVotes();
+        voteRepository.save(voteSeedData.getVotes());
+        Map<String, String> result = new HashMap<>();
+        result.put("message", "simulation data created");
+        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+    }
+
+    // used by unit tests to create a known data set
+    public void seedData(Map candidates) {
+
+        voteRepository.deleteAll();
+        VoteSeedData voteSeedData = new VoteSeedData();
+        voteSeedData.votesFromMap(candidates);
+        voteRepository.save(voteSeedData.getVotes());
     }
 }
