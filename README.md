@@ -4,7 +4,7 @@
 
 ## Introduction
 
-A simple Spring Boot RESTful API microservice, backed by MongoDB. The Voter service exposes several HTTP endpoints, listed below. Calling those endpoints, end-users can review candidates, submit a vote, view voting results, and view the winner. End-users can also create random voting data for simulations.
+A sample Spring Boot RESTful API microservice, backed by MongoDB. The Voter service exposes several HTTP endpoints, listed below. Calling those endpoints, end-users can review candidates, submit a vote, view voting results, and view the winner. End-users can also create random voting data for simulations.
 
 ## Quick Start
 
