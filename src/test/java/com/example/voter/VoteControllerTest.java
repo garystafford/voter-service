@@ -87,5 +87,4 @@ public class VoteControllerTest {
         assertThat(voteCount.getVote()).isEqualTo(expectedVote);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
     }
-
 }
