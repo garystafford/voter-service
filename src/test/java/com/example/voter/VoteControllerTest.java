@@ -39,7 +39,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getVotesReturnsListOfVoteChoices() throws Exception {
+    public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
         String expectedVoteList =
                 "{\"candidates\":[\"Chris Keniston\",\"Darrell Castle\",\"Donald Trump\",\"Gary Johnson\",\"Hillary Clinton\",\"Jill Stein\"]}";
         ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("/candidates", String.class);
@@ -59,7 +59,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getResultsReturnsExpectedVoteCounts() throws Exception {
+    public void getResultsReturnsListOfExpectedVoteCounts() throws Exception {
         String expectedVote = "Chris Keniston";
         int expectedCount = 3;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
