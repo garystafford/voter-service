@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Deploys JAR build artifact to GitHub (acts as pseudo binary repository)
-# (4) encypted environment variables in .travis.yml file used here
+# (3) encrypted environment variables in .travis.yml file used here
 # travis encrypt GH_TOKEN=<your_token_hash> --add
 # travis encrypt COMMIT_AUTHOR_EMAIL=<your_email_here> --add
 # travis encrypt GH_ARTIFACT_REPO=github.com/<your_repo_path>.git --add

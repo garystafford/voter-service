@@ -49,7 +49,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void setVoteReturnsNewVote() throws Exception {
+    public void postVoteReturnsNewVote() throws Exception {
         String expectedVote = "Test Vote";
         Vote vote = new Vote(expectedVote);
         ResponseEntity<Vote> responseEntity =
@@ -59,7 +59,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getResultsReturnsVoteCounts() throws Exception {
+    public void getResultsReturnsExpectedVoteCounts() throws Exception {
         String expectedVote = "Chris Keniston";
         int expectedCount = 3;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
@@ -77,7 +77,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getWinnerReturnsMaxCountVote() throws Exception {
+    public void getWinnerReturnsCandidateWithMostVotes() throws Exception {
         String expectedVote = "Hillary Clinton";
         int expectedCount = 14;
         ResponseEntity<VoteCount> responseEntity =
