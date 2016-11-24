@@ -87,4 +87,15 @@ public class VoteControllerTest {
         assertThat(voteCount.getVote()).isEqualTo(expectedVote);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
     }
+
+    @Test
+    public void getSimulationReturnsExpectedMessage() throws Exception {
+        String expectedResponse =
+                "{\"message\":\"simulation data created\"}";
+        ResponseEntity<String> responseEntity =
+                this.restTemplate.getForEntity("/simulation", String.class);
+        assertThat(responseEntity.getStatusCode().value() == 200);
+        assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
+    }
+
 }

@@ -1,6 +1,9 @@
 package com.example.voter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class VoteSeedData {
@@ -14,7 +17,7 @@ public class VoteSeedData {
         return votes;
     }
 
-    // accepts map of candidates and total candidates
+    // accepts map of candidates and total votes
     public void votesFromMap(Map candidates) {
         for (Object key : candidates.keySet()) {
             int value = Integer.parseInt(String.valueOf(candidates.get(key)));
@@ -30,7 +33,7 @@ public class VoteSeedData {
         Map candidates = new HashMap();
         List<String> candidateList = CandidateList.getCandidates();
         for (int i = 0; i < candidateList.size(); i++) {
-            candidates.put(candidateList.get(i), getRandomIntAsString(5, 15));
+            candidates.put(candidateList.get(i), getRandomIntAsString(2, 20));
         }
         votesFromMap(candidates);
     }
