@@ -31,7 +31,7 @@ Out of the box, the service runs on `localhost`, port `8099`. By default, the se
 - Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints include: `/mappings`, `/env`, `/configprops`, etc.
 - Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` include: DELETE, PATCH, PUT, page sort, size, etc.
 
-## How to POST a Vote:
+## How to POST a Vote
 
 HTTPie
 
