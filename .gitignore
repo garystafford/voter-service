@@ -99,3 +99,4 @@ gradle-app.setting
 *.tfstate*
 
 **.DS_Store**
+*.log
