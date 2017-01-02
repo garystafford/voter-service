@@ -77,12 +77,18 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getWinnerReturnsFirstCandidateAlphabeticallyWithMostVotes() throws Exception {
+    public void getWinnerReturnsCandidatesWithMostVotes() throws Exception {
         String expectedVote = "Hillary Clinton";
         int expectedCount = 14;
-        ResponseEntity<VoteCount> responseEntity =
-                this.restTemplate.getForEntity("/winner", VoteCount.class);
-        VoteCount voteCount = responseEntity.getBody();
+        ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
+                new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
+                };
+        ResponseEntity<Map<String, List<VoteCount>>> responseEntity =
+                this.restTemplate.exchange("/winner", HttpMethod.GET, null, typeRef);
+        LinkedHashMap body = ((LinkedHashMap) responseEntity.getBody());
+        Collection voteCountCollection = body.values();
+        ArrayList voteCountArray = (ArrayList) voteCountCollection.toArray()[0];
+        VoteCount voteCount = (VoteCount) voteCountArray.get(0);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getVote()).isEqualTo(expectedVote);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
@@ -107,5 +113,4 @@ public class VoteControllerTest {
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
     }
-
 }
