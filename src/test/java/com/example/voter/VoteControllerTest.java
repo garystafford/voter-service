@@ -77,7 +77,7 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getWinnerReturnsCandidateWithMostVotes() throws Exception {
+    public void getWinnerReturnsFirstCandidateAlphabeticallyWithMostVotes() throws Exception {
         String expectedVote = "Hillary Clinton";
         int expectedCount = 14;
         ResponseEntity<VoteCount> responseEntity =
@@ -86,6 +86,16 @@ public class VoteControllerTest {
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getVote()).isEqualTo(expectedVote);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
+    }
+
+    @Test
+    public void getWinnerCountReturnsMostVotes() throws Exception {
+        int expectedCount = 14;
+        ResponseEntity<VoteCountWinner> responseEntity =
+                this.restTemplate.getForEntity("/winner/count", VoteCountWinner.class);
+        VoteCountWinner voteCountWinner = responseEntity.getBody();
+        assertThat(responseEntity.getStatusCode().value() == 200);
+        assertThat(voteCountWinner.getCount()).isEqualTo(expectedCount);
     }
 
     @Test

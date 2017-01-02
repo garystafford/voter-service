@@ -26,10 +26,13 @@ Out of the box, the service runs on `localhost`, port `8099`. By default, the se
 - Submit Vote (POST): <http://localhost:8099/votes>
 - View Voting Results (GET): <http://localhost:8099/results>
 - View Winner (GET): <http://localhost:8099/winner>
+- View Winning Vote Count (GET): <http://localhost:8091/winner/count>
 - Service Health (GET): <http://localhost:8099/health>
 - Service Metrics (GET): <http://localhost:8099/metrics>
 - Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints include: `/mappings`, `/env`, `/configprops`, etc.
 - Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` include: DELETE, PATCH, PUT, page sort, size, etc.
+
+Note the `/winner` endpoint returns the first candidate, alphabetically, with the most votes, even in the event of a tie.
 
 ## How to POST a Vote
 
@@ -116,6 +119,14 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 {
     "count": 10,
     "vote": "Hillary Clinton"
+}
+```
+
+`http http://localhost:8099/winner/count`
+
+```json
+{
+    "count": 10,
 }
 ```
 

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.2.RELEASE'
+        springBootVersion = '1.4.3.RELEASE'
     }
     repositories {
         jcenter()
@@ -47,12 +47,12 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR1'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR3'
     }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2'
+    gradleVersion = '3.2.1'
 }
 
 test {
