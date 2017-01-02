@@ -6,5 +6,4 @@ import org.springframework.data.repository.query.Param;
 
 public interface VoteRepository extends MongoRepository<Vote, String> {
 
-    Vote findByVote(@Param("vote") String vote);
 }

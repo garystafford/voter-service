@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class VoteController {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
                 project("count").and("vote").previousOperation(),
-                sort(Sort.Direction.ASC, "vote")
+                sort(Sort.Direction.DESC, "count")
         );
 
         AggregationResults<VoteCount> groupResults
@@ -49,12 +50,25 @@ public class VoteController {
         return new ResponseEntity<>(Collections.singletonMap("results", results), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/results/votes", method = RequestMethod.GET)
+    public ResponseEntity<VoteCountWinner> getTotalVotes() {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("vote").exists(true));
+
+        Long groupResults =
+                mongoTemplate.count(query, Vote.class);
+        VoteCountWinner result = new VoteCountWinner(groupResults.intValue());
+
+        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+    }
+
     @RequestMapping(value = "/winner", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<VoteCount>>> getWinner() {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
-                match(Criteria.where("count").is(getWinnerCountInt())),
+                match(Criteria.where("count").is(getWinnerVotesInt())),
                 project("count").and("vote").previousOperation(),
                 sort(Sort.Direction.ASC, "vote")
         );
@@ -65,8 +79,8 @@ public class VoteController {
         return new ResponseEntity<>(Collections.singletonMap("results", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/winner/count", method = RequestMethod.GET)
-    public ResponseEntity<VoteCountWinner> getWinnerCount() {
+    @RequestMapping(value = "/winner/votes", method = RequestMethod.GET)
+    public ResponseEntity<VoteCountWinner> getWinnerVotes() {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
@@ -82,7 +96,7 @@ public class VoteController {
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 
-    private int getWinnerCountInt() {
+    private int getWinnerVotesInt() {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
@@ -106,7 +120,7 @@ public class VoteController {
         voteSeedData.setRandomVotes();
         voteRepository.save(voteSeedData.getVotes());
         Map<String, String> result = new HashMap<>();
-        result.put("message", "simulation data created");
+        result.put("message", "random simulation data created");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 

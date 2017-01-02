@@ -60,8 +60,8 @@ public class VoteControllerTest {
 
     @Test
     public void getResultsReturnsListOfExpectedVoteCounts() throws Exception {
-        String expectedVote = "Chris Keniston";
-        int expectedCount = 3;
+        String expectedVote = "Hillary Clinton";
+        int expectedCount = 14;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
                 };
@@ -73,6 +73,16 @@ public class VoteControllerTest {
         VoteCount voteCount = (VoteCount) voteCountArray.get(0);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getVote()).isEqualTo(expectedVote);
+        assertThat(voteCount.getCount()).isEqualTo(expectedCount);
+    }
+
+    @Test
+    public void getTotalVotesReturnsSumOfVotes() throws Exception {
+        int expectedCount = 35;
+        ResponseEntity<VoteCountWinner> responseEntity =
+                this.restTemplate.getForEntity("/results/votes", VoteCountWinner.class);
+        VoteCountWinner voteCount = responseEntity.getBody();
+        assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
     }
 
@@ -95,10 +105,10 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getWinnerCountReturnsMostVotes() throws Exception {
+    public void getWinnerVotesReturnsWinnersVoteCount() throws Exception {
         int expectedCount = 14;
         ResponseEntity<VoteCountWinner> responseEntity =
-                this.restTemplate.getForEntity("/winner/count", VoteCountWinner.class);
+                this.restTemplate.getForEntity("/winner/votes", VoteCountWinner.class);
         VoteCountWinner voteCountWinner = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCountWinner.getCount()).isEqualTo(expectedCount);
@@ -107,7 +117,7 @@ public class VoteControllerTest {
     @Test
     public void getSimulationReturnsExpectedMessage() throws Exception {
         String expectedResponse =
-                "{\"message\":\"simulation data created\"}";
+                "{\"message\":\"random simulation data created\"}";
         ResponseEntity<String> responseEntity =
                 this.restTemplate.getForEntity("/simulation", String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);

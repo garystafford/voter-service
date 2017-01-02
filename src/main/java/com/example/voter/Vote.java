@@ -1,6 +1,7 @@
 package com.example.voter;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,7 @@ class Vote {
     @Id
     private String id;
 
+    @JsonProperty("candidate")
     private String vote;
 
     Vote() {

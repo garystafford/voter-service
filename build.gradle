@@ -20,7 +20,7 @@ springBoot {
 }
 
 def application_name = 'voter-service'
-def major = '0.1'
+def major = '0.2'
 def minor = System.env.TRAVIS_BUILD_NUMBER ?: '0'
 def artifact_version = major + '.' + minor
 
