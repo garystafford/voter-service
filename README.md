@@ -21,18 +21,20 @@ java -jar build/libs/voter-service-0.2.0.jar
 
 By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
-- Create Random Sample Data (GET): <http://localhost:8099/simulation>
-- List Candidates (GET): <http://localhost:8099/candidates>
-- Submit Vote (POST): <http://localhost:8099/votes>
-- View Voting Results (GET): <http://localhost:8099/results>
-- View Total Votes (GET): <http://localhost:8099/results/votes>
-- View Winner(s) (GET): <http://localhost:8099/winner>
-- View Winning Vote Count (GET): <http://localhost:8091/winner/votes>
-- Service Info (GET): <http://localhost:8099/info>
-- Service Health (GET): <http://localhost:8099/health>
-- Service Metrics (GET): <http://localhost:8099/metrics>
-- Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints include: `/mappings`, `/env`, `/configprops`, etc.
-- Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` include: DELETE, PATCH, PUT, page sort, size, etc.
+| Purpose                   | Method | Endpoint                              |
+| --------------------------|:-------|:--------------------------------------|
+| Create Random Sample Data | GET    | <http://localhost:8099/simulation>    |
+| List Candidates | GET              | <http://localhost:8099/candidates>    |
+| Submit Vote | POST                 | <http://localhost:8099/votes>         |
+| View Voting Results | GET          | <http://localhost:8099/results>       |
+| View Total Votes | GET             | <http://localhost:8099/results/votes> |
+| View Winner(s) | GET               | <http://localhost:8099/winner>        |
+| View Winning Vote Count | GET      | <http://localhost:8091/winner/votes>  |
+| Service Info | GET                 | <http://localhost:8099/info>          |
+| Service Health | GET               | <http://localhost:8099/health>        |
+| Service Metrics | GET              | <http://localhost:8099/metrics>       |
+| Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET | `/mappings`, `/env`, `/configprops`, etc. |
+| Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` | | DELETE, PATCH, PUT, page sort, size, etc. |
 
 ## Voting
 Submitting a new vote, requires an `HTTP POST` to the `/votes` endpoint, as follows:
