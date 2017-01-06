@@ -63,7 +63,7 @@ public class VoteController {
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 
-    @RequestMapping(value = "/winner", method = RequestMethod.GET)
+    @RequestMapping(value = "/winners", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<VoteCount>>> getWinner() {
 
         Aggregation aggregation = Aggregation.newAggregation(
@@ -79,7 +79,7 @@ public class VoteController {
         return new ResponseEntity<>(Collections.singletonMap("results", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/winner/votes", method = RequestMethod.GET)
+    @RequestMapping(value = "/winners/votes", method = RequestMethod.GET)
     public ResponseEntity<VoteCountWinner> getWinnerVotes() {
 
         VoteCountWinner result = new VoteCountWinner(getWinnerVotesInt());

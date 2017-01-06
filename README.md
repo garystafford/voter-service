@@ -4,11 +4,11 @@
 
 ## Introduction
 
-Spring Boot RESTful API µService, backed by MongoDB, used for DevOps training and testing. The Voter µService exposes several endpoints, listed below. API users can review a list candidates, submit a vote, view voting results, and so forth. API users can also create random voting data, by calling the `/simulation` endpoint.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/), is used for DevOps-related training and testing. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
 
 ## Quick Start for Local Development
 
-The Voter service requires MongoDB to be pre-installed and running locally, on port `27017`. To clone, build, test, and run the Voter µService, locally:
+The Voter service requires MongoDB to be pre-installed and running locally, on port `27017`. To clone, build, test, and run the Voter service, locally:
 
 ```bash
 git clone https://github.com/garystafford/voter-service.git
@@ -21,20 +21,20 @@ java -jar build/libs/voter-service-0.2.0.jar
 
 By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
-| Purpose                   | Method | Endpoint                              |
-| --------------------------|:-------|:--------------------------------------|
-| Create Random Sample Data | GET    | <http://localhost:8099/simulation>    |
-| List Candidates | GET              | <http://localhost:8099/candidates>    |
-| Submit Vote | POST                 | <http://localhost:8099/votes>         |
-| View Voting Results | GET          | <http://localhost:8099/results>       |
-| View Total Votes | GET             | <http://localhost:8099/results/votes> |
-| View Winner(s) | GET               | <http://localhost:8099/winner>        |
-| View Winning Vote Count | GET      | <http://localhost:8091/winner/votes>  |
-| Service Info | GET                 | <http://localhost:8099/info>          |
-| Service Health | GET               | <http://localhost:8099/health>        |
-| Service Metrics | GET              | <http://localhost:8099/metrics>       |
+| Purpose                   | Method | Endpoint                                              |
+| --------------------------|:-------|:------------------------------------------------------|
+| Create Random Sample Data | GET    | [/simulation](http://localhost:8099/simulation)       |
+| List Candidates | GET              | [/candidates](http://localhost:8099/candidates)       |
+| Submit Vote | POST                 | [/votes](http://localhost:8099/votes)                 |
+| View Voting Results | GET          | [/results](http://localhost:8099/results)             |
+| View Total Votes | GET             | [/results/votes](http://localhost:8099/results/votes) |
+| View Winner(s) | GET               | [/winners](http://localhost:8099/winners)               |
+| View Winning Vote Count | GET      | [/winners/votes](http://localhost:8091/winners/votes)   |
+| Service Info | GET                 | [/info](http://localhost:8099/info)                   |
+| Service Health | GET               | [/health](http://localhost:8099/health)               |
+| Service Metrics | GET              | [/metrics](http://localhost:8099/metrics)             |
 | Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET | `/mappings`, `/env`, `/configprops`, etc. |
-| Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` | | DELETE, PATCH, PUT, page sort, size, etc. |
+| Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` | Various | DELETE, PATCH, PUT, page sort, size, etc. |
 
 ## Voting
 
@@ -133,7 +133,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 }
 ```
 
-`http http://localhost:8099/winner`
+`http http://localhost:8099/winners`
 
 ```json
 {
@@ -146,7 +146,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 }
 ```
 
-`http http://localhost:8099/winner/votes`
+`http http://localhost:8099/winners/votes`
 
 ```json
 {
