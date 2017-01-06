@@ -65,6 +65,6 @@ test {
 }
 
 updateImpactSubmit {
-    apiKey = updateimpactApiKey
-    openBrowser = updateimpactOpenBrowser
+    apiKey = $System.env.updateimpactApiKey
+    openBrowser = true
 }
