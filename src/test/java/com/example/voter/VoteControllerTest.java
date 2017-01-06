@@ -94,7 +94,7 @@ public class VoteControllerTest {
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
                 };
         ResponseEntity<Map<String, List<VoteCount>>> responseEntity =
-                this.restTemplate.exchange("/winner", HttpMethod.GET, null, typeRef);
+                this.restTemplate.exchange("/winners", HttpMethod.GET, null, typeRef);
         LinkedHashMap body = ((LinkedHashMap) responseEntity.getBody());
         Collection voteCountCollection = body.values();
         ArrayList voteCountArray = (ArrayList) voteCountCollection.toArray()[0];
@@ -108,7 +108,7 @@ public class VoteControllerTest {
     public void getWinnerVotesReturnsWinnersVoteCount() throws Exception {
         int expectedCount = 14;
         ResponseEntity<VoteCountWinner> responseEntity =
-                this.restTemplate.getForEntity("/winner/votes", VoteCountWinner.class);
+                this.restTemplate.getForEntity("/winners/votes", VoteCountWinner.class);
         VoteCountWinner voteCountWinner = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCountWinner.getCount()).isEqualTo(expectedCount);
