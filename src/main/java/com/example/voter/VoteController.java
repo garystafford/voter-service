@@ -82,16 +82,7 @@ public class VoteController {
     @RequestMapping(value = "/winner/votes", method = RequestMethod.GET)
     public ResponseEntity<VoteCountWinner> getWinnerVotes() {
 
-        Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("vote").count().as("count"),
-                project("count"),
-                sort(Sort.Direction.DESC, "count"),
-                limit(1)
-        );
-
-        AggregationResults<VoteCountWinner> groupResults =
-                mongoTemplate.aggregate(aggregation, Vote.class, VoteCountWinner.class);
-        VoteCountWinner result = groupResults.getMappedResults().get(0);
+        VoteCountWinner result = new VoteCountWinner(getWinnerVotesInt());
 
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
@@ -107,6 +98,9 @@ public class VoteController {
 
         AggregationResults<VoteCountWinner> groupResults =
                 mongoTemplate.aggregate(aggregation, Vote.class, VoteCountWinner.class);
+        if (groupResults.getMappedResults().isEmpty()) {
+            return 0;
+        }
         int result = groupResults.getMappedResults().get(0).getCount();
 
         return result;
