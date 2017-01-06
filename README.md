@@ -37,12 +37,13 @@ By default, the service runs on `localhost`, port `8099`. By default, the servic
 | Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` | | DELETE, PATCH, PUT, page sort, size, etc. |
 
 ## Voting
-Submitting a new vote, requires an `HTTP POST` to the `/votes` endpoint, as follows:
+
+Submitting a new vote, requires an HTTP `POST` request to the `/votes` endpoint, as follows:
 
 HTTPie
 
 ```text
-http POST http://localhost:8099/votes candidate="Hillary Clinton"
+http POST http://localhost:8099/votes candidate="Jill Stein"
 ```
 
 cURL
@@ -50,7 +51,7 @@ cURL
 ```text
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "candidate": "Hillary Clinton" }' \
+  -d '{ "candidate": "Jill Stein" }' \
   "http://localhost:8099/votes"
 ```
 
@@ -59,7 +60,7 @@ wget
 ```text
 wget --method POST \
   --header 'content-type: application/json' \
-  --body-data '{ "candidate": "Hillary Clinton" }' \
+  --body-data '{ "candidate": "Jill Stein" }' \
   --no-verbose \
   --output-document - http://localhost:8099/votes
 ```
@@ -169,7 +170,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 }
 ```
 
-## Build Artifact
+## Continuous Integration
 
 The project's source code is continuously built and tested on every commit to [GitHub](https://github.com/garystafford/voter-service), using [Travis CI](https://travis-ci.org/garystafford/voter-service). If all unit tests pass, the resulting Spring Boot JAR is pushed to the `artifacts` branch of the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository. The JAR's filename is incremented with each successful build (i.e. `voter-service-0.2.10.jar`).
 
@@ -177,7 +178,7 @@ The project's source code is continuously built and tested on every commit to [G
 
 ## Spring Profiles
 
-The service has (3) Spring Profiles, located here, `src/main/resources/application.yml`. They are `default` (`localhost`), `aws-production`, and `docker-production`.
+The service includes (3) Spring Profiles, as YAML: `src/main/resources/application.yml`. They are `default`, `aws-production`, and `docker-production`. Please note the `spring.data.mongodb.host` value for each of the profiles. You will need to ensure your MongoDB instance(s) are available at host value, or adjust the profile(s) before using. The value can be a hostname or IP address.
 
 ```yaml
 spring:
