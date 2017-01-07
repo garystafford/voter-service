@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=master)](https://travis-ci.org/garystafford/voter-service)     [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service)
+[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=master)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service)
 
 # Voter Service
 
@@ -21,20 +21,20 @@ java -jar build/libs/voter-service-0.2.0.jar
 
 By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
-| Purpose                   | Method | Endpoint                                              |
-| --------------------------|:-------|:------------------------------------------------------|
-| Create Random Sample Data | GET    | [/simulation](http://localhost:8099/simulation)       |
-| List Candidates | GET              | [/candidates](http://localhost:8099/candidates)       |
-| Submit Vote | POST                 | [/votes](http://localhost:8099/votes)                 |
-| View Voting Results | GET          | [/results](http://localhost:8099/results)             |
-| View Total Votes | GET             | [/results/votes](http://localhost:8099/results/votes) |
-| View Winner(s) | GET               | [/winners](http://localhost:8099/winners)               |
-| View Winning Vote Count | GET      | [/winners/votes](http://localhost:8091/winners/votes)   |
-| Service Info | GET                 | [/info](http://localhost:8099/info)                   |
-| Service Health | GET               | [/health](http://localhost:8099/health)               |
-| Service Metrics | GET              | [/metrics](http://localhost:8099/metrics)             |
-| Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET | `/mappings`, `/env`, `/configprops`, etc. |
-| Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes` | Various | DELETE, PATCH, PUT, page sort, size, etc. |
+Purpose                                                                                                                  | Method  | Endpoint
+------------------------------------------------------------------------------------------------------------------------ | :------ | :----------------------------------------------------
+Create Random Sample Data                                                                                                | GET     | [/simulation](http://localhost:8099/simulation)
+List Candidates                                                                                                          | GET     | [/candidates](http://localhost:8099/candidates)
+Submit Vote                                                                                                              | POST    | [/votes](http://localhost:8099/votes)
+View Voting Results                                                                                                      | GET     | [/results](http://localhost:8099/results)
+View Total Votes                                                                                                         | GET     | [/results/votes](http://localhost:8099/results/votes)
+View Winner(s)                                                                                                           | GET     | [/winners](http://localhost:8099/winners)
+View Winning Vote Count                                                                                                  | GET     | [/winners/votes](http://localhost:8091/winners/votes)
+Service Info                                                                                                             | GET     | [/info](http://localhost:8099/info)
+Service Health                                                                                                           | GET     | [/health](http://localhost:8099/health)
+Service Metrics                                                                                                          | GET     | [/metrics](http://localhost:8099/metrics)
+Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `/mappings`, `/env`, `/configprops`, etc.
+Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes`                                         | Various | DELETE, PATCH, PUT, page sort, size, etc.
 
 ## Voting
 
@@ -178,57 +178,58 @@ The project's source code is continuously built and tested on every commit to [G
 
 ## Spring Profiles
 
-The service includes (3) Spring Profiles, as YAML: `src/main/resources/application.yml`. They are `default`, `aws-production`, and `docker-production`. Please note the `spring.data.mongodb.host` value for each of the profiles. You will need to ensure your MongoDB instance(s) are available at host value, or adjust the profile(s) before using. The value can be a hostname or IP address.
+The Voter service includes (3) Spring Boot Profiles, in a multi-profile YAML document: `src/main/resources/application.yml`. The profiles are `default`, `aws-production`, and `docker-production`. You will need to ensure your MongoDB instance is available at that `host` address and port of the profile you choose, or you may override the profile's properties.
+
 
 ```yaml
-spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: voters
-
+server:
+  port: 8099
+data:
+  mongodb:
+    host: localhost
+    port: 27017
+    database: voters
 logging:
   level:
     root: INFO
-
-server:
-  port: 8099
-
 info:
-    java:
-      source: ${java.version}
-      target: ${java.version}
-
+  java:
+    source: ${java.version}
+    target: ${java.version}
 ---
-
 spring:
   profiles: aws-production
-  data:
-    mongodb:
-      host: 10.0.1.6
-
+data:
+  mongodb:
+    host: 10.0.1.6
 logging:
   level:
     root: WARN
-
 ---
-
 spring:
   profiles: docker-production
-  data:
-    mongodb:
-      host: mongodb
-
+data:
+  mongodb:
+    host: mongodb
 logging:
   level:
-    root: INFO
+    root: WARN
 ```
 
-## README
+All profile property values may be overridden on the command line, or in a .conf file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:
+
+```bash
+java -jar <name_of_the_jar_file> \
+  --spring.profiles.active=aws-production \
+  --spring.data.mongodb.host=<new_host_address>
+  -Djava.security.egd=file:/dev/./urandom
+```
+
+# README
 
 - [Spring Data MongoDB - Reference Documentation](http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/)
 - [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
 - [Spring Boot Testing](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-testing)
 - [Installing Spring Boot applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html#deployment-install)
+- [Externalized Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
 - [2016 Presidential Candidates](http://www.politics1.com/p2016.htm)
