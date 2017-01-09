@@ -22,7 +22,7 @@ java -jar build/libs/voter-service-0.2.0.jar
 By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
 
 Purpose                                                                                                                  | Method  | Endpoint
------------------------------------------------------------------------------------------------------------------------- | :------ | :----------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
 Create Random Sample Data                                                                                                | GET     | [/simulation](http://localhost:8099/simulation)
 List Candidates                                                                                                          | GET     | [/candidates](http://localhost:8099/candidates)
 Submit Vote                                                                                                              | POST    | [/votes](http://localhost:8099/votes)
@@ -180,7 +180,6 @@ The project's source code is continuously built and tested on every commit to [G
 
 The Voter service includes (3) Spring Boot Profiles, in a multi-profile YAML document: `src/main/resources/application.yml`. The profiles are `default`, `aws-production`, and `docker-production`. You will need to ensure your MongoDB instance is available at that `host` address and port of the profile you choose, or you may override the profile's properties.
 
-
 ```yaml
 server:
   port: 8099
@@ -196,6 +195,14 @@ info:
   java:
     source: ${java.version}
     target: ${java.version}
+management:
+  info:
+    git:
+      mode: full
+    build:
+      enabled: true
+endpoints:
+  sensitive: true
 ---
 spring:
   profiles: aws-production
@@ -205,6 +212,18 @@ data:
 logging:
   level:
     root: WARN
+management:
+  info:
+    git:
+      enabled: false
+    build:
+      enabled: false
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
 ---
 spring:
   profiles: docker-production
@@ -214,12 +233,24 @@ data:
 logging:
   level:
     root: WARN
+management:
+  info:
+    git:
+      enabled: false
+    build:
+      enabled: false
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
 ```
 
-All profile property values may be overridden on the command line, or in a .conf file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:
+All profile property values may be overridden on the command line, or in a `.conf` file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:
 
 ```bash
-java -jar <name_of_the_jar_file> \
+java -jar <name_of_jar_file> \
   --spring.profiles.active=aws-production \
   --spring.data.mongodb.host=<new_host_address>
   -Djava.security.egd=file:/dev/./urandom
