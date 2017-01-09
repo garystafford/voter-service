@@ -258,7 +258,7 @@ java -jar <name_of_jar_file> \
   -Djava.security.egd=file:/dev/./urandom
 ```
 
-# README
+## References
 
 - [Spring Data MongoDB - Reference Documentation](http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/)
 - [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
