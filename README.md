@@ -33,7 +33,7 @@ View Winning Vote Count                                                         
 Service Info                                                                                                             | GET     | [/info](http://localhost:8099/info)
 Service Health                                                                                                           | GET     | [/health](http://localhost:8099/health)
 Service Metrics                                                                                                          | GET     | [/metrics](http://localhost:8099/metrics)
-Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `/mappings`, `/env`, `/configprops`, etc.
+Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `/actuator`, `/mappings`, `/env`, `/configprops`, etc.
 Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes`                                         | Various | DELETE, PATCH, PUT, page sort, size, etc.
 
 ## Voting
