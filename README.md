@@ -156,19 +156,19 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 }
 ```
 
-`http POST http://localhost:8099/votes vote="Jill Stein"`
+`http POST http://localhost:8099/votes candidate="Jill Stein"`
 
 ```json
 {
     "_links": {
         "self": {
-            "href": "http://localhost:8099/votes/58279bda909a021142712fe7"
+            "href": "http://localhost:8099/votes/5872f388a6e0de7595dd22ac"
         },
         "vote": {
-            "href": "http://localhost:8099/votes/58279bda909a021142712fe7"
+            "href": "http://localhost:8099/votes/5872f388a6e0de7595dd22ac"
         }
     },
-    "vote": "Jill Stein"
+    "candidate": "Jill Stein"
 }
 ```
 
