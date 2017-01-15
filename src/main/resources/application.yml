@@ -42,6 +42,13 @@ endpoints:
     enabled: true
 ---
 spring:
+  profiles: docker-local
+data:
+  mongodb:
+    host: mongodb
+    port: 27017
+---
+spring:
   profiles: docker-production
 data:
   mongodb:

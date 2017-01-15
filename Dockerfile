@@ -2,7 +2,7 @@ FROM java:openjdk-8u111-jdk
 
 MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
 
-ENV REFRESHED_AT 2016-12-29
+ENV REFRESHED_AT 2017-01-14
 
 RUN set -ex \
   && apt-get -y update \
@@ -17,4 +17,4 @@ RUN set -ex \
   && cd /voter \
   && mv voter-service-*.jar voter-service.jar
 
-CMD ["java", "-jar", "voter/voter-service.jar", "-Djava.security.egd=file:/dev/./urandom", "--spring.profiles.active=docker-production"]
+CMD ["java", "-jar", "voter/voter-service.jar", "-Djava.security.egd=file:/dev/./urandom", "--spring.profiles.active=docker-local"]
