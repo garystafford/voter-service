@@ -185,11 +185,10 @@ The Voter service includes (3) Spring Boot Profiles, in a multi-profile YAML doc
 ```yaml
 server:
   port: 8099
-data:
-  mongodb:
-    host: localhost
-    port: 27017
-    database: voters
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/voters
 logging:
   level:
     root: INFO
@@ -203,14 +202,12 @@ management:
       mode: full
     build:
       enabled: true
-endpoints:
-  sensitive: true
 ---
 spring:
   profiles: aws-production
-data:
-  mongodb:
-    host: 10.0.1.6
+  data:
+    mongodb:
+      uri: mongodb://10.0.1.6:27017/voters
 logging:
   level:
     root: WARN
@@ -221,6 +218,7 @@ management:
     build:
       enabled: false
 endpoints:
+  sensitive: true
   enabled: false
   info:
     enabled: true
@@ -228,10 +226,16 @@ endpoints:
     enabled: true
 ---
 spring:
+  profiles: docker-local
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/voters
+---
+spring:
   profiles: docker-production
-data:
-  mongodb:
-    host: mongodb
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/voters
 logging:
   level:
     root: WARN
@@ -242,6 +246,7 @@ management:
     build:
       enabled: false
 endpoints:
+  sensitive: true
   enabled: false
   info:
     enabled: true

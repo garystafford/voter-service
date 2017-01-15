@@ -1,8 +1,9 @@
 server:
   port: 8099
-data:
-  mongodb:
-    uri: mongodb://localhost:27017/voters
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/voters
 logging:
   level:
     root: INFO
@@ -19,9 +20,9 @@ management:
 ---
 spring:
   profiles: aws-production
-data:
-  mongodb:
-    uri: mongodb://10.0.1.6:27017/voters
+  data:
+    mongodb:
+      uri: mongodb://10.0.1.6:27017/voters
 logging:
   level:
     root: WARN
@@ -41,15 +42,15 @@ endpoints:
 ---
 spring:
   profiles: docker-local
-data:
-  mongodb:
-    uri: mongodb://mongodb:27017/voters
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/voters
 ---
 spring:
   profiles: docker-production
-data:
-  mongodb:
-    uri: mongodb://mongodb:27017/voters
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/voters
 logging:
   level:
     root: WARN
