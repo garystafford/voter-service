@@ -17,4 +17,4 @@ RUN set -ex \
   && cd /voter \
   && mv voter-service-*.jar voter-service.jar
 
-CMD ["java", "-jar", "voter/voter-service.jar", "-Djava.security.egd=file:/dev/./urandom", "--spring.profiles.active=docker-local"]
+CMD ["java", "-Dspring.profiles.active=docker-local", "-Djava.security.egd=file:/dev/./urandom", "-jar", "voter/voter-service.jar"]
