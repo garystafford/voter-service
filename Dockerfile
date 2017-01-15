@@ -10,8 +10,8 @@ RUN set -ex \
   && apt-get -y install git \
   && mkdir /voter \
   && git clone --depth 1 \
-      "https://github.com/garystafford/voter-service-artifacts.git" \
-      /voter
+    "https://github.com/garystafford/voter-service-artifacts.git" \
+    /voter
 
 RUN set -ex \
   && cd /voter \
