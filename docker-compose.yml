@@ -3,7 +3,7 @@ version: '2'
 #   data: {}
 services:
   voter:
-    image: garystafford/voter-service:0.2.49
+    image: garystafford/voter-service:latest
     links:
     - mongodb:mongodb
     ports:
