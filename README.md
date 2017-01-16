@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The Candidate Spring Boot Service is a RESTful Web Service, backed by MongoDB. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
+The Voter Spring Boot Service is a RESTful Web Service, backed by MongoDB. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
 
 ## Quick Start for Local Development
 
