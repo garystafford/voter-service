@@ -30,12 +30,13 @@ public class VoteSeedData {
 
     // generates random number of total votes for each candidate
     public void setRandomVotes() {
-        Map candidates = new HashMap();
-        List<String> candidateList = CandidateList.getCandidates();
-        for (int i = 0; i < candidateList.size(); i++) {
-            candidates.put(candidateList.get(i), getRandomIntAsString(2, 20));
+        Map candidatesMap = new HashMap();
+        CandidateList candidateList = new CandidateList();
+        List<String> candidates = candidateList.getCandidates();
+        for (int i = 0; i < candidates.size(); i++) {
+            candidatesMap.put(candidates.get(i), getRandomIntAsString(2, 20));
         }
-        votesFromMap(candidates);
+        votesFromMap(candidatesMap);
     }
 
     // returns random number as string

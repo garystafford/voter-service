@@ -30,9 +30,11 @@ public class VoteController {
     private VoteRepository voteRepository;
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<String>>> getCandidates() {
-        List<String> results = CandidateList.getCandidates();
-        return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
+    public ResponseEntity<List<String>> getCandidates() {
+        CandidateList candidateList = new CandidateList();
+        ResponseEntity<List<String>> results = candidateList.getCandidatesRemote();
+//        return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
+        return results;
     }
 
     @RequestMapping(value = "/results", method = RequestMethod.GET)

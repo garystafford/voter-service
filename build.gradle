@@ -42,19 +42,22 @@ repositories {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-actuator-docs')
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.webjars:hal-browser')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'org.springframework.boot', name: 'spring-boot-actuator-docs'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-consul-discovery'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-commons'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-consul-config'
+    compile group: 'org.webjars', name: 'hal-browser'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR3'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR4'
     }
 }
 
