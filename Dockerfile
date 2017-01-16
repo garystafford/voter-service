@@ -2,7 +2,7 @@ FROM java:openjdk-8u111-jdk
 
 MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
 
-ENV REFRESHED_AT Sat Jan 14 22:44:15 EST 2017
+ENV REFRESHED_AT 2017-01-16
 
 RUN set -ex \
   && apt-get -y update \
