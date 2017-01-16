@@ -21,7 +21,7 @@ management:
      enabled: true
 ---
 spring:
- profiles: docker-local
+ profiles: docker-development
  data:
    mongodb:
      host: mongodb
