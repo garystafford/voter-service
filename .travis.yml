@@ -9,9 +9,10 @@ before_deploy:
 before_script:
 - sleep 15
 script:
-- "./gradlew clean cleanTest build --console=rich"
-- "./gradlew updateImpactSubmit"
-- sh ./deploy_travisci.sh
+- "./gradlew clean cleanTest build -x test --console=rich"
+# - "./gradlew clean cleanTest build --console=rich"
+# - "./gradlew updateImpactSubmit"
+# - sh ./deploy_travisci.sh
 env:
   global:
   - secure: kY31UwyQyayD3BPh9+waoQxDdXmHUZaiTVsnDKmbMsOd0CHjv6JhBt9vlastHGCWW5LElmSDlyhq9gwhrCz/WsrptwwfYD1o0rDTGUhZSuGsjkJ8NyVcboHeW42IgaST27kksEY78GHXPyLT/f6uyMgDYZ/RABgjCUMcGnfzHOVoxyn1QjEvEomLcEFjijVDYSAdx5GMQocXvfFlwL2UIu4Ip8WKm9S/YgnKk6gG1bsmfecOSOk+9Aj8mv82V1XIrSUh0E/+t6E4OqsEX9OQ7ZvK7Z9QJ56GyspzJwyyFRQ51Jg6mdLYwlBCMcSHYSgQu4eS8nRrWxuBWCxcMblHb/zKd8ZVWN0Gm4iK1g3lKg95A+oQHYTvtAdY6lGFsPUw61eTdazS/Koc4DOfkUPMQd6P0RkO0UcJfzV4ne7CcFDaezVJD0qCfGlyAxvzTug8fJ4UybBtwGWmn5AQVXL30eIDdpMOFb7n9O0z65HUz/+wVKaHjCI7TQ+SBkHLk6XXm2HJcGYHRKvpKATAU4lApPnj/UWhEbilqmXQP10eTryBcadSnjvpSYD3ZJQn8rH1qPlVnTIncPCT3aPC3eiPFv1OUnPekSXXIcPbUIYu73yGaX0GyixbKiHafL8H8hw/3WxVouUe/yiNb/eYRFcBXi3lDTSSi/qv7cnYohvO3/o=
