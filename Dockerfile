@@ -5,6 +5,7 @@ MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
 ENV REFRESHED_AT 2017-01-16
 
 RUN set -ex \
+  && sleep 240 \
   && apt-get -y update \
   && apt-get -y upgrade \
   && apt-get -y install git \
