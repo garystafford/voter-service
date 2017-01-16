@@ -1,18 +1,11 @@
 version: '2'
-# volumes:
-#   data: {}
 services:
   voter:
     image: garystafford/voter-service:latest
-    links:
-    - mongodb:mongodb
     ports:
     - 8099:8099/tcp
   mongodb:
     image: mongo:latest
-    # volumes:
-    # - data:/data/db
-    # - data:/data/configdb
     ports:
     - 27017:27017/tcp
     command:
