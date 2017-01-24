@@ -1,8 +1,8 @@
 FROM java:openjdk-8u111-jdk
 
-MAINTAINER Gary A. Stafford <garystafford@rochester.rr.com>
+LABEL maintainer "Gary A. Stafford <garystafford@rochester.rr.com>"
 
-ENV REFRESHED_AT 2017-01-16
+ENV REFRESHED_AT 2017-01-23
 
 RUN set -ex \
   && sleep 240 \
