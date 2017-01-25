@@ -16,4 +16,4 @@ git config user.email "${COMMIT_AUTHOR_EMAIL}"
 
 git add *.jar
 git commit -m "Deploy Travis CI Build #${TRAVIS_BUILD_NUMBER} artifacts to GitHub"
-git push --force --quiet "https://${GH_TOKEN}@${GH_ARTIFACT_REPO}" master:master
+git push --force --quiet "https://${GH_TOKEN}@${GH_ARTIFACT_REPO}" master:build-artifacts
