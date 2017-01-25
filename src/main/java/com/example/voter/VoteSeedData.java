@@ -39,7 +39,7 @@ public class VoteSeedData {
     // generates random number of total votes for each candidate
     public void setRandomVotes() {
         Map candidates = new HashMap();
-        List<String> list = candidateList.getCandidatesRemote();
+        List<String> list = candidateList.getCandidates();
         for (int i = 0; i < list.size(); i++) {
             candidates.put(list.get(i), getRandomIntAsString(2, 20));
         }

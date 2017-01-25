@@ -37,7 +37,7 @@ public class VoteController {
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<String>>> getCandidates() {
-        List<String> results = candidateList.getCandidatesRemote();
+        List<String> results = candidateList.getCandidates();
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 

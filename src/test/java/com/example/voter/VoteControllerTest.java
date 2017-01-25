@@ -1,6 +1,7 @@
 package com.example.voter;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class VoteControllerTest {
         voteController.seedData(candidates);
     }
 
+    @Ignore
     @Test
     public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
         String expectedVoteList =
@@ -114,6 +116,7 @@ public class VoteControllerTest {
         assertThat(voteCountWinner.getCount()).isEqualTo(expectedCount);
     }
 
+    @Ignore
     @Test
     public void getSimulationReturnsExpectedMessage() throws Exception {
         String expectedResponse =

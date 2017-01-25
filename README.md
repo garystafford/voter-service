@@ -4,11 +4,13 @@
 
 ## Introduction
 
-The Voter Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
+The Voter Service [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
+
+The Voter service is dependent on the [Candidates Service](https://github.com/garystafford/candidates-service) to supply a list of candidates. The Candidates service is called by the Voter service when either the `/candidates` or `/simulation` endpoints are called.
 
 ## Quick Start for Local Development
 
-The Voter service requires MongoDB to be pre-installed and running locally, on port `27017`. To clone, build, test, and run the Voter service, as a JAR file, locally:
+The Voter service requires MongoDB to be running locally, on port `27017`. The Voter service also required the Candidates service to be running locally on `8097`. To clone, build, test, and run the Voter service, as a JAR file, locally:
 
 ```bash
 git clone https://github.com/garystafford/voter-service.git
@@ -45,7 +47,8 @@ Submitting a new vote, requires an HTTP `POST` request to the `/votes` endpoint,
 HTTPie
 
 ```text
-http POST http://localhost:8099/votes candidate="Jill Stein"
+http POST http://localhost:8099/votes \
+candidate="Jill Stein (Green Party of the United States)"
 ```
 
 cURL
@@ -53,7 +56,7 @@ cURL
 ```text
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "candidate": "Jill Stein" }' \
+  -d '{ "candidate": "Jill Stein (Green Party of the United States)" }' \
   "http://localhost:8099/votes"
 ```
 
@@ -62,7 +65,7 @@ wget
 ```text
 wget --method POST \
   --header 'content-type: application/json' \
-  --body-data '{ "candidate": "Jill Stein" }' \
+  --body-data '{ "candidate": "Jill Stein (Green Party of the United States)" }' \
   --no-verbose \
   --output-document - http://localhost:8099/votes
 ```
@@ -76,12 +79,12 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 ```json
 {
     "candidates": [
-        "Chris Keniston",
-        "Darrell Castle",
-        "Donald Trump",
-        "Gary Johnson",
-        "Hillary Clinton",
-        "Jill Stein"
+        "Chris Keniston (Veterans Party of America)",
+        "Darrell Castle (Constitution Party)",
+        "Donald Trump (Republican Party)",
+        "Gary Johnson (Libertarian Party)",
+        "Hillary Clinton (Democratic Party)",
+        "Jill Stein (Green Party of the United States)"
     ]
 }
 ```
@@ -100,28 +103,28 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 {
     "results": [
         {
-            "candidate": "Gary Johnson",
-            "votes": 20
+            "candidate": "Jill Stein (Green Party of the United States)",
+            "votes": 18
         },
         {
-            "candidate": "Hillary Clinton",
+            "candidate": "Darrell Castle (Constitution Party)",
+            "votes": 17
+        },
+        {
+            "candidate": "Chris Keniston (Veterans Party of America)",
+            "votes": 16
+        },
+        {
+            "candidate": "Gary Johnson (Libertarian Party)",
             "votes": 15
         },
         {
-            "candidate": "Donald Trump",
-            "votes": 11
+            "candidate": "Donald Trump (Republican Party)",
+            "votes": 7
         },
         {
-            "candidate": "Jill Stein",
-            "votes": 8
-        },
-        {
-            "candidate": "Chris Keniston",
-            "votes": 3
-        },
-        {
-            "candidate": "Darrell Castle",
-            "votes": 2
+            "candidate": "Hillary Clinton (Democratic Party)",
+            "votes": 7
         }
     ]
 }
@@ -131,7 +134,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 
 ```json
 {
-    "votes": 59
+    "votes": 80
 }
 ```
 
@@ -141,8 +144,8 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 {
     "results": [
         {
-            "candidate": "Gary Johnson",
-            "votes": 20
+            "candidate": "Jill Stein (Green Party of the United States)",
+            "votes": 18
         }
     ]
 }
@@ -152,23 +155,23 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 
 ```json
 {
-    "votes": 20
+    "votes": 18
 }
 ```
 
-`http POST http://localhost:8099/votes candidate="Jill Stein"`
+`http POST http://localhost:8099/votes candidate="Jill Stein (Green Party of the United States)"`
 
 ```json
 {
     "_links": {
         "self": {
-            "href": "http://localhost:8099/votes/5872f388a6e0de7595dd22ac"
+            "href": "http://localhost:8099/votes/5888605326b6f40371a1d016"
         },
         "vote": {
-            "href": "http://localhost:8099/votes/5872f388a6e0de7595dd22ac"
+            "href": "http://localhost:8099/votes/5888605326b6f40371a1d016"
         }
     },
-    "candidate": "Jill Stein"
+    "candidate": "Jill Stein (Green Party of the United States)"
 }
 ```
 
@@ -204,12 +207,19 @@ management:
      mode: full
    build:
      enabled: true
+services:
+  candidates:
+    host: localhost
+    port: 8097
 ---
 spring:
  profiles: docker-development
  data:
    mongodb:
      host: mongodb
+services:
+  candidates:
+    host: candidates
 ---
 spring:
  profiles: aws-production
@@ -232,6 +242,9 @@ endpoints:
    enabled: true
  health:
    enabled: true
+services:
+  candidates:
+    host: candidates
 ---
 spring:
  profiles: docker-production
@@ -254,6 +267,9 @@ endpoints:
    enabled: true
  health:
    enabled: true
+services:
+  candidates:
+    host: candidates
 ```
 
 All profile property values may be overridden on the command line, or in a `.conf` file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:

@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,30 +20,20 @@ public class CandidateList {
     @Autowired
     private Environment env;
 
-    @Deprecated
-    private List<String> candidates = Arrays.asList(
-            "Donald Trump",
-            "Chris Keniston",
-            "Jill Stein",
-            "Gary Johnson",
-            "Darrell Castle",
-            "Hillary Clinton"
-    );
-
-    @Deprecated
     public List<String> getCandidates() {
-        List<String> candidatesSorted = candidates.subList(0, candidates.size());
+        List<String> candidatesSorted = getCandidatesRemote();
+        candidatesSorted = candidatesSorted.subList(0, candidatesSorted.size());
         Collections.sort(candidatesSorted);
         return candidatesSorted;
     }
 
-    public List<String> getCandidatesRemote() {
+    private List<String> getCandidatesRemote() {
+        List<String> candidatesRemote = new ArrayList<>();
         String candidatesHostname = env.getProperty("services.candidates.host");
         String candidatesPort = env.getProperty("services.candidates.port");
         String candidatesResourceUrl = String.format("http://%s:%s/candidates/summary",
                 candidatesHostname, candidatesPort);
 
-        List<String> candidateList = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> responseEntity =
@@ -63,10 +52,10 @@ public class CandidateList {
         for (int i = 0; i < candidatesArray.size(); i++) {
             JsonNode jsonNode = candidatesArray.get(i);
             if (jsonNode.isTextual()) {
-                candidateList.add(jsonNode.asText());
+                candidatesRemote.add(jsonNode.asText());
             }
         }
 
-        return candidateList;
+        return candidatesRemote;
     }
 }
