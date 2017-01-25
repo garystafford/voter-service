@@ -21,6 +21,7 @@ public class CandidateList {
     @Autowired
     private Environment env;
 
+    @Deprecated
     private List<String> candidates = Arrays.asList(
             "Donald Trump",
             "Chris Keniston",
@@ -30,6 +31,7 @@ public class CandidateList {
             "Hillary Clinton"
     );
 
+    @Deprecated
     public List<String> getCandidates() {
         List<String> candidatesSorted = candidates.subList(0, candidates.size());
         Collections.sort(candidatesSorted);
@@ -37,7 +39,7 @@ public class CandidateList {
     }
 
     public List<String> getCandidatesRemote() {
-        String candidatesHostname = env.getProperty("services.candidates.hostname");
+        String candidatesHostname = env.getProperty("services.candidates.host");
         String candidatesPort = env.getProperty("services.candidates.port");
         String candidatesResourceUrl = String.format("http://%s:%s/candidates/summary",
                 candidatesHostname, candidatesPort);
