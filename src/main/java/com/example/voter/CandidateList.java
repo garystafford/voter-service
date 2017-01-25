@@ -18,11 +18,6 @@ import java.util.List;
 @Component
 public class CandidateList {
 
-    private final String candidatesResourceUrl = "http://localhost:8097/candidates/summary";
-
-    @Autowired
-    private ServicesProperties servicesProperties;
-
     @Autowired
     private Environment env;
 
@@ -42,13 +37,16 @@ public class CandidateList {
     }
 
     public List<String> getCandidatesRemote() {
+        String candidatesHostname = env.getProperty("services.candidates.hostname");
+        String candidatesPort = env.getProperty("services.candidates.port");
+        String candidatesResourceUrl = String.format("http://%s:%s/candidates/summary",
+                candidatesHostname, candidatesPort);
+
         List<String> candidateList = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> responseEntity =
                 restTemplate.getForEntity(candidatesResourceUrl, String.class);
-
-//        System.out.print(responseEntity.getBody());
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
@@ -67,8 +65,6 @@ public class CandidateList {
             }
         }
 
-        System.out.print(servicesProperties.getCandidateHostname());
-        System.out.print(env.getProperty("services.candidateHostname"));
         return candidateList;
     }
 }
