@@ -1,12 +1,19 @@
 package com.example.voter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Component
 public class VoteSeedData {
+
+    @Autowired
+    private CandidateList candidateList;
 
     private List<Vote> votes = new ArrayList<>();
 
@@ -19,6 +26,7 @@ public class VoteSeedData {
 
     // accepts map of candidates and total votes
     public void votesFromMap(Map candidates) {
+        votes.clear(); // clear previous seed data from list
         for (Object key : candidates.keySet()) {
             int value = Integer.parseInt(String.valueOf(candidates.get(key)));
             for (int i = 0; i < value; i++) {
@@ -31,9 +39,9 @@ public class VoteSeedData {
     // generates random number of total votes for each candidate
     public void setRandomVotes() {
         Map candidates = new HashMap();
-        List<String> candidateList = CandidateList.getCandidates();
-        for (int i = 0; i < candidateList.size(); i++) {
-            candidates.put(candidateList.get(i), getRandomIntAsString(2, 20));
+        List<String> list = candidateList.getCandidatesRemote();
+        for (int i = 0; i < list.size(); i++) {
+            candidates.put(list.get(i), getRandomIntAsString(2, 20));
         }
         votesFromMap(candidates);
     }

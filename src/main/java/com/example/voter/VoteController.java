@@ -29,9 +29,15 @@ public class VoteController {
     @Autowired
     private VoteRepository voteRepository;
 
+    @Autowired
+    private VoteSeedData voteSeedData;
+
+    @Autowired
+    private CandidateList candidateList;
+
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<String>>> getCandidates() {
-        List<String> results = CandidateList.getCandidates();
+        List<String> results = candidateList.getCandidates();
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
@@ -110,7 +116,6 @@ public class VoteController {
     public ResponseEntity<Map<String, String>> seedData() {
 
         voteRepository.deleteAll();
-        VoteSeedData voteSeedData = new VoteSeedData();
         voteSeedData.setRandomVotes();
         voteRepository.save(voteSeedData.getVotes());
         Map<String, String> result = new HashMap<>();
@@ -122,7 +127,6 @@ public class VoteController {
     public void seedData(Map candidates) {
 
         voteRepository.deleteAll();
-        VoteSeedData voteSeedData = new VoteSeedData();
         voteSeedData.votesFromMap(candidates);
         voteRepository.save(voteSeedData.getVotes());
     }

@@ -19,6 +19,9 @@ management:
      mode: full
    build:
      enabled: true
+services:
+  candidateHostname: localhost
+  candidatePort: 8097
 ---
 spring:
  profiles: docker-development

@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'com.updateimpact:updateimpact-gradle-plugin:1.1.6'
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
     }
 }
 
@@ -19,6 +20,9 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'com.updateimpact.updateimpact'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-idea'
+apply plugin: 'propdeps-eclipse'
 
 springBoot {
     executable = true
@@ -50,13 +54,17 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.webjars:hal-browser')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    optional('org.springframework.boot:spring-boot-configuration-processor')
 }
+
+compileJava.dependsOn(processResources)
 
 dependencyManagement {
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR3'
     }
 }
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.2.1'
