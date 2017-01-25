@@ -29,15 +29,15 @@ public class CandidateList {
 
     private List<String> getCandidatesRemote() {
         List<String> candidatesRemote = new ArrayList<>();
-        String candidatesHostname = env.getProperty("services.candidates.host");
-        String candidatesPort = env.getProperty("services.candidates.port");
-        String candidatesResourceUrl = String.format("http://%s:%s/candidates/summary",
-                candidatesHostname, candidatesPort);
+        String candidateServiceHostname = env.getProperty("services.candidate.host");
+        String candidateServicePort = env.getProperty("services.candidate.port");
+        String candidateServiceResourceUrl = String.format("http://%s:%s/candidates/summary",
+                candidateServiceHostname, candidateServicePort);
 
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> responseEntity =
-                restTemplate.getForEntity(candidatesResourceUrl, String.class);
+                restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;

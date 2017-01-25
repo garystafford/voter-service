@@ -20,7 +20,7 @@ management:
    build:
      enabled: true
 services:
-  candidates:
+  candidate:
     host: localhost
     port: 8097
 ---
@@ -30,8 +30,8 @@ spring:
    mongodb:
      host: mongodb
 services:
-  candidates:
-    host: candidates
+  candidate:
+    host: candidate
 ---
 spring:
  profiles: aws-production
@@ -55,8 +55,8 @@ endpoints:
  health:
    enabled: true
 services:
-  candidates:
-    host: candidates
+  candidate:
+    host: candidate
 ---
 spring:
  profiles: docker-production
@@ -80,5 +80,5 @@ endpoints:
  health:
    enabled: true
 services:
-  candidates:
-    host: candidates
+  candidate:
+    host: candidate
