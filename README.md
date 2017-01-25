@@ -48,7 +48,7 @@ HTTPie
 
 ```text
 http POST http://localhost:8099/votes \
-candidate="Jill Stein (Green Party of the United States)"
+candidate="Jill Stein (Green Party)"
 ```
 
 cURL
@@ -56,7 +56,7 @@ cURL
 ```text
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "candidate": "Jill Stein (Green Party of the United States)" }' \
+  -d '{ "candidate": "Jill Stein (Green Party)" }' \
   "http://localhost:8099/votes"
 ```
 
@@ -65,7 +65,7 @@ wget
 ```text
 wget --method POST \
   --header 'content-type: application/json' \
-  --body-data '{ "candidate": "Jill Stein (Green Party of the United States)" }' \
+  --body-data '{ "candidate": "Jill Stein (Green Party)" }' \
   --no-verbose \
   --output-document - http://localhost:8099/votes
 ```
@@ -79,12 +79,12 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 ```json
 {
     "candidates": [
-        "Chris Keniston (Veterans Party of America)",
+        "Chris Keniston (Veterans Party)",
         "Darrell Castle (Constitution Party)",
         "Donald Trump (Republican Party)",
         "Gary Johnson (Libertarian Party)",
         "Hillary Clinton (Democratic Party)",
-        "Jill Stein (Green Party of the United States)"
+        "Jill Stein (Green Party)"
     ]
 }
 ```
@@ -103,7 +103,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 {
     "results": [
         {
-            "candidate": "Jill Stein (Green Party of the United States)",
+            "candidate": "Jill Stein (Green Party)",
             "votes": 18
         },
         {
@@ -111,7 +111,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
             "votes": 17
         },
         {
-            "candidate": "Chris Keniston (Veterans Party of America)",
+            "candidate": "Chris Keniston (Veterans Party)",
             "votes": 16
         },
         {
@@ -144,7 +144,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 {
     "results": [
         {
-            "candidate": "Jill Stein (Green Party of the United States)",
+            "candidate": "Jill Stein (Green Party)",
             "votes": 18
         }
     ]
@@ -159,7 +159,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 }
 ```
 
-`http POST http://localhost:8099/votes candidate="Jill Stein (Green Party of the United States)"`
+`http POST http://localhost:8099/votes candidate="Jill Stein (Green Party)"`
 
 ```json
 {
@@ -171,7 +171,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
             "href": "http://localhost:8099/votes/5888605326b6f40371a1d016"
         }
     },
-    "candidate": "Jill Stein (Green Party of the United States)"
+    "candidate": "Jill Stein (Green Party)"
 }
 ```
 
