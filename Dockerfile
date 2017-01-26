@@ -9,7 +9,7 @@ RUN set -ex \
   && apt-get -y upgrade \
   && apt-get -y install git \
   && mkdir /voter \
-  && git clone --depth 1 \
+  && git clone --depth 1 --branch build-artifacts \
       "https://github.com/garystafford/voter-service-artifacts.git" \
       /voter
 
