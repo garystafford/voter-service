@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=master)](https://travis-ci.org/garystafford/voter-service)  [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service)  [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com")  [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
+[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=master)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
 
 # Voter Service
 
@@ -185,6 +185,7 @@ The project's source code is continuously built and tested on every commit to [G
 
 The Voter service includes several Spring Boot Profiles, in a multi-profile YAML document: `src/main/resources/application.yml`. The profiles are `default`, `docker-development`, `docker-production`, and `aws-production`. You will need to ensure your MongoDB instance is available at that `host` address and port of the profile you choose, or you may override the profile's properties.
 
+
 ```yaml
 server:
   port: 8099
@@ -280,6 +281,14 @@ java -jar <name_of_jar_file> \
   --spring.data.mongodb.host=<new_host_address>
   -Djava.security.egd=file:/dev/./urandom
 ```
+
+## Getting Started with API
+
+How to create sample voter data using both services:
+
+1. Create Sample Candidate List: `http localhost:8097/simulation`
+2. Create Sample Voter Data using Candidate List: `http localhost:8099/simulation`
+3. View Sample Voter Data: `http localhost:8099/results`
 
 ## References
 

@@ -1,16 +1,19 @@
 version: '2'
 services:
-  voter:
-    image: garystafford/voter-service:latest
-    ports:
-    - 8099:8099/tcp
-  candidate-service:
-    image: garystafford/candidate-service:latest
+  candidate:
+    hostname: candidate
+    image: garystafford/candidate-service:0.2.14
     ports:
     - 8097:8097/tcp
   mongodb:
+    command:
+    - --smallfiles
+    hostname: mongodb
     image: mongo:latest
     ports:
     - 27017:27017/tcp
-    command:
-    - --smallfiles
+  voter:
+    hostname: voter
+    image: garystafford/voter-service:0.2.80
+    ports:
+    - 8099:8099/tcp
