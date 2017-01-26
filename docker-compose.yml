@@ -1,6 +1,8 @@
-version: '2'
+version: '2.0'
 services:
   candidate:
+    depends_on:
+    - mongodb
     hostname: candidate
     image: garystafford/candidate-service:0.2.14
     ports:
@@ -13,7 +15,12 @@ services:
     ports:
     - 27017:27017/tcp
   voter:
+    depends_on:
+    - mongodb
+    - candidate
     hostname: voter
     image: garystafford/voter-service:0.2.80
     ports:
     - 8099:8099/tcp
+networks: {}
+volumes: {}
