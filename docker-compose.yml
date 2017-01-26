@@ -4,6 +4,10 @@ services:
     image: garystafford/voter-service:latest
     ports:
     - 8099:8099/tcp
+  candidate-service:
+    image: garystafford/candidate-service:latest
+    ports:
+    - 8097:8097/tcp
   mongodb:
     image: mongo:latest
     ports:

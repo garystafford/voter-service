@@ -17,3 +17,10 @@ git config user.email "${COMMIT_AUTHOR_EMAIL}"
 git add *.jar
 git commit -m "Deploy Travis CI Build #${TRAVIS_BUILD_NUMBER} artifacts to GitHub"
 git push --force --quiet "https://${GH_TOKEN}@${GH_ARTIFACT_REPO}" master:build-artifacts
+
+docker build -t garystafford/voter-service:latest .
+docker push garystafford/voter-service:latest
+
+IMAGE_TAG="v0.2.${TRAVIS_BUILD_NUMBER}"
+docker tag garystafford/voter-service:latest voter-service:${IMAGE_TAG}
+docker push voter-service::${IMAGE_TAG}
