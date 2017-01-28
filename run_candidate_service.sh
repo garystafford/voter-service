@@ -12,7 +12,6 @@ cd candidate-service/
 mv candidate-service-*.jar candidate-service.jar
 
 nohup \
-  java -Dspring.profiles.active=docker-development \
-  -Djava.security.egd=file:/dev/./urandom \
+  java -Djava.security.egd=file:/dev/./urandom \
   -jar candidate-service.jar \
   > /dev/null 2>&1 &
