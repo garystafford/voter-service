@@ -11,6 +11,7 @@ before_deploy:
 before_script:
 - sleep 15
 script:
+- sh run_candidate_service.sh
 - "./gradlew clean cleanTest build --console=rich"
 - "./gradlew updateImpactSubmit"
 - sh ./deploy_travisci.sh

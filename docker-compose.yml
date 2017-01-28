@@ -4,7 +4,7 @@ services:
     depends_on:
     - mongodb
     hostname: candidate
-    image: garystafford/candidate-service:0.2.14
+    image: garystafford/candidate-service:0.2.15
     ports:
     - 8097:8097/tcp
   mongodb:
@@ -19,7 +19,7 @@ services:
     - mongodb
     - candidate
     hostname: voter
-    image: garystafford/voter-service:0.2.80
+    image: garystafford/voter-service:0.2.81
     ports:
     - 8099:8099/tcp
 networks: {}
