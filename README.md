@@ -74,6 +74,14 @@ wget --method POST \
 
 Using [HTTPie](https://httpie.org/) command line HTTP client.
 
+`http http://localhost:8099/simulation`
+
+```json
+{
+    "message": "simulation data created"
+}
+```
+
 `http http://localhost:8099/candidates`
 
 ```json
@@ -86,14 +94,6 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
         "Hillary Clinton (Democratic Party)",
         "Jill Stein (Green Party)"
     ]
-}
-```
-
-`http http://localhost:8099/simulation`
-
-```json
-{
-    "message": "random simulation data created"
 }
 ```
 
