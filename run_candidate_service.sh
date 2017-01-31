@@ -18,4 +18,5 @@ nohup \
 
 sleep 10
 
+# populate candidates
 curl localhost:8097/simulation

@@ -26,9 +26,12 @@ git push --force --quiet "https://${GH_TOKEN}@${GH_ARTIFACT_REPO}" master:build-
 cd -
 docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
 
-docker build -t garystafford/voter-service:latest .
-docker push garystafford/voter-service:latest
+set -ex
+
+IMAGE="garystafford/voter-service"
+docker build -t ${IMAGE}:latest .
+docker push ${IMAGE}:latest
 
 IMAGE_TAG="0.2.${TRAVIS_BUILD_NUMBER}"
-docker tag garystafford/voter-service:latest garystafford/voter-service:${IMAGE_TAG}
-docker push garystafford/voter-service:${IMAGE_TAG}
+docker tag ${IMAGE}:latest ${IMAGE}:${IMAGE_TAG}
+docker push ${IMAGE}:${IMAGE_TAG}
