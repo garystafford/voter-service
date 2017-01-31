@@ -16,6 +16,6 @@ nohup \
   -jar candidate-service.jar \
   > /dev/null 2>&1 &
 
-sleep 15
+sleep 10
 
-curl http localhost:8097/candidates
+curl localhost:8097/candidates
