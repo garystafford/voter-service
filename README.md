@@ -6,7 +6,7 @@
 
 The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
 
-The Voter service is dependent on the [Candidate Service](https://github.com/garystafford/candidate-service) to supply a list of candidates. The Candidate service is called by the Voter service when either the `/candidates` or `/simulation` endpoints are called.
+The Voter service is dependent on the [Candidate Service](https://github.com/garystafford/candidate-service) to supply a list of candidates. The Candidate service is called by the Voter service, using [HTTP-based synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/candidates` or `/simulation` endpoints are called.
 
 ## Quick Start for Local Development
 
@@ -20,7 +20,7 @@ cd voter-service
 java -jar build/libs/voter-service-0.2.0.jar
 ```
 
-## Getting Started with API
+## Getting Started with the API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
 1. Create sample candidates: `http http://localhost:8097/simulation`  
 2. Create sample voter data: `http http://localhost:8099/simulation`  
