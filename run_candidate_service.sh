@@ -15,3 +15,5 @@ nohup \
   java -Djava.security.egd=file:/dev/./urandom \
   -jar candidate-service.jar \
   > /dev/null 2>&1 &
+
+sleep 15
