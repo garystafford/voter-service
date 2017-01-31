@@ -13,11 +13,18 @@ The Voter service is dependent on the [Candidate Service](https://github.com/gar
 The Voter service requires MongoDB to be running locally, on port `27017`. The Voter service also required the Candidate service to be running locally on `8097`. To clone, build, test, and run the Voter service, as a JAR file, locally:
 
 ```bash
-git clone https://github.com/garystafford/voter-service.git
+git clone --depth 1 --branch master \
+  https://github.com/garystafford/voter-service.git
 cd voter-service
 ./gradlew clean cleanTest build
 java -jar build/libs/voter-service-0.2.0.jar
 ```
+
+## Getting Started with API
+The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:
+1. Create sample candidates: `http localhost:8097/simulation`
+2. Create sample voter data: `http localhost:8099/simulation`
+3. View sample voter results: `http localhost:8099/results`
 
 ## Service Endpoints
 
@@ -177,7 +184,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 
 ## Continuous Integration
 
-The project's source code is continuously built and tested on every commit to [GitHub](https://github.com/garystafford/voter-service), using [Travis CI](https://travis-ci.org/garystafford/voter-service). If all unit tests pass, the resulting Spring Boot JAR is pushed to the `artifacts` branch of the [voter-service-artifacts](https://github.com/garystafford/voter-service-artifacts) GitHub repository. The JAR's filename is incremented with each successful build (i.e. `voter-service-0.2.10.jar`).
+The project's source code is continuously built and tested on every commit to [GitHub](https://github.com/garystafford/voter-service), using [Travis CI](https://travis-ci.org/garystafford/voter-service). If all unit tests pass, the resulting Spring Boot JAR is pushed to the `build-artifacts` branch of the [voter-service](https://github.com/garystafford/voter-service/tree/build-artifacts) GitHub repository. The JAR's filename is incremented with each successful build (i.e. `voter-service-0.2.10.jar`).
 
 ![Vote Continuous Integration Pipeline](Voter-CI.png)
 
@@ -281,14 +288,6 @@ java -jar <name_of_jar_file> \
   --spring.data.mongodb.host=<new_host_address>
   -Djava.security.egd=file:/dev/./urandom
 ```
-
-## Getting Started with API
-
-How to create sample voter data using both services:
-
-1. Create Sample Candidate List: `http localhost:8097/simulation`
-2. Create Sample Voter Data using Candidate List: `http localhost:8099/simulation`
-3. View Sample Voter Data: `http localhost:8099/results`
 
 ## References
 
