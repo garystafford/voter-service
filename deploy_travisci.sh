@@ -28,6 +28,7 @@ docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
 
 set -ex
 
+sleep 120 # wait for automated Docker Hub build to finish...
 IMAGE="garystafford/voter-service"
 docker build -t ${IMAGE}:latest .
 docker push ${IMAGE}:latest
