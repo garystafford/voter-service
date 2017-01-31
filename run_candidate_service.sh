@@ -18,4 +18,4 @@ nohup \
 
 sleep 10
 
-curl localhost:8097/candidates
+curl localhost:8097/simulation
