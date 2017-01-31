@@ -10,7 +10,7 @@ The Voter service is designed to work along with the [Candidate Service](https:/
 
 ## Quick Start for Local Development
 
-The Voter service requires MongoDB to be running locally, on port `27017`. The Voter service also required the Candidate service to be running locally on `8097`. To clone, build, test, and run the Voter service, as a JAR file, locally:
+The Voter service requires MongoDB to be running locally, on port `27017`. The Voter service also required the Candidate service to be running locally on `8097`. To clone, build, test, and run the Voter service as a JAR file, locally:
 
 ```bash
 git clone --depth 1 --branch master \
