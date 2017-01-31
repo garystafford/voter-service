@@ -7,11 +7,12 @@ services:
 before_install:
 - chmod +x gradlew
 before_deploy:
+- chmod ugo+x start_candidate_service.sh
 - chmod ugo+x deploy_travisci.sh
 before_script:
 - sleep 15
 script:
-- sh run_candidate_service.sh
+- sh start_candidate_service.sh
 - "./gradlew clean cleanTest build --console=rich"
 - "./gradlew updateImpactSubmit"
 - sh ./deploy_travisci.sh

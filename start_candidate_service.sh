@@ -17,6 +17,3 @@ nohup \
   > /dev/null 2>&1 &
 
 sleep 10
-
-# populate candidates
-curl localhost:8097/simulation

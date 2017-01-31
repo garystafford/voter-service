@@ -70,7 +70,7 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/winners", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<VoteCount>>> getWinner() {
+    public ResponseEntity<Map<String, List<VoteCount>>> getWinners() {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
@@ -86,7 +86,7 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/winners/votes", method = RequestMethod.GET)
-    public ResponseEntity<VoteCountWinner> getWinnerVotes() {
+    public ResponseEntity<VoteCountWinner> getWinnersVotes() {
 
         VoteCountWinner result = new VoteCountWinner(getWinnerVotesInt());
 
@@ -113,7 +113,7 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/simulation", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> seedData() {
+    public ResponseEntity<Map<String, String>> getSimulation() {
 
         voteRepository.deleteAll();
         voteSeedData.setRandomVotes();
@@ -124,7 +124,7 @@ public class VoteController {
     }
 
     // used by unit tests to create a known data set
-    public void seedData(Map candidates) {
+    public void getSimulation(Map candidates) {
 
         voteRepository.deleteAll();
         voteSeedData.votesFromMap(candidates);

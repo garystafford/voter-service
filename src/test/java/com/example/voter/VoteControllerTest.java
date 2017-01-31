@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,26 +26,44 @@ public class VoteControllerTest {
     @Autowired
     private VoteController voteController;
 
+    @Autowired
+    private Environment env;
+
     @Before
     public void setup() {
-        // sample test data
-        Map candidates = new HashMap();
+        createSampleVoterResults();
+        createSampleCandidateList();
+    }
+
+    private void createSampleVoterResults() {
+        // create sample voter test data
+        Map<String, String> candidates = new HashMap<>();
         candidates.put("Chris Keniston (Veterans Party)", "3");
         candidates.put("Darrell Castle (Constitution Party)", "2");
         candidates.put("Donald Trump (Republican Party)", "8");
         candidates.put("Gary Johnson (Libertarian Party)", "3");
         candidates.put("Hillary Clinton (Democratic Party)", "14");
         candidates.put("Jill Stein (Green Party)", "5");
-        voteController.seedData(candidates);
+        voteController.getSimulation(candidates);
+    }
+
+    private void createSampleCandidateList() {
+        // create sample list of candidates by calling the candidate service
+        String candidateServiceHostname = env.getProperty("services.candidate.host");
+        String candidateServicePort = env.getProperty("services.candidate.port");
+        String candidateServiceResourceUrl = String.format("http://%s:%s/simulation",
+                candidateServiceHostname, candidateServicePort);
+
+        restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
     }
 
     @Test
     public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
-//        String expectedVoteList = "{\"candidates\":[\"Chris Keniston (Veterans Party)\",\"Darrell Castle (Constitution Party)\",\"Donald Trump (Republican Party)\",\"Gary Johnson (Libertarian Party)\",\"Hillary Clinton (Democratic Party)\",\"Jill Stein (Green Party)\"]}";
-        String expectedVoteList = "{\"candidates\":[\"Chris Keniston (Veterans Party)\"";
-        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("/candidates", String.class);
+        // String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\",\"Darrell Castle (Constitution Party)\",\"Donald Trump (Republican Party)\",\"Gary Johnson (Libertarian Party)\",\"Hillary Clinton (Democratic Party)\",\"Jill Stein (Green Party)\"]}";
+        String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\"";
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("/candidates", String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
-        assertThat(responseEntity.getBody()).contains(expectedVoteList);
+        assertThat(responseEntity.getBody()).contains(expectedCandidates);
 
     }
 
@@ -53,7 +72,7 @@ public class VoteControllerTest {
         String expectedVote = "Test Vote";
         Vote vote = new Vote(expectedVote);
         ResponseEntity<Vote> responseEntity =
-                this.restTemplate.postForEntity("/votes", vote, Vote.class);
+                restTemplate.postForEntity("/votes", vote, Vote.class);
         assertThat(responseEntity.getStatusCode().value() == 201);
         assertThat(responseEntity.getBody().getVote()).isEqualTo(expectedVote);
     }
@@ -66,7 +85,7 @@ public class VoteControllerTest {
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
                 };
         ResponseEntity<Map<String, List<VoteCount>>> responseEntity =
-                this.restTemplate.exchange("/results", HttpMethod.GET, null, typeRef);
+                restTemplate.exchange("/results", HttpMethod.GET, null, typeRef);
         LinkedHashMap body = ((LinkedHashMap) responseEntity.getBody());
         Collection voteCountCollection = body.values();
         ArrayList voteCountArray = (ArrayList) voteCountCollection.toArray()[0];
@@ -80,21 +99,21 @@ public class VoteControllerTest {
     public void getTotalVotesReturnsSumOfVotes() throws Exception {
         int expectedCount = 35;
         ResponseEntity<VoteCountWinner> responseEntity =
-                this.restTemplate.getForEntity("/results/votes", VoteCountWinner.class);
+                restTemplate.getForEntity("/results/votes", VoteCountWinner.class);
         VoteCountWinner voteCount = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
     }
 
     @Test
-    public void getWinnerReturnsCandidatesWithMostVotes() throws Exception {
+    public void getWinnersReturnsCandidatesWithMostVotes() throws Exception {
         String expectedVote = "Hillary Clinton (Democratic Party)";
         int expectedCount = 14;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
                 };
         ResponseEntity<Map<String, List<VoteCount>>> responseEntity =
-                this.restTemplate.exchange("/winners", HttpMethod.GET, null, typeRef);
+                restTemplate.exchange("/winners", HttpMethod.GET, null, typeRef);
         LinkedHashMap body = ((LinkedHashMap) responseEntity.getBody());
         Collection voteCountCollection = body.values();
         ArrayList voteCountArray = (ArrayList) voteCountCollection.toArray()[0];
@@ -105,10 +124,10 @@ public class VoteControllerTest {
     }
 
     @Test
-    public void getWinnerVotesReturnsWinnersVoteCount() throws Exception {
+    public void getWinnersVotesReturnsWinnersVoteCount() throws Exception {
         int expectedCount = 14;
         ResponseEntity<VoteCountWinner> responseEntity =
-                this.restTemplate.getForEntity("/winners/votes", VoteCountWinner.class);
+                restTemplate.getForEntity("/winners/votes", VoteCountWinner.class);
         VoteCountWinner voteCountWinner = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCountWinner.getCount()).isEqualTo(expectedCount);
@@ -119,7 +138,7 @@ public class VoteControllerTest {
         String expectedResponse =
                 "{\"message\":\"random simulation data created\"}";
         ResponseEntity<String> responseEntity =
-                this.restTemplate.getForEntity("/simulation", String.class);
+                restTemplate.getForEntity("/simulation", String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
     }
