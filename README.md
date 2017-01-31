@@ -22,9 +22,9 @@ java -jar build/libs/voter-service-0.2.0.jar
 
 ## Getting Started with API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:
-1. Create sample candidates: `http localhost:8097/simulation`
-2. Create sample voter data: `http localhost:8099/simulation`
-3. View sample voter results: `http localhost:8099/results`
+1. Create sample candidates: `http http://localhost:8097/simulation`
+2. Create sample voter data: `http http://localhost:8099/simulation`
+3. View sample voter results: `http http://localhost:8099/results`
 
 ## Service Endpoints
 

@@ -74,7 +74,7 @@ public class VoteController {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
-                match(Criteria.where("count").is(getWinnerVotesInt())),
+                match(Criteria.where("count").is(getWinnersVotesInt())),
                 project("count").and("vote").previousOperation(),
                 sort(Sort.Direction.ASC, "vote")
         );
@@ -88,12 +88,12 @@ public class VoteController {
     @RequestMapping(value = "/winners/votes", method = RequestMethod.GET)
     public ResponseEntity<VoteCountWinner> getWinnersVotes() {
 
-        VoteCountWinner result = new VoteCountWinner(getWinnerVotesInt());
+        VoteCountWinner result = new VoteCountWinner(getWinnersVotesInt());
 
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 
-    private int getWinnerVotesInt() {
+    private int getWinnersVotesInt() {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.group("vote").count().as("count"),
