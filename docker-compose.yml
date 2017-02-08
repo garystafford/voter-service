@@ -1,25 +1,25 @@
 version: '2.0'
 services:
   candidate:
+    image: garystafford/candidate-service:0.2.26
     depends_on:
     - mongodb
     hostname: candidate
-    image: garystafford/candidate-service:0.2.15
     ports:
     - 8097:8097/tcp
   mongodb:
+    image: mongo:latest
     command:
     - --smallfiles
     hostname: mongodb
-    image: mongo:latest
     ports:
     - 27017:27017/tcp
   voter:
+    image: garystafford/voter-service:0.2.99
     depends_on:
     - mongodb
     - candidate
     hostname: voter
-    image: garystafford/voter-service:0.2.81
     ports:
     - 8099:8099/tcp
 networks: {}

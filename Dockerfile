@@ -2,6 +2,7 @@ FROM openjdk:8u111-jdk-alpine
 LABEL maintainer "Gary A. Stafford <garystafford@rochester.rr.com>"
 ENV REFRESHED_AT 2017-02-02
 VOLUME /tmp
+EXPOSE 8097
 RUN set -ex \
   && apk update \
   && apk upgrade \
@@ -12,4 +13,4 @@ RUN mkdir /voter \
   && cd /voter \
   && mv voter-service-*.jar voter-service.jar
 ENV JAVA_OPTS=""
-CMD [ "sh", "-c", "java", "-Dspring.profiles.active=docker-development", "-Djava.security.egd=file:/dev/./urandom", "-jar", "voter/voter-service.jar"]
+CMD [ "java", "-Dspring.profiles.active=docker-development", "-Djava.security.egd=file:/dev/./urandom", "-jar", "voter/voter-service.jar"]
