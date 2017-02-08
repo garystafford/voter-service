@@ -1,7 +1,7 @@
 version: '2.0'
 services:
   candidate:
-    image: garystafford/candidate-service:0.2.26
+    image: garystafford/candidate-service:0.2.27
     depends_on:
     - mongodb
     hostname: candidate
@@ -15,7 +15,7 @@ services:
     ports:
     - 27017:27017/tcp
   voter:
-    image: garystafford/voter-service:0.2.99
+    image: garystafford/voter-service:0.2.101
     depends_on:
     - mongodb
     - candidate

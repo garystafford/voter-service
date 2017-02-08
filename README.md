@@ -19,6 +19,19 @@ cd voter-service
 ./gradlew clean cleanTest build
 java -jar build/libs/voter-service-0.2.0.jar
 ```
+## Quick Start with Docker
+There is a `docker-compose.yml` file included in the project. The compose file will spin up single container instances of the Voter service, Candidate service, and MongoDB.
+
+```bash
+docker-compose up -d
+```
+
+```text
+CONTAINER ID        IMAGE                                   COMMAND                  CREATED             STATUS              PORTS                                                                                                                                                                            NAMES
+c7b23aaf7af6        garystafford/voter-service:0.2.101      "java -Dspring.pro..."   8 hours ago         Up 8 hours          8097/tcp, 0.0.0.0:8099->8099/tcp                                                                                                                                                 voterservice_voter_1
+0d4d3006f012        garystafford/candidate-service:0.2.27   "java -Dspring.pro..."   8 hours ago         Up 8 hours          0.0.0.0:8097->8097/tcp                                                                                                                                                           voterservice_candidate_1
+13b8670790cf        mongo:latest                            "/entrypoint.sh --..."   8 hours ago         Up 8 hours          0.0.0.0:27017->27017/tcp                                                                                                                                                         voterservice_mongodb_1
+```
 
 ## Getting Started with the API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
