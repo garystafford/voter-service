@@ -2,7 +2,7 @@ FROM openjdk:8u111-jdk-alpine
 LABEL maintainer "Gary A. Stafford <garystafford@rochester.rr.com>"
 ENV REFRESHED_AT 2017-02-02
 VOLUME /tmp
-EXPOSE 8097
+EXPOSE 8099
 RUN set -ex \
   && apk update \
   && apk upgrade \
