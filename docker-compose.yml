@@ -15,7 +15,7 @@ services:
     ports:
     - 27017:27017/tcp
   voter:
-    image: garystafford/voter-service:0.2.101
+    image: garystafford/voter-service:0.2.102
     depends_on:
     - mongodb
     - candidate
