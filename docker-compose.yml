@@ -7,6 +7,8 @@ services:
     hostname: candidate
     ports:
     - 8097:8097/tcp
+    environment:
+      - "constraint:node.hostname != master0"
   mongodb:
     image: mongo:latest
     command:
@@ -14,13 +16,17 @@ services:
     hostname: mongodb
     ports:
     - 27017:27017/tcp
+    environment:
+      - "constraint:node.hostname != master0"
   voter:
-    image: garystafford/voter-service:0.2.102
+    image: garystafford/voter-service:0.2.103
     depends_on:
     - mongodb
     - candidate
     hostname: voter
     ports:
     - 8099:8099/tcp
+    environment:
+      - "constraint:node.hostname != master0"
 networks: {}
 volumes: {}
