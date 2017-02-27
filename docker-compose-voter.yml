@@ -1,0 +1,64 @@
+version: '3.0'
+
+services:
+  candidate:
+    image: garystafford/candidate-service:0.2.27
+    depends_on:
+    - voter_stack_mongodb
+    hostname: candidate
+    ports:
+    - 8097:8097/tcp
+    networks:
+    - voter_overlay_net
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.labels.purpose == backend]
+    environment:
+    - "SERVICE_NAME=candidate-service"
+    - "SERVICE_TAGS=service"
+
+  voter:
+    image: garystafford/voter-service:0.2.103
+    depends_on:
+    - voter_stack_mongodb
+    - voter_stack_candidate
+    hostname: voter
+    ports:
+    - 8099:8099/tcp
+    networks:
+    - voter_overlay_net
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.labels.purpose == backend]
+    environment:
+    - "SERVICE_NAME=voter-service"
+    - "SERVICE_TAGS=service"
+
+  mongodb:
+    image: mongo:latest
+    command:
+    - --smallfiles
+    hostname: mongodb
+    ports:
+    - 27017:27017/tcp
+    networks:
+    - voter_overlay_net
+    volumes:
+    - voter_data_vol:/data/db
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.labels.purpose == backend]
+    environment:
+    - "SERVICE_NAME=mongodb"
+    - "SERVICE_TAGS=database"
+
+networks:
+  voter_overlay_net:
+    external: true
+
+volumes:
+  voter_data_vol:
+    external: true
