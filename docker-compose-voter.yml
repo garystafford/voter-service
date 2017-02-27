@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   candidate:
-    image: garystafford/candidate-service:0.2.27
+    image: garystafford/candidate-service:latest
     depends_on:
     - voter_stack_mongodb
     hostname: candidate
@@ -19,10 +19,10 @@ services:
     - "SERVICE_TAGS=service"
 
   voter:
-    image: garystafford/voter-service:0.2.103
+    image: garystafford/voter-service:latest
     depends_on:
-    - voter_stack_mongodb
-    - voter_stack_candidate
+    - mongodb
+    - candidate
     hostname: voter
     ports:
     - 8099:8099/tcp
