@@ -4,7 +4,7 @@ services:
   candidate:
     image: garystafford/candidate-service:latest
     depends_on:
-    - voter_stack_mongodb
+    - mongodb
     hostname: candidate
     ports:
     - 8097:8097/tcp
@@ -15,14 +15,14 @@ services:
       placement:
         constraints: [node.labels.purpose == backend]
     environment:
-    - "SERVICE_NAME=candidate-service"
+    - "SERVICE_NAME=candidate"
     - "SERVICE_TAGS=service"
 
   voter:
     image: garystafford/voter-service:latest
     depends_on:
     - mongodb
-    - candidate
+    # - candidate
     hostname: voter
     ports:
     - 8099:8099/tcp
@@ -33,7 +33,7 @@ services:
       placement:
         constraints: [node.labels.purpose == backend]
     environment:
-    - "SERVICE_NAME=voter-service"
+    - "SERVICE_NAME=voter"
     - "SERVICE_TAGS=service"
 
   mongodb:

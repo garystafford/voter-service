@@ -1,12 +1,13 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.3.RELEASE'
+        springBootVersion = '1.5.2.RELEASE'
     }
     repositories {
         jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.2.RELEASE"
         classpath 'com.updateimpact:updateimpact-gradle-plugin:1.1.6'
     }
 }
@@ -18,6 +19,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
 apply plugin: 'com.updateimpact.updateimpact'
 
 springBoot {
@@ -25,7 +27,7 @@ springBoot {
 }
 
 def application_name = 'voter-service'
-def major = '0.2'
+def major = '0.3'
 def minor = System.env.TRAVIS_BUILD_NUMBER ?: '0'
 def artifact_version = major + '.' + minor
 
@@ -35,32 +37,33 @@ jar {
 }
 
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     jcenter()
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-actuator-docs')
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.webjars:hal-browser')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'org.springframework.boot', name: 'spring-boot-actuator-docs'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.webjars', name: 'hal-browser'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-stream'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-stream-rabbit'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.SR3'
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE"
     }
 }
 
-
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '3.5'
 }
 
 test {

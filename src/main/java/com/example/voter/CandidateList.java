@@ -13,12 +13,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class CandidateList {
 
     @Autowired
     private Environment env;
+
+    private Receiver receiver;
 
     public List<String> getCandidates() {
         List<String> candidatesSorted = getCandidatesRemote();
@@ -56,6 +59,11 @@ public class CandidateList {
             }
         }
 
+        return candidatesRemote;
+    }
+
+    private List<String> getCandidatesMessage() throws InterruptedException {
+        List<String> candidatesRemote = new ArrayList<>();
         return candidatesRemote;
     }
 }
