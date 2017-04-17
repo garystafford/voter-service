@@ -119,7 +119,7 @@ public class VoteController {
         voteSeedData.setRandomVotes();
         voteRepository.save(voteSeedData.getVotes());
         Map<String, String> result = new HashMap<>();
-        result.put("message", "simulation data created");
+        result.put("message", "Simulation data created!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 

@@ -136,7 +136,7 @@ public class VoteControllerTest {
     @Test
     public void getSimulationReturnsExpectedMessage() throws Exception {
         String expectedResponse =
-                "{\"message\":\"simulation data created\"}";
+                "{\"message\":\"Simulation data created!\"}";
         ResponseEntity<String> responseEntity =
                 restTemplate.getForEntity("/simulation", String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);

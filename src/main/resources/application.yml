@@ -1,86 +1,94 @@
+endpoints:
+  enabled: true
+  sensitive: false
+info:
+  java:
+    source: "${java.version}"
+logging:
+  level:
+    root: DEBUG
+management:
+  info:
+    build:
+      enabled: true
+    git:
+      mode: full
 server:
   port: 8099
-spring:
-  data:
-   mongodb:
-     host: localhost
-     port: 27017
-     database: voters
-logging:
- level:
-   root: INFO
-info:
- java:
-   source: ${java.version}
-management:
- info:
-   git:
-     mode: full
-   build:
-     enabled: true
-endpoints:
- sensitive: false
- enabled: true
 services:
   candidate:
     host: localhost
     port: 8097
----
 spring:
- profiles: docker-local
- data:
-   mongodb:
-     host: mongodb
+  data:
+    mongodb:
+      database: voters
+      host: localhost
+      port: 27017
+  rabbitmq:
+    host: localhost
+---
 services:
   candidate:
     host: candidate
----
 spring:
- profiles: aws-production
- data:
-   mongodb:
-     host: 10.0.1.6
-logging:
- level:
-   root: WARN
-management:
- info:
-   git:
-     enabled: false
-   build:
-     enabled: false
+  data:
+    mongodb:
+      host: mongodb
+  rabbitmq:
+    host: rabbitmq
+  profiles: docker-local
+---
 endpoints:
- sensitive: true
- enabled: false
- info:
-   enabled: true
- health:
-   enabled: true
-services:
   candidate:
     host: candidate
----
-spring:
- profiles: docker-production
- data:
-   mongodb:
-     host: mongodb
+  enabled: false
+  health:
+    enabled: true
+  info:
+    enabled: true
+  sensitive: true
+  services: ~
 logging:
- level:
-   root: WARN
+  level:
+    root: WARN
 management:
- info:
-   git:
-     enabled: false
-   build:
-     enabled: false
+  info:
+    build:
+      enabled: false
+    git:
+      enabled: false
+spring:
+  data:
+    mongodb:
+      host: "10.0.1.6"
+  rabbitmq:
+    host: "10.0.1.8"
+  profiles: aws-production
+---
 endpoints:
- sensitive: true
- enabled: false
- info:
-   enabled: true
- health:
-   enabled: true
+  enabled: false
+  health:
+    enabled: true
+  info:
+    enabled: true
+  sensitive: true
+logging:
+  level:
+    root: WARN
+management:
+  info:
+    build:
+      enabled: false
+    git:
+      enabled: false
 services:
   candidate:
     host: candidate
+spring:
+  data:
+    mongodb:
+      host: mongodb
+  rabbitmq:
+    host: rabbitmq
+  profiles: docker-production

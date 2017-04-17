@@ -8,11 +8,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Application {
 
-    @Bean
-    public DirectExchange directExchange() {
-        return new DirectExchange("voter.rpc");
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

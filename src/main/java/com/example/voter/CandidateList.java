@@ -21,7 +21,7 @@ import java.util.List;
 public class CandidateList {
 
     @Autowired
-    private Environment env;
+    private Environment environment;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -30,17 +30,17 @@ public class CandidateList {
     private DirectExchange directExchange;
 
     public List<String> getCandidates() {
-        List<String> candidatesSorted = getCandidatesRemote();
-        List<String> candidatesMessageSorted = getCandidatesMessage();
+        List<String> candidatesSorted = getCandidatesSyncHttp();
+        List<String> candidatesMessageSorted = getCandidatesMessageRpc();
         candidatesSorted = candidatesSorted.subList(0, candidatesSorted.size());
         Collections.sort(candidatesSorted);
         return candidatesSorted;
     }
 
-    private List<String> getCandidatesRemote() {
+    private List<String> getCandidatesSyncHttp() {
         List<String> candidatesRemote = new ArrayList<>();
-        String candidateServiceHostname = env.getProperty("services.candidate.host");
-        String candidateServicePort = env.getProperty("services.candidate.port");
+        String candidateServiceHostname = environment.getProperty("services.candidate.host");
+        String candidateServicePort = environment.getProperty("services.candidate.port");
         String candidateServiceResourceUrl = String.format("http://%s:%s/candidates/summary",
                 candidateServiceHostname, candidateServicePort);
 
@@ -70,15 +70,13 @@ public class CandidateList {
     }
 
     @SuppressWarnings("unchecked")
-    private List<String> getCandidatesMessage() {
-        System.out.println("Sending request for candidates...");
+    private List<String> getCandidatesMessageRpc() {
+        System.out.println("Sending RPC request message for list of candidates...");
+        String requestMessage = LocalDateTime.now().toString();
         List<String> candidatesRemote;
         candidatesRemote = (List<String>) rabbitTemplate.convertSendAndReceive(
-                directExchange.getName(),
-                "rpc",
-                LocalDateTime.now().toString()
-        );
-        
+                directExchange.getName(),"rpc", requestMessage);
+
         for (String candidate : candidatesRemote) {
             System.out.println(candidate);
         }
