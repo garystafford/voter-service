@@ -20,18 +20,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class VoteControllerTest {
 
+    @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
     private VoteController voteController;
 
-    private Environment environment;
-
     @Autowired
-    public VoteControllerTest(TestRestTemplate restTemplate, VoteController voteController, Environment environment) {
-        this.restTemplate = restTemplate;
-        this.voteController = voteController;
-        this.environment = environment;
-    }
+    private Environment environment;
 
     @Before
     public void setup() {
