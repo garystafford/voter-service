@@ -41,7 +41,7 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<String>>> getCandidates() {
+    public ResponseEntity<Map<String, List<String>>> getCandidatesHttp() {
         List<String> results = candidateList.getCandidatesSyncHttp();
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
@@ -124,13 +124,24 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/simulation", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> getSimulation() {
+    public ResponseEntity<Map<String, String>> getSimulationHttp() {
 
         voteRepository.deleteAll();
-        voteSeedData.setRandomVotes();
+        voteSeedData.setRandomVotesHttp();
         voteRepository.save(voteSeedData.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created!");
+        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+    }
+
+    @RequestMapping(value = "/simulation/rpc", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> getSimulationRpc() {
+
+        voteRepository.deleteAll();
+        voteSeedData.setRandomVotesRpc();
+        voteRepository.save(voteSeedData.getVotes());
+        Map<String, String> result = new HashMap<>();
+        result.put("message", "Simulation data created using RPC!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 

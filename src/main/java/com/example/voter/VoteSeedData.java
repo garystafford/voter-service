@@ -21,12 +21,12 @@ public class VoteSeedData {
         this.candidateList = candidateList;
     }
 
-    public List<Vote> getVotes() {
+    List<Vote> getVotes() {
         return votes;
     }
 
     // accepts map of candidates and total votes
-    public void votesFromMap(Map candidates) {
+    void votesFromMap(Map candidates) {
         votes.clear(); // clear previous seed data from list
         for (Object key : candidates.keySet()) {
             int value = Integer.parseInt(String.valueOf(candidates.get(key)));
@@ -38,11 +38,21 @@ public class VoteSeedData {
     }
 
     // generates random number of total votes for each candidate
-    public void setRandomVotes() {
+    void setRandomVotesHttp() {
         Map candidates = new HashMap();
         List<String> list = candidateList.getCandidatesSyncHttp();
-        for (int i = 0; i < list.size(); i++) {
-            candidates.put(list.get(i), getRandomIntAsString(2, 20));
+        for (String aList : list) {
+            candidates.put(aList, getRandomIntAsString(2, 20));
+        }
+        votesFromMap(candidates);
+    }
+
+    // generates random number of total votes for each candidate
+    void setRandomVotesRpc() {
+        Map candidates = new HashMap();
+        List<String> list = candidateList.getCandidatesMessageRpc();
+        for (String aList : list) {
+            candidates.put(aList, getRandomIntAsString(2, 20));
         }
         votesFromMap(candidates);
     }
