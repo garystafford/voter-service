@@ -5,36 +5,63 @@ services:
     image: garystafford/candidate-service:latest
     depends_on:
     - mongodb
+    - rabbitmq
     hostname: candidate
     ports:
     - 8097:8097/tcp
     networks:
     - voter_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
     deploy:
       mode: global
       placement:
-        constraints: [node.labels.purpose == backend]
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
     environment:
+    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=candidate"
     - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar candidate/candidate-service.jar"
 
   voter:
     image: garystafford/voter-service:latest
     depends_on:
     - mongodb
-    # - candidate
+    - rabbitmq
     hostname: voter
     ports:
     - 8099:8099/tcp
     networks:
     - voter_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
     deploy:
       mode: global
       placement:
-        constraints: [node.labels.purpose == backend]
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
     environment:
+    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=voter"
     - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar voter/voter-service.jar"
 
   mongodb:
     image: mongo:latest
@@ -47,13 +74,49 @@ services:
     - voter_overlay_net
     volumes:
     - voter_data_vol:/data/db
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
     deploy:
       replicas: 1
       placement:
-        constraints: [node.labels.purpose == backend]
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
     environment:
     - "SERVICE_NAME=mongodb"
     - "SERVICE_TAGS=database"
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    hostname: rabbitmq
+    ports:
+    - 5672:5672/tcp
+    - 15672:15672/tcp
+    networks:
+    - voter_overlay_net
+    volumes:
+    - voter_data_vol:/data/db
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
+    environment:
+    - "SERVICE_NAME=rabbitmq"
+    - "SERVICE_TAGS=messaging"
 
 networks:
   voter_overlay_net:

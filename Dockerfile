@@ -1,6 +1,6 @@
 FROM openjdk:8u111-jdk-alpine
 LABEL maintainer "Gary A. Stafford <garystafford@rochester.rr.com>"
-ENV REFRESHED_AT 2017-02-02
+ENV REFRESHED_AT 2017-04-17
 VOLUME /tmp
 EXPOSE 8099
 RUN set -ex \
@@ -13,4 +13,4 @@ RUN mkdir /voter \
   && cd /voter \
   && mv voter-service-*.jar voter-service.jar
 ENV JAVA_OPTS=""
-CMD [ "java", "-Dspring.profiles.active=docker-development", "-Djava.security.egd=file:/dev/./urandom", "-jar", "voter/voter-service.jar"]
+CMD [ "java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "voter/voter-service.jar" ]
