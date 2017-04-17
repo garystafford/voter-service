@@ -23,17 +23,22 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @RestController
 public class VoteController {
 
-    @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
     private VoteRepository voteRepository;
 
-    @Autowired
     private VoteSeedData voteSeedData;
 
-    @Autowired
     private CandidateList candidateList;
+
+    @Autowired
+    public VoteController(MongoTemplate mongoTemplate, VoteRepository voteRepository,
+                          VoteSeedData voteSeedData, CandidateList candidateList) {
+        this.mongoTemplate = mongoTemplate;
+        this.voteRepository = voteRepository;
+        this.voteSeedData = voteSeedData;
+        this.candidateList = candidateList;
+    }
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<String>>> getCandidates() {

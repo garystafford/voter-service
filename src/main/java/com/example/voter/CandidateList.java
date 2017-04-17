@@ -20,16 +20,20 @@ import java.util.List;
 @Component
 public class CandidateList {
 
-    @Autowired
     private Environment environment;
 
-    @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Autowired
     private DirectExchange directExchange;
 
-    public List<String> getCandidates() {
+    @Autowired
+    public CandidateList(Environment environment, RabbitTemplate rabbitTemplate, DirectExchange directExchange) {
+        this.environment = environment;
+        this.rabbitTemplate = rabbitTemplate;
+        this.directExchange = directExchange;
+    }
+
+    List<String> getCandidates() {
         List<String> candidatesSorted = getCandidatesSyncHttp();
         List<String> candidatesMessageSorted = getCandidatesMessageRpc();
         candidatesSorted = candidatesSorted.subList(0, candidatesSorted.size());

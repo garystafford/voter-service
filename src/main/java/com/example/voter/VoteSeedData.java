@@ -12,12 +12,13 @@ import java.util.concurrent.ThreadLocalRandom;
 @Component
 public class VoteSeedData {
 
-    @Autowired
     private CandidateList candidateList;
 
     private List<Vote> votes = new ArrayList<>();
 
-    public VoteSeedData() {
+    @Autowired
+    public VoteSeedData(CandidateList candidateList) {
+        this.candidateList = candidateList;
     }
 
     public List<Vote> getVotes() {

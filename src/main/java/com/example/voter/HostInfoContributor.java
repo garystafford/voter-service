@@ -15,8 +15,12 @@ import java.util.Map;
 @Component
 public class HostInfoContributor implements InfoContributor {
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public HostInfoContributor(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void contribute(Info.Builder builder) {
