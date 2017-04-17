@@ -3,7 +3,10 @@ package com.example.voter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -21,10 +25,12 @@ public class CandidateList {
     @Autowired
     private Environment env;
 
-    private Receiver receiver;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     public List<String> getCandidates() {
         List<String> candidatesSorted = getCandidatesRemote();
+        List<String> candidatesMessageSorted = getCandidatesMessage();
         candidatesSorted = candidatesSorted.subList(0, candidatesSorted.size());
         Collections.sort(candidatesSorted);
         return candidatesSorted;
@@ -62,7 +68,15 @@ public class CandidateList {
         return candidatesRemote;
     }
 
-    private List<String> getCandidatesMessage() throws InterruptedException {
+    private List<String> getCandidatesMessage() {
+        System.out.println("Sending request for candidates...");
+        String correlationId = UUID.randomUUID().toString();
+        List<String> message = new ArrayList<>();
+        message.add(0, correlationId);
+        message.add(1, Application.replyTo);
+        CorrelationData correlationData = new CorrelationData(correlationId);
+
+        rabbitTemplate.convertSendAndReceive(Application.requestQueueName, message, correlationData);
         List<String> candidatesRemote = new ArrayList<>();
         return candidatesRemote;
     }

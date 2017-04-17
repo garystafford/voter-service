@@ -7,19 +7,23 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.UUID;
+
 @SpringBootApplication
 public class Application {
 
-    final static String queueName = "candidates";
+    final static String requestQueueName = "rpc_queue";
+    final static String responseQueueName = "rpc_response";
+    final static String replyTo = "voter_reply_queue";
 
     @Bean
-    Queue queue() {
-        return new Queue(queueName, false);
+    Queue rcpQueue() {
+        return new Queue(requestQueueName, false);
     }
 
     @Bean
@@ -29,7 +33,7 @@ public class Application {
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(queueName);
+        return BindingBuilder.bind(queue).to(exchange).with(requestQueueName);
     }
 
     @Bean
@@ -37,7 +41,8 @@ public class Application {
                                              MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
+        container.setQueueNames(responseQueueName);
+//        container.setQueueNames(replyTo);
         container.setMessageListener(listenerAdapter);
         return container;
     }

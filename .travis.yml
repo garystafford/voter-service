@@ -4,6 +4,7 @@ jdk: oraclejdk8
 services:
 - mongodb
 - docker
+- rabbitmq
 before_install:
 - chmod +x gradlew
 before_deploy:
