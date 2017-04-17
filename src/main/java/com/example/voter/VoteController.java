@@ -42,7 +42,13 @@ public class VoteController {
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<String>>> getCandidates() {
-        List<String> results = candidateList.getCandidates();
+        List<String> results = candidateList.getCandidatesSyncHttp();
+        return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/candidates/rpc", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<String>>> getCandidatesRpc() {
+        List<String> results = candidateList.getCandidatesMessageRpc();
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
@@ -129,7 +135,7 @@ public class VoteController {
     }
 
     // used by unit tests to create a known data set
-    public void getSimulation(Map candidates) {
+    void getSimulation(Map candidates) {
 
         voteRepository.deleteAll();
         voteSeedData.votesFromMap(candidates);

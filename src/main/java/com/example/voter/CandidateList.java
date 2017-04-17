@@ -33,15 +33,8 @@ public class CandidateList {
         this.directExchange = directExchange;
     }
 
-    List<String> getCandidates() {
-        List<String> candidatesSorted = getCandidatesSyncHttp();
-        List<String> candidatesMessageSorted = getCandidatesMessageRpc();
-        candidatesSorted = candidatesSorted.subList(0, candidatesSorted.size());
-        Collections.sort(candidatesSorted);
-        return candidatesSorted;
-    }
 
-    private List<String> getCandidatesSyncHttp() {
+    List<String> getCandidatesSyncHttp() {
         List<String> candidatesRemote = new ArrayList<>();
         String candidateServiceHostname = environment.getProperty("services.candidate.host");
         String candidateServicePort = environment.getProperty("services.candidate.port");
@@ -70,11 +63,13 @@ public class CandidateList {
             }
         }
 
-        return candidatesRemote;
+        List<String> candidatesSorted = candidatesRemote.subList(0, candidatesRemote.size());
+        Collections.sort(candidatesSorted);
+        return candidatesSorted;
     }
 
     @SuppressWarnings("unchecked")
-    private List<String> getCandidatesMessageRpc() {
+    List<String> getCandidatesMessageRpc() {
         System.out.println("Sending RPC request message for list of candidates...");
         String requestMessage = LocalDateTime.now().toString();
         List<String> candidatesRemote;
@@ -84,6 +79,9 @@ public class CandidateList {
         for (String candidate : candidatesRemote) {
             System.out.println(candidate);
         }
-        return candidatesRemote;
+
+        List<String> candidatesSorted = candidatesRemote.subList(0, candidatesRemote.size());
+        Collections.sort(candidatesSorted);
+        return candidatesSorted;
     }
 }
