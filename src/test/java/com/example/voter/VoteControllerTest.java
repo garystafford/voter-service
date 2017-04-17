@@ -20,14 +20,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class VoteControllerTest {
 
-    @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
     private VoteController voteController;
 
+    private Environment environment;
+
     @Autowired
-    private Environment env;
+    public VoteControllerTest(TestRestTemplate restTemplate, VoteController voteController, Environment environment) {
+        this.restTemplate = restTemplate;
+        this.voteController = voteController;
+        this.environment = environment;
+    }
 
     @Before
     public void setup() {
@@ -49,8 +53,8 @@ public class VoteControllerTest {
 
     private void createSampleCandidateList() {
         // create sample list of candidates by calling the candidate service
-        String candidateServiceHostname = env.getProperty("services.candidate.host");
-        String candidateServicePort = env.getProperty("services.candidate.port");
+        String candidateServiceHostname = environment.getProperty("services.candidate.host");
+        String candidateServicePort = environment.getProperty("services.candidate.port");
         String candidateServiceResourceUrl = String.format("http://%s:%s/simulation",
                 candidateServiceHostname, candidateServicePort);
 
