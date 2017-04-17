@@ -15,7 +15,7 @@ before_script:
 script:
 - sh start_candidate_service.sh
 - "./gradlew clean cleanTest build --console=rich"
-- "./gradlew updateImpactSubmit"
+# - "./gradlew updateImpactSubmit"
 - sh ./deploy_travisci.sh
 env:
   global:
