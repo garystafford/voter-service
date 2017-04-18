@@ -10,7 +10,7 @@ services:
     ports:
     - 8097:8097/tcp
     networks:
-    - widget_overlay_net
+    - demo_overlay_net
     logging:
       driver: fluentd
       options:
@@ -23,7 +23,6 @@ services:
       placement:
         constraints:
         - node.role == worker
-        - node.hostname != worker3
     environment:
     - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=candidate"
@@ -41,7 +40,7 @@ services:
     ports:
     - 8099:8099/tcp
     networks:
-    - widget_overlay_net
+    - demo_overlay_net
     logging:
       driver: fluentd
       options:
@@ -54,7 +53,6 @@ services:
       placement:
         constraints:
         - node.role == worker
-        - node.hostname != worker3
     environment:
     - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=voter"
@@ -71,9 +69,9 @@ services:
     ports:
     - 27017:27017/tcp
     networks:
-    - widget_overlay_net
+    - demo_overlay_net
     volumes:
-    - widget_data_vol:/data/db
+    - demo_data_vol:/data/db
     logging:
       driver: fluentd
       options:
@@ -85,8 +83,7 @@ services:
       replicas: 1
       placement:
         constraints:
-        - node.role == worker
-        - node.hostname != worker3
+        - node.hostname == worker2
     environment:
     - "SERVICE_NAME=mongodb"
     - "SERVICE_TAGS=database"
@@ -98,9 +95,9 @@ services:
     - 5672:5672/tcp
     - 15672:15672/tcp
     networks:
-    - widget_overlay_net
+    - demo_overlay_net
     volumes:
-    - widget_data_vol:/data/db
+    - demo_data_vol:/data/db
     logging:
       driver: fluentd
       options:
@@ -118,9 +115,9 @@ services:
     - "SERVICE_TAGS=messaging"
 
 networks:
-  widget_overlay_net:
+  demo_overlay_net:
     external: true
 
 volumes:
-  widget_data_vol:
+  demo_data_vol:
     external: true
