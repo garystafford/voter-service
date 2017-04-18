@@ -8,7 +8,8 @@ docker-machine env manager1
 eval $(docker-machine env manager1)
 
 export CONSUL_SERVER=$(docker-machine ip $(docker node ls | grep Leader | awk '{print $3}'))
-export WIDGET_PROFILE=docker-local
+export ACTIVE_PROFILE=docker-local
+export ENVIRONMENT=development
 
 docker stack deploy --compose-file=docker-compose.yml voter_stack
 

@@ -16,8 +16,10 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: environment
-        env: development
+        labels: com.voter.environment
+        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+    labels:
+    - "com.voter.environment: ${ENVIRONMENT}"
     deploy:
       mode: global
       placement:
@@ -27,7 +29,7 @@ services:
     - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=candidate"
     - "SERVICE_TAGS=service"
-    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
       -Djava.security.egd=file:/dev/./urandom \
       -jar candidate/candidate-service.jar"
 
@@ -46,8 +48,10 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: environment
-        env: development
+        labels: com.voter.environment
+        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+    labels:
+    - "com.voter.environment: ${ENVIRONMENT}"
     deploy:
       mode: global
       placement:
@@ -57,7 +61,7 @@ services:
     - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=voter"
     - "SERVICE_TAGS=service"
-    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
       -Djava.security.egd=file:/dev/./urandom \
       -jar voter/voter-service.jar"
 
@@ -77,8 +81,10 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: environment
-        env: development
+        labels: com.voter.environment
+        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+    labels:
+    - "com.voter.environment: ${ENVIRONMENT}"
     deploy:
       replicas: 1
       placement:
@@ -103,8 +109,10 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: environment
-        env: development
+        labels: com.voter.environment
+        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+    labels:
+    - "com.voter.environment: ${ENVIRONMENT}"
     deploy:
       replicas: 1
       placement:
