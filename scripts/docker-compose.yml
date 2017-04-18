@@ -10,7 +10,7 @@ services:
     ports:
     - 8097:8097/tcp
     networks:
-    - voter_overlay_net
+    - widget_overlay_net
     logging:
       driver: fluentd
       options:
@@ -41,7 +41,7 @@ services:
     ports:
     - 8099:8099/tcp
     networks:
-    - voter_overlay_net
+    - widget_overlay_net
     logging:
       driver: fluentd
       options:
@@ -71,9 +71,9 @@ services:
     ports:
     - 27017:27017/tcp
     networks:
-    - voter_overlay_net
+    - widget_overlay_net
     volumes:
-    - voter_data_vol:/data/db
+    - widget_data_vol:/data/db
     logging:
       driver: fluentd
       options:
@@ -98,9 +98,9 @@ services:
     - 5672:5672/tcp
     - 15672:15672/tcp
     networks:
-    - voter_overlay_net
+    - widget_overlay_net
     volumes:
-    - voter_data_vol:/data/db
+    - widget_data_vol:/data/db
     logging:
       driver: fluentd
       options:
@@ -118,9 +118,9 @@ services:
     - "SERVICE_TAGS=messaging"
 
 networks:
-  voter_overlay_net:
+  widget_overlay_net:
     external: true
 
 volumes:
-  voter_data_vol:
+  widget_data_vol:
     external: true
