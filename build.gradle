@@ -48,8 +48,6 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.webjars', name: 'hal-browser'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-stream'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-stream-rabbit'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
