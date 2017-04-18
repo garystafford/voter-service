@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=master)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
+[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=rabbitmq)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
 
 # Voter Service
 
@@ -13,11 +13,11 @@ The Voter service is designed to work along with the [Candidate Service](https:/
 The Voter service requires MongoDB to be running locally, on port `27017`. The Voter service also required the Candidate service to be running locally on `8097`. To clone, build, test, and run the Voter service as a JAR file, locally:
 
 ```bash
-git clone --depth 1 --branch master \
+git clone --depth 1 --branch rabbitmq \
   https://github.com/garystafford/voter-service.git
 cd voter-service
 ./gradlew clean cleanTest build
-java -jar build/libs/voter-service-0.2.0.jar
+java -jar build/libs/voter-service-0.3.0.jar
 ```
 ## Quick Start with Docker
 There is a `docker-compose.yml` file included in the project. The compose file will spin up single container instances of the Voter service, Candidate service, and MongoDB.
@@ -207,90 +207,132 @@ The Voter service includes several Spring Boot Profiles, in a multi-profile YAML
 
 
 ```yaml
-server:
-  port: 8099
-spring:
-  data:
-   mongodb:
-     host: localhost
-     port: 27017
-     database: voters
-logging:
- level:
-   root: INFO
-info:
- java:
-   source: ${java.version}
-   target: ${java.version}
-management:
- info:
-   git:
-     mode: full
-   build:
-     enabled: true
+version: '3.0'
+
 services:
-  candidates:
-    host: localhost
-    port: 8097
----
-spring:
- profiles: docker-development
- data:
-   mongodb:
-     host: mongodb
-services:
-  candidates:
-    host: candidates
----
-spring:
- profiles: aws-production
- data:
-   mongodb:
-     host: 10.0.1.6
-logging:
- level:
-   root: WARN
-management:
- info:
-   git:
-     enabled: false
-   build:
-     enabled: false
-endpoints:
- sensitive: true
- enabled: false
- info:
-   enabled: true
- health:
-   enabled: true
-services:
-  candidates:
-    host: candidates
----
-spring:
- profiles: docker-production
- data:
-   mongodb:
-     host: mongodb
-logging:
- level:
-   root: WARN
-management:
- info:
-   git:
-     enabled: false
-   build:
-     enabled: false
-endpoints:
- sensitive: true
- enabled: false
- info:
-   enabled: true
- health:
-   enabled: true
-services:
-  candidates:
-    host: candidates
+  candidate:
+    image: garystafford/candidate-service:latest
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: candidate
+    ports:
+    - 8097:8097/tcp
+    networks:
+    - voter_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
+    environment:
+    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
+    - "SERVICE_NAME=candidate"
+    - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar candidate/candidate-service.jar"
+
+  voter:
+    image: garystafford/voter-service:latest
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: voter
+    ports:
+    - 8099:8099/tcp
+    networks:
+    - voter_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
+    environment:
+    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
+    - "SERVICE_NAME=voter"
+    - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar voter/voter-service.jar"
+
+  mongodb:
+    image: mongo:latest
+    command:
+    - --smallfiles
+    hostname: mongodb
+    ports:
+    - 27017:27017/tcp
+    networks:
+    - voter_overlay_net
+    volumes:
+    - voter_data_vol:/data/db
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.role == worker
+        - node.hostname != worker3
+    environment:
+    - "SERVICE_NAME=mongodb"
+    - "SERVICE_TAGS=database"
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    hostname: rabbitmq
+    ports:
+    - 5672:5672/tcp
+    - 15672:15672/tcp
+    networks:
+    - voter_overlay_net
+    volumes:
+    - voter_data_vol:/data/db
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: environment
+        env: development
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == worker3
+    environment:
+    - "SERVICE_NAME=rabbitmq"
+    - "SERVICE_TAGS=messaging"
+
+networks:
+  voter_overlay_net:
+    external: true
+
+volumes:
+  voter_data_vol:
+    external: true
 ```
 
 All profile property values may be overridden on the command line, or in a `.conf` file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:
