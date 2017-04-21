@@ -64,14 +64,13 @@ public class CandidateList {
         }
 
         List<String> candidatesSorted = candidatesRemote.subList(0, candidatesRemote.size());
-        Collections.sort(candidatesSorted);
         return candidatesSorted;
     }
 
     @SuppressWarnings("unchecked")
     List<String> getCandidatesMessageRpc() {
         System.out.println("Sending RPC request message for list of candidates...");
-        String requestMessage = LocalDateTime.now().toString();
+        String requestMessage = "2016 Presidential Election";
         List<String> candidatesRemote;
         candidatesRemote = (List<String>) rabbitTemplate.convertSendAndReceive(
                 directExchange.getName(),"rpc", requestMessage);
@@ -81,7 +80,6 @@ public class CandidateList {
         }
 
         List<String> candidatesSorted = candidatesRemote.subList(0, candidatesRemote.size());
-        Collections.sort(candidatesSorted);
         return candidatesSorted;
     }
 }
