@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -34,12 +32,12 @@ public class CandidateList {
     }
 
 
-    List<String> getCandidatesSyncHttp() {
+    List<String> getCandidatesSyncHttp(String election) {
         List<String> candidatesRemote = new ArrayList<>();
         String candidateServiceHostname = environment.getProperty("services.candidate.host");
         String candidateServicePort = environment.getProperty("services.candidate.port");
-        String candidateServiceResourceUrl = String.format("http://%s:%s/candidates/summary",
-                candidateServiceHostname, candidateServicePort);
+        String candidateServiceResourceUrl = String.format("http://%s:%s/candidates/summary?election=%s",
+                candidateServiceHostname, candidateServicePort, election);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -67,10 +65,14 @@ public class CandidateList {
         return candidatesSorted;
     }
 
+    /**
+     * Produces query message containing election
+     * Consumes candidate list based on election query
+     */
     @SuppressWarnings("unchecked")
-    List<String> getCandidatesMessageRpc() {
+    List<String> getCandidatesMessageRpc(String election) {
         System.out.println("Sending RPC request message for list of candidates...");
-        String requestMessage = "2016 Presidential Election";
+        String requestMessage = election; //"2016 Presidential Election";
         List<String> candidatesRemote;
         candidatesRemote = (List<String>) rabbitTemplate.convertSendAndReceive(
                 directExchange.getName(),"rpc", requestMessage);

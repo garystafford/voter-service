@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,14 +42,14 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<String>>> getCandidatesHttp() {
-        List<String> results = candidateList.getCandidatesSyncHttp();
+    public ResponseEntity<Map<String, List<String>>> getCandidatesHttp(@Param("election") String election) {
+        List<String> results = candidateList.getCandidatesSyncHttp(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/candidates/rpc", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<String>>> getCandidatesRpc() {
-        List<String> results = candidateList.getCandidatesMessageRpc();
+    public ResponseEntity<Map<String, List<String>>> getCandidatesRpc(@Param("election") String election) {
+        List<String> results = candidateList.getCandidatesMessageRpc(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
@@ -124,10 +125,10 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/simulation", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> getSimulationHttp() {
+    public ResponseEntity<Map<String, String>> getSimulationHttp(@Param("election") String election) {
 
         voteRepository.deleteAll();
-        voteSeedData.setRandomVotesHttp();
+        voteSeedData.setRandomVotesHttp(election);
         voteRepository.save(voteSeedData.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created!");
@@ -135,10 +136,10 @@ public class VoteController {
     }
 
     @RequestMapping(value = "/simulation/rpc", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> getSimulationRpc() {
+    public ResponseEntity<Map<String, String>> getSimulationRpc(@Param("election") String election) {
 
         voteRepository.deleteAll();
-        voteSeedData.setRandomVotesRpc();
+        voteSeedData.setRandomVotesRpc(election);
         voteRepository.save(voteSeedData.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created using RPC!");

@@ -38,9 +38,9 @@ public class VoteSeedData {
     }
 
     // generates random number of total votes for each candidate
-    void setRandomVotesHttp() {
+    void setRandomVotesHttp(String election) {
         Map candidates = new HashMap();
-        List<String> list = candidateList.getCandidatesSyncHttp();
+        List<String> list = candidateList.getCandidatesSyncHttp(election);
         for (String aList : list) {
             candidates.put(aList, getRandomIntAsString(2, 20));
         }
@@ -48,9 +48,9 @@ public class VoteSeedData {
     }
 
     // generates random number of total votes for each candidate
-    void setRandomVotesRpc() {
+    void setRandomVotesRpc(String election) {
         Map candidates = new HashMap();
-        List<String> list = candidateList.getCandidatesMessageRpc();
+        List<String> list = candidateList.getCandidatesMessageRpc(election);
         for (String aList : list) {
             candidates.put(aList, getRandomIntAsString(2, 20));
         }

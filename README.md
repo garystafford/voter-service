@@ -7,8 +7,8 @@
 The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
 
 The Voter service is designed to work along with the [Candidate Service](https://github.com/garystafford/candidate-service), as part of a complete API. The Voter service is dependent on the Candidate service to supply a list of candidates. The Candidate service is called by the Voter service, using one of two methods:
-1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/candidates` or `/simulation` endpoints are called.
-2. [Messaging-based Remote Procedure Call (RPC) IPC](http://www.rabbitmq.com/tutorials/tutorial-six-java.html), when either the Voter service's `/candidates/rpc` or `/simulation/rpc` endpoints are called.
+1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/candidates?election={election}` or `/simulation?election={election}` endpoints are called.
+2. [Messaging-based Remote Procedure Call (RPC) IPC](http://www.rabbitmq.com/tutorials/tutorial-six-java.html), when either the Voter service's `/candidates/rpc?election={election}` or `/simulation/rpc?election={election}` endpoints are called.
 
 ## Quick Start for Local Development
 
@@ -38,7 +38,7 @@ c7b23aaf7af6        garystafford/voter-service:0.2.101      "java -Dspring.pro..
 ## Getting Started with the API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
 1. Create sample candidates: `http http://localhost:8097/simulation`  
-2. Create sample voter data: `http http://localhost:8099/simulation`  
+2. Create sample voter data: `http http://localhost:8099/simulation?election="2016 Presidential Election"`  
 3. View sample voter results: `http http://localhost:8099/results`
 
 ## Service Endpoints
@@ -47,10 +47,10 @@ By default, the service runs on `localhost`, port `8099`. By default, the servic
 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
-Create Random Sample Data                                                                                                | GET     | [/simulation](http://localhost:8099/simulation)
-Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/simulation](http://localhost:8099/simulation)
-List Candidates (using RPC Messaging)                                                                                    | GET     | [/candidates](http://localhost:8099/candidates/rpc)
-List Candidates                                                                                                          | GET     | [/candidates](http://localhost:8099/candidates)
+Create Random Sample Data                                                                                                | GET     | [/simulation?election={election}](http://localhost:8099/simulation?election=)
+Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/simulation/rpc?election={election}](http://localhost:8099/simulation/rpc?election=)
+List Candidates                                                                                                          | GET     | [/candidates?election={election}](http://localhost:8099/candidates?election=)
+List Candidates (using RPC Messaging)                                                                                    | GET     | [/candidates/rpc?election={election}](http://localhost:8099/candidates/rpc?election=)
 Submit Vote                                                                                                              | POST    | [/votes](http://localhost:8099/votes)
 View Voting Results                                                                                                      | GET     | [/results](http://localhost:8099/results)
 View Total Votes                                                                                                         | GET     | [/results/votes](http://localhost:8099/results/votes)
@@ -104,7 +104,7 @@ or
 
 ```json
 {
-    "message": "simulation data created"
+    "message": "Simulation data created!"
 }
 ```
 

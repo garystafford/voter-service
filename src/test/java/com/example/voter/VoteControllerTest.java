@@ -49,19 +49,21 @@ public class VoteControllerTest {
 
     private void createSampleCandidateList() {
         // create sample list of candidates by calling the candidate service
+        String election = "2016 Presidential Election";
         String candidateServiceHostname = environment.getProperty("services.candidate.host");
         String candidateServicePort = environment.getProperty("services.candidate.port");
-        String candidateServiceResourceUrl = String.format("http://%s:%s/simulation",
-                candidateServiceHostname, candidateServicePort);
-
+        String candidateServiceResourceUrl = String.format("http://%s:%s/candidates/summary?election=%s",
+                candidateServiceHostname, candidateServicePort, election);
         restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
     }
 
     @Test
     public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
         // String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\",\"Darrell Castle (Constitution Party)\",\"Donald Trump (Republican Party)\",\"Gary Johnson (Libertarian Party)\",\"Hillary Clinton (Democratic Party)\",\"Jill Stein (Green Party)\"]}";
+        String election = "2016 Presidential Election";
         String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\"";
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("/candidates", String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
+                String.format("/candidates?election=%s", election), String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).contains(expectedCandidates);
 
@@ -135,10 +137,11 @@ public class VoteControllerTest {
 
     @Test
     public void getSimulationReturnsExpectedMessage() throws Exception {
+        String election = "2016 Presidential Election";
         String expectedResponse =
                 "{\"message\":\"Simulation data created!\"}";
         ResponseEntity<String> responseEntity =
-                restTemplate.getForEntity("/simulation", String.class);
+                restTemplate.getForEntity(String.format("/simulation?election=%s", election), String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
     }
