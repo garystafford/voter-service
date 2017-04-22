@@ -1,4 +1,4 @@
-FROM openjdk:8u111-jdk-alpine
+FROM openjdk:8u121-jdk-alpine
 LABEL maintainer "Gary A. Stafford <garystafford@rochester.rr.com>"
 ENV REFRESHED_AT 2017-04-17
 VOLUME /tmp
