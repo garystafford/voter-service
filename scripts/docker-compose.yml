@@ -16,10 +16,11 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: com.voter.environment
-        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+        labels: com.voter.environment,com.voter.active_profile
+        env: SERVICE_NAME,SERVICE_TAGS
     labels:
-    - "com.voter.environment: ${ENVIRONMENT}"
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
     deploy:
       mode: global
       placement:
@@ -30,6 +31,7 @@ services:
     - "SERVICE_NAME=candidate"
     - "SERVICE_TAGS=service"
     command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
       -Djava.security.egd=file:/dev/./urandom \
       -jar candidate/candidate-service.jar"
 
@@ -48,10 +50,11 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: com.voter.environment
-        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+        labels: com.voter.environment,com.voter.active_profile
+        env: SERVICE_NAME,SERVICE_TAGS
     labels:
-    - "com.voter.environment: ${ENVIRONMENT}"
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
     deploy:
       mode: global
       placement:
@@ -62,6 +65,7 @@ services:
     - "SERVICE_NAME=voter"
     - "SERVICE_TAGS=service"
     command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
       -Djava.security.egd=file:/dev/./urandom \
       -jar voter/voter-service.jar"
 
@@ -81,10 +85,11 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: com.voter.environment
-        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+        labels: com.voter.environment,com.voter.active_profile
+        env: SERVICE_NAME,SERVICE_TAGS
     labels:
-    - "com.voter.environment: ${ENVIRONMENT}"
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
     deploy:
       replicas: 1
       placement:
@@ -109,10 +114,11 @@ services:
       options:
         tag: docker.{{.Name}}
         fluentd-address: localhost:24224
-        labels: com.voter.environment
-        env: SERVICE_NAME, SERVICE_TAGS, ACTIVE_PROFILE
+        labels: com.voter.environment,com.voter.active_profile
+        env: SERVICE_NAME,SERVICE_TAGS
     labels:
-    - "com.voter.environment: ${ENVIRONMENT}"
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
     deploy:
       replicas: 1
       placement:
