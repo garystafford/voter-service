@@ -1,4 +1,4 @@
-package com.example.voter;
+package com.voter.utilities;
 
 import com.mongodb.CommandResult;
 import org.springframework.beans.factory.annotation.Autowired;

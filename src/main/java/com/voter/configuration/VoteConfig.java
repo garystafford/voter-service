@@ -1,4 +1,4 @@
-package com.example.voter;
+package com.voter.configuration;
 
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.context.annotation.Bean;

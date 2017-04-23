@@ -1,4 +1,4 @@
-package com.example.voter;
+package com.voter.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,14 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class CandidateList {
+@Service
+public class CandidateListService {
 
     private Environment environment;
 
@@ -25,14 +26,14 @@ public class CandidateList {
     private DirectExchange directExchange;
 
     @Autowired
-    public CandidateList(Environment environment, RabbitTemplate rabbitTemplate, DirectExchange directExchange) {
+    public CandidateListService(Environment environment, RabbitTemplate rabbitTemplate, DirectExchange directExchange) {
         this.environment = environment;
         this.rabbitTemplate = rabbitTemplate;
         this.directExchange = directExchange;
     }
 
 
-    List<String> getCandidatesSyncHttp(String election) {
+    public List<String> getCandidatesSyncHttp(String election) {
         List<String> candidatesRemote = new ArrayList<>();
         String candidateServiceHostname = environment.getProperty("services.candidate.host");
         String candidateServicePort = environment.getProperty("services.candidate.port");
@@ -70,7 +71,7 @@ public class CandidateList {
      * Consumes candidate list based on election query
      */
     @SuppressWarnings("unchecked")
-    List<String> getCandidatesMessageRpc(String election) {
+    public List<String> getCandidatesMessageRpc(String election) {
         System.out.println("Sending RPC request message for list of candidates...");
         String requestMessage = election; //"2016 Presidential Election";
         List<String> candidatesRemote;

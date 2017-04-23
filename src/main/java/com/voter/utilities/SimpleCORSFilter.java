@@ -1,4 +1,4 @@
-package com.example.voter;
+package com.voter.utilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

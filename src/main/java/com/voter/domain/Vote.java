@@ -1,4 +1,4 @@
-package com.example.voter;
+package com.voter.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-class Vote {
+public class Vote {
 
     @Id
     private String id;
@@ -19,7 +19,7 @@ class Vote {
         // unused constructor
     }
 
-    Vote(String vote) {
+    public Vote(String vote) {
         this.vote = vote;
     }
 

@@ -1,7 +1,8 @@
-package com.example.voter;
+package com.voter.service;
 
+import com.voter.domain.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,24 +10,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Component
-public class VoteSeedData {
+@Service
+public class VoteSeedDataService {
 
-    private CandidateList candidateList;
+    private CandidateListService candidateList;
 
     private List<Vote> votes = new ArrayList<>();
 
     @Autowired
-    public VoteSeedData(CandidateList candidateList) {
+    public VoteSeedDataService(CandidateListService candidateList) {
         this.candidateList = candidateList;
     }
 
-    List<Vote> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
     // accepts map of candidates and total votes
-    void votesFromMap(Map candidates) {
+    public void votesFromMap(Map candidates) {
         votes.clear(); // clear previous seed data from list
         for (Object key : candidates.keySet()) {
             int value = Integer.parseInt(String.valueOf(candidates.get(key)));
@@ -38,7 +39,7 @@ public class VoteSeedData {
     }
 
     // generates random number of total votes for each candidate
-    void setRandomVotesHttp(String election) {
+    public void setRandomVotesHttp(String election) {
         Map candidates = new HashMap();
         List<String> list = candidateList.getCandidatesSyncHttp(election);
         for (String aList : list) {
@@ -48,7 +49,7 @@ public class VoteSeedData {
     }
 
     // generates random number of total votes for each candidate
-    void setRandomVotesRpc(String election) {
+    public void setRandomVotesRpc(String election) {
         Map candidates = new HashMap();
         List<String> list = candidateList.getCandidatesMessageRpc(election);
         for (String aList : list) {

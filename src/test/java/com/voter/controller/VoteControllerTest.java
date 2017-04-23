@@ -1,5 +1,9 @@
-package com.example.voter;
+package com.voter.controller;
 
+import com.voter.controller.VoteController;
+import com.voter.domain.Vote;
+import com.voter.domain.VoteCount;
+import com.voter.domain.VoteCountWinner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +65,7 @@ public class VoteControllerTest {
     public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
         // String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\",\"Darrell Castle (Constitution Party)\",\"Donald Trump (Republican Party)\",\"Gary Johnson (Libertarian Party)\",\"Hillary Clinton (Democratic Party)\",\"Jill Stein (Green Party)\"]}";
         String election = "2016 Presidential Election";
-        String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\"";
+        String expectedCandidates = "{\"candidates\":[\"Darrell Castle (Constitution Party)\"";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 String.format("/candidates?election=%s", election), String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);

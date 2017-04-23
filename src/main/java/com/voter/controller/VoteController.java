@@ -1,5 +1,11 @@
-package com.example.voter;
+package com.voter.controller;
 
+import com.voter.domain.VoteCount;
+import com.voter.domain.VoteCountWinner;
+import com.voter.repository.VoteRepository;
+import com.voter.service.VoteSeedDataService;
+import com.voter.domain.Vote;
+import com.voter.service.CandidateListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -28,28 +34,28 @@ public class VoteController {
 
     private VoteRepository voteRepository;
 
-    private VoteSeedData voteSeedData;
+    private VoteSeedDataService voteSeedDataService;
 
-    private CandidateList candidateList;
+    private CandidateListService candidateListService;
 
     @Autowired
     public VoteController(MongoTemplate mongoTemplate, VoteRepository voteRepository,
-                          VoteSeedData voteSeedData, CandidateList candidateList) {
+                          VoteSeedDataService voteSeedDataService, CandidateListService candidateListService) {
         this.mongoTemplate = mongoTemplate;
         this.voteRepository = voteRepository;
-        this.voteSeedData = voteSeedData;
-        this.candidateList = candidateList;
+        this.voteSeedDataService = voteSeedDataService;
+        this.candidateListService = candidateListService;
     }
 
     @RequestMapping(value = "/candidates", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<String>>> getCandidatesHttp(@Param("election") String election) {
-        List<String> results = candidateList.getCandidatesSyncHttp(election);
+        List<String> results = candidateListService.getCandidatesSyncHttp(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/candidates/rpc", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<String>>> getCandidatesRpc(@Param("election") String election) {
-        List<String> results = candidateList.getCandidatesMessageRpc(election);
+        List<String> results = candidateListService.getCandidatesMessageRpc(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
@@ -128,8 +134,8 @@ public class VoteController {
     public ResponseEntity<Map<String, String>> getSimulationHttp(@Param("election") String election) {
 
         voteRepository.deleteAll();
-        voteSeedData.setRandomVotesHttp(election);
-        voteRepository.save(voteSeedData.getVotes());
+        voteSeedDataService.setRandomVotesHttp(election);
+        voteRepository.save(voteSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
@@ -139,18 +145,18 @@ public class VoteController {
     public ResponseEntity<Map<String, String>> getSimulationRpc(@Param("election") String election) {
 
         voteRepository.deleteAll();
-        voteSeedData.setRandomVotesRpc(election);
-        voteRepository.save(voteSeedData.getVotes());
+        voteSeedDataService.setRandomVotesRpc(election);
+        voteRepository.save(voteSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created using RPC!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 
     // used by unit tests to create a known data set
-    void getSimulation(Map candidates) {
+    public void getSimulation(Map candidates) {
 
         voteRepository.deleteAll();
-        voteSeedData.votesFromMap(candidates);
-        voteRepository.save(voteSeedData.getVotes());
+        voteSeedDataService.votesFromMap(candidates);
+        voteRepository.save(voteSeedDataService.getVotes());
     }
 }
