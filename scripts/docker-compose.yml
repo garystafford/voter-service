@@ -32,7 +32,7 @@ services:
     - "SERVICE_TAGS=api gateway"
 
   candidate:
-    image: garystafford/candidate-service:latest
+    image: garystafford/candidate-service:rabbitmq
     depends_on:
     - mongodb
     - rabbitmq
@@ -66,7 +66,7 @@ services:
       -jar candidate/candidate-service.jar"
 
   voter:
-    image: garystafford/voter-service:latest
+    image: garystafford/voter-service:rabbitmq
     depends_on:
     - mongodb
     - rabbitmq
