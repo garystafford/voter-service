@@ -62,6 +62,7 @@ services:
     - "SERVICE_TAGS=service"
     command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
       -Dlogging.level.root=DEBUG \
+      -Dserver.context-path=/candidate
       -Djava.security.egd=file:/dev/./urandom \
       -jar candidate/candidate-service.jar"
 
@@ -96,6 +97,7 @@ services:
     - "SERVICE_TAGS=service"
     command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
       -Dlogging.level.root=DEBUG \
+      -Dserver.context-path=/voter
       -Djava.security.egd=file:/dev/./urandom \
       -jar voter/voter-service.jar"
 
