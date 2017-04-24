@@ -1,6 +1,36 @@
 version: '3.0'
 
 services:
+  voter-lb:
+    image: garystafford/voter-lb:latest
+    depends_on:
+    - voter
+    - candidate
+    hostname: voter-lb
+    ports:
+    - 8399:8399/tcp
+    networks:
+    - demo_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: com.voter.environment,com.voter.active_profile
+        env: SERVICE_NAME,SERVICE_TAGS
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == worker2
+    environment:
+    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
+    - "SERVICE_NAME=voter-lb"
+    - "SERVICE_TAGS=load balancer"
+
   candidate:
     image: garystafford/candidate-service:latest
     depends_on:
