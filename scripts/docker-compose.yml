@@ -1,14 +1,14 @@
 version: '3.0'
 
 services:
-  voter-lb:
-    image: garystafford/voter-lb:latest
+  voter-api-gateway:
+    image: garystafford/voter-api-gateway:latest
     depends_on:
     - voter
     - candidate
     hostname: voter-lb
     ports:
-    - 8399:8399/tcp
+    - "8080:8080/tcp"
     networks:
     - demo_overlay_net
     logging:
@@ -28,8 +28,8 @@ services:
         - node.hostname == worker2
     environment:
     - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
-    - "SERVICE_NAME=voter-lb"
-    - "SERVICE_TAGS=load balancer"
+    - "SERVICE_NAME=voter-api-gateway"
+    - "SERVICE_TAGS=api gateway"
 
   candidate:
     image: garystafford/candidate-service:latest
