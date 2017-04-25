@@ -15,6 +15,7 @@ management:
       mode: full
 server:
   port: 8099
+  context-path: /voter
 services:
   candidate:
     host: localhost
