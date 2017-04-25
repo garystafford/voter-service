@@ -1,11 +1,11 @@
 package com.voter.controller;
 
+import com.voter.domain.Vote;
 import com.voter.domain.VoteCount;
 import com.voter.domain.VoteCountWinner;
 import com.voter.repository.VoteRepository;
-import com.voter.service.VoteSeedDataService;
-import com.voter.domain.Vote;
 import com.voter.service.CandidateListService;
+import com.voter.service.VoteSeedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;

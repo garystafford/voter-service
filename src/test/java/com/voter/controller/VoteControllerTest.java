@@ -1,10 +1,10 @@
 package com.voter.controller;
 
-import com.voter.controller.VoteController;
 import com.voter.domain.Vote;
 import com.voter.domain.VoteCount;
 import com.voter.domain.VoteCountWinner;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
