@@ -6,7 +6,10 @@ set -e
 
 export ACTIVE_PROFILE=docker-local
 
-docker-compose -f docker-compose-local.yml -p voter_stack up -d
+docker-compose \
+  -f docker-compose-local.yml \
+  -p voterstack up \
+  --force-recreate -d
 
 echo "Letting services start-up..."
 sleep 5
