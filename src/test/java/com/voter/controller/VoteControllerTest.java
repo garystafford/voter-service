@@ -65,7 +65,7 @@ public class VoteControllerTest {
     @Test
     public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
         // String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\",\"Darrell Castle (Constitution Party)\",\"Donald Trump (Republican Party)\",\"Gary Johnson (Libertarian Party)\",\"Hillary Clinton (Democratic Party)\",\"Jill Stein (Green Party)\"]}";
-        String election = "2016%20Presidential%20Election";
+        String election = "2016 Presidential Election";
         String expectedCandidates = "{\"candidates\":[\"Darrell Castle (Constitution Party)\"";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 String.format("/candidates?election=%s", election), String.class);

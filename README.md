@@ -44,6 +44,9 @@ The easiest way to get started with the Candidate and Voter services API, using 
 3. Create sample voter data: `http http://localhost:8099/voter/simulation?election=2016%20Presidential%20Election`  
 4. View sample voter results: `http http://localhost:8099/voter/results`
 
+Alternately, for step 3 above, you can use Service-to-Service RPC IPC with RabbitMQ, to retrieve the candidates:  
+`http http://localhost:8099/voter/simulation/rpc\?election\=2016%20Presidential%20Election`
+
 ## Service Endpoints
 
 By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`. The service uses a context path of `/voter`. All endpoints must be are prefixed with this sub-path.
