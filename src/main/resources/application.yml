@@ -19,6 +19,7 @@ services:
   candidate:
     host: localhost
     port: 8097
+    context-path: candidate
 spring:
   data:
     mongodb:

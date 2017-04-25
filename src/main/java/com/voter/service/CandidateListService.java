@@ -33,12 +33,19 @@ public class CandidateListService {
     }
 
 
+    /**
+     * Produces HTTP GET request containing election
+     * Candidate service returns a list of candidates
+     * * @param election
+     * @return List of candidates
+     */
     public List<String> getCandidatesSyncHttp(String election) {
         List<String> candidatesRemote = new ArrayList<>();
         String candidateServiceHostname = environment.getProperty("services.candidate.host");
         String candidateServicePort = environment.getProperty("services.candidate.port");
-        String candidateServiceResourceUrl = String.format("http://%s:%s/candidates/summary?election=%s",
-                candidateServiceHostname, candidateServicePort, election);
+        String candidateContextPath = environment.getProperty("services.candidate.context-path");
+        String candidateServiceResourceUrl = String.format("http://%s:%s/%s/candidates/summary?election=%s",
+                candidateServiceHostname, candidateServicePort, candidateContextPath, election);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -69,6 +76,8 @@ public class CandidateListService {
     /**
      * Produces query message containing election
      * Consumes candidate list based on election query
+     * @param election
+     * @return List of candidates
      */
     @SuppressWarnings("unchecked")
     public List<String> getCandidatesMessageRpc(String election) {
