@@ -67,8 +67,6 @@ services:
 
 networks:
   demo_overlay_net:
-    external: true
 
 volumes:
   demo_data_vol:
-    external: true
