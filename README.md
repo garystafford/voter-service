@@ -4,11 +4,11 @@
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/simulation` endpoint.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
 
 The Voter service is designed to work along with the [Candidate Service](https://github.com/garystafford/candidate-service), as part of a complete API. The Voter service is dependent on the Candidate service to supply a list of candidates. The Candidate service is called by the Voter service, using one of two methods:
-1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/candidates?election={election}` or `/simulation?election={election}` endpoints are called.
-2. [Messaging-based Remote Procedure Call (RPC) IPC](http://www.rabbitmq.com/tutorials/tutorial-six-java.html), when either the Voter service's `/candidates/rpc?election={election}` or `/simulation/rpc?election={election}` endpoints are called.
+1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates?election={election}` or `/voter/simulation?election={election}` endpoints are called.
+2. [Messaging-based Remote Procedure Call (RPC) IPC](http://www.rabbitmq.com/tutorials/tutorial-six-java.html), when either the Voter service's `/voter/candidates/rpc?election={election}` or `/voter/simulation/rpc?election={election}` endpoints are called.
 
 ## Quick Start for Local Development
 
@@ -22,10 +22,10 @@ cd voter-service
 java -jar build/libs/voter-service-0.3.0.jar
 ```
 ## Quick Start with Docker
-There is a `docker-compose.yml` file included in the project. The compose file will spin up single container instances of the Voter service, Candidate service, and MongoDB.
+There is a `docker-compose-local.yml` file included in the project. The compose file will spin up single container instances of the Voter service, Candidate service, RabbitMQ, and MongoDB.
 
 ```bash
-docker-compose up -d
+docker-compose --file docker-compose-local.yml up -d
 ```
 
 ```text
@@ -37,42 +37,42 @@ c7b23aaf7af6        garystafford/voter-service:0.2.101      "java -Dspring.pro..
 
 ## Getting Started with the API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
-1. Create sample candidates: `http http://localhost:8097/simulation`  
-2. View sample candidates: `http http://localhost:8097/candidates/summary?election=2016%20Presidential%20Election`  
-3. Create sample voter data: `http http://localhost:8099/simulation?election=2016%20Presidential%20Election`  
-4. View sample voter results: `http http://localhost:8099/results`
+1. Create sample candidates: `http http://localhost:8097/candidate/simulation`  
+2. View sample candidates: `http http://localhost:8097/candidate/candidates/summary?election=2016%20Presidential%20Election`  
+3. Create sample voter data: `http http://localhost:8099/voter/simulation?election=2016%20Presidential%20Election`  
+4. View sample voter results: `http http://localhost:8099/voter/results`
 
 ## Service Endpoints
 
-By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`.
+By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`. The service uses a context path of `/voter`. All endpoints must be are prefixed with this sub-path.
 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
-Create Random Sample Data                                                                                                | GET     | [/simulation?election={election}](http://localhost:8099/simulation?election=)
-Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/simulation/rpc?election={election}](http://localhost:8099/simulation/rpc?election=)
-List Candidates                                                                                                          | GET     | [/candidates?election={election}](http://localhost:8099/candidates?election=)
-List Candidates (using RPC Messaging)                                                                                    | GET     | [/candidates/rpc?election={election}](http://localhost:8099/candidates/rpc?election=)
-Submit Vote                                                                                                              | POST    | [/votes](http://localhost:8099/votes)
-View Voting Results                                                                                                      | GET     | [/results](http://localhost:8099/results)
-View Total Votes                                                                                                         | GET     | [/results/votes](http://localhost:8099/results/votes)
-View Winner(s)                                                                                                           | GET     | [/winners](http://localhost:8099/winners)
-View Winning Vote Count                                                                                                  | GET     | [/winners/votes](http://localhost:8091/winners/votes)
-Service Info                                                                                                             | GET     | [/info](http://localhost:8099/info)
-Service Health                                                                                                           | GET     | [/health](http://localhost:8099/health)
-Service Metrics                                                                                                          | GET     | [/metrics](http://localhost:8099/metrics)
+Create Random Sample Data                                                                                                | GET     | [/voter/simulation?election={election}](http://localhost:8099/voter/simulation?election=)
+Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/voter/simulation/rpc?election={election}](http://localhost:8099/voter/simulation/rpc?election=)
+List Candidates                                                                                                          | GET     | [/voter/candidates?election={election}](http://localhost:8099/voter/candidates?election=)
+List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc?election={election}](http://localhost:8099/voter/candidates/rpc?election=)
+Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
+View Voting Results                                                                                                      | GET     | [/voter/results](http://localhost:8099/voter/results)
+View Total Votes                                                                                                         | GET     | [/voter/results/votes](http://localhost:8099/voter/results/votes)
+View Winner(s)                                                                                                           | GET     | [/voter/winners](http://localhost:8099/voter/winners)
+View Winning Vote Count                                                                                                  | GET     | [/voter/winners/votes](http://localhost:8099/voter/winners/votes)
+Service Info                                                                                                             | GET     | [/voter/info](http://localhost:8099/voter/info)
+Service Health                                                                                                           | GET     | [/voter/health](http://localhost:8099/voter/health)
+Service Metrics                                                                                                          | GET     | [/voter/metrics](http://localhost:8099/voter/metrics)
 Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `/actuator`, `/mappings`, `/env`, `/configprops`, etc.
-Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/votes`                                         | Various | DELETE, PATCH, PUT, page sort, size, etc.
+Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/voter/votes`                                         | Various | DELETE, PATCH, PUT, page sort, size, etc.
 
-The [HAL Browser](https://github.com/mikekelly/hal-browser) API browser for the `hal+json` media type is installed alongside the service. It can be accessed at `http://localhost:8099/actuator/`.
+The [HAL Browser](https://github.com/mikekelly/hal-browser) API browser for the `hal+json` media type is installed alongside the service. It can be accessed at `http://localhost:8099/voter/actuator/`.
 
 ## Voting
 
-Submitting a new vote, requires an HTTP `POST` request to the `/votes` endpoint, as follows:
+Submitting a new vote, requires an HTTP `POST` request to the `/voter/votes` endpoint, as follows:
 
 HTTPie
 
 ```text
-http POST http://localhost:8099/votes \
+http POST http://localhost:8099/voter/votes \
 candidate="Jill Stein (Green Party)"
 ```
 
@@ -82,7 +82,7 @@ cURL
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{ "candidate": "Jill Stein (Green Party)" }' \
-  "http://localhost:8099/votes"
+  "http://localhost:8099/voter/votes"
 ```
 
 wget
@@ -92,16 +92,16 @@ wget --method POST \
   --header 'content-type: application/json' \
   --body-data '{ "candidate": "Jill Stein (Green Party)" }' \
   --no-verbose \
-  --output-document - http://localhost:8099/votes
+  --output-document - http://localhost:8099/voter/votes
 ```
 
 ## Sample Output
 
 Using [HTTPie](https://httpie.org/) command line HTTP client.
 
-`http http://localhost:8099/simulation`
+`http http://localhost:8099/voter/simulation`
 or  
-`http http://localhost:8099/simulation/rpc`
+`http http://localhost:8099/voter/simulation/rpc`
 
 ```json
 {
@@ -109,9 +109,9 @@ or
 }
 ```
 
-`http http://localhost:8099/candidates`
+`http http://localhost:8099/voter/candidates`
 or  
-`http http://localhost:8099/candidates/rpc`
+`http http://localhost:8099/voter/candidates/rpc`
 
 ```json
 {
@@ -126,7 +126,7 @@ or
 }
 ```
 
-`http http://localhost:8099/results`
+`http http://localhost:8099/voter/results`
 
 ```json
 {
@@ -159,7 +159,7 @@ or
 }
 ```
 
-`http http://localhost:8099/results/votes`
+`http http://localhost:8099/voter/results/votes`
 
 ```json
 {
@@ -167,7 +167,7 @@ or
 }
 ```
 
-`http http://localhost:8099/winners`
+`http http://localhost:8099/voter/winners`
 
 ```json
 {
@@ -180,7 +180,7 @@ or
 }
 ```
 
-`http http://localhost:8099/winners/votes`
+`http http://localhost:8099/voter/winners/votes`
 
 ```json
 {
@@ -188,16 +188,16 @@ or
 }
 ```
 
-`http POST http://localhost:8099/votes candidate="Jill Stein (Green Party)"`
+`http POST http://localhost:8099/voter/votes candidate="Jill Stein (Green Party)"`
 
 ```json
 {
     "_links": {
         "self": {
-            "href": "http://localhost:8099/votes/5888605326b6f40371a1d016"
+            "href": "http://localhost:8099/voter/votes/5888605326b6f40371a1d016"
         },
         "vote": {
-            "href": "http://localhost:8099/votes/5888605326b6f40371a1d016"
+            "href": "http://localhost:8099/voter/votes/5888605326b6f40371a1d016"
         }
     },
     "candidate": "Jill Stein (Green Party)"
@@ -216,132 +216,102 @@ The Voter service includes several Spring Boot Profiles, in a multi-profile YAML
 
 
 ```yaml
-version: '3.0'
-
+endpoints:
+  enabled: true
+  sensitive: false
+info:
+  java:
+    source: "${java.version}"
+logging:
+  level:
+    root: INFO
+management:
+  info:
+    build:
+      enabled: true
+    git:
+      mode: full
+server:
+  port: 8099
+  context-path: /voter
 services:
   candidate:
-    image: garystafford/candidate-service:latest
-    depends_on:
-    - mongodb
-    - rabbitmq
-    hostname: candidate
-    ports:
-    - 8097:8097/tcp
-    networks:
-    - voter_overlay_net
-    logging:
-      driver: fluentd
-      options:
-        tag: docker.{{.Name}}
-        fluentd-address: localhost:24224
-        labels: environment
-        env: development
-    deploy:
-      mode: global
-      placement:
-        constraints:
-        - node.role == worker
-        - node.hostname != worker3
-    environment:
-    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
-    - "SERVICE_NAME=candidate"
-    - "SERVICE_TAGS=service"
-    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
-      -Djava.security.egd=file:/dev/./urandom \
-      -jar candidate/candidate-service.jar"
-
-  voter:
-    image: garystafford/voter-service:latest
-    depends_on:
-    - mongodb
-    - rabbitmq
-    hostname: voter
-    ports:
-    - 8099:8099/tcp
-    networks:
-    - voter_overlay_net
-    logging:
-      driver: fluentd
-      options:
-        tag: docker.{{.Name}}
-        fluentd-address: localhost:24224
-        labels: environment
-        env: development
-    deploy:
-      mode: global
-      placement:
-        constraints:
-        - node.role == worker
-        - node.hostname != worker3
-    environment:
-    - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
-    - "SERVICE_NAME=voter"
-    - "SERVICE_TAGS=service"
-    command: "java -Dspring.profiles.active=${WIDGET_PROFILE} \
-      -Djava.security.egd=file:/dev/./urandom \
-      -jar voter/voter-service.jar"
-
-  mongodb:
-    image: mongo:latest
-    command:
-    - --smallfiles
-    hostname: mongodb
-    ports:
-    - 27017:27017/tcp
-    networks:
-    - voter_overlay_net
-    volumes:
-    - voter_data_vol:/data/db
-    logging:
-      driver: fluentd
-      options:
-        tag: docker.{{.Name}}
-        fluentd-address: localhost:24224
-        labels: environment
-        env: development
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-        - node.role == worker
-        - node.hostname != worker3
-    environment:
-    - "SERVICE_NAME=mongodb"
-    - "SERVICE_TAGS=database"
-
+    host: localhost
+    port: 8097
+    context-path: candidate
+spring:
+  data:
+    mongodb:
+      database: voters
+      host: localhost
+      port: 27017
   rabbitmq:
-    image: rabbitmq:management-alpine
-    hostname: rabbitmq
-    ports:
-    - 5672:5672/tcp
-    - 15672:15672/tcp
-    networks:
-    - voter_overlay_net
-    volumes:
-    - voter_data_vol:/data/db
-    logging:
-      driver: fluentd
-      options:
-        tag: docker.{{.Name}}
-        fluentd-address: localhost:24224
-        labels: environment
-        env: development
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-        - node.hostname == worker3
-    environment:
-    - "SERVICE_NAME=rabbitmq"
-    - "SERVICE_TAGS=messaging"
-
-networks:
-  voter_overlay_net:
-    external: true
-
-volumes:
-  voter_data_vol:
-    external: true
+    host: localhost
+---
+services:
+  candidate:
+    host: candidate
+spring:
+  data:
+    mongodb:
+      host: mongodb
+  rabbitmq:
+    host: rabbitmq
+  profiles: docker-local
+---
+endpoints:
+  candidate:
+    host: candidate
+  enabled: false
+  health:
+    enabled: true
+  info:
+    enabled: true
+  sensitive: true
+  services: ~
+logging:
+  level:
+    root: WARN
+management:
+  info:
+    build:
+      enabled: false
+    git:
+      enabled: false
+spring:
+  data:
+    mongodb:
+      host: "10.0.1.6"
+  rabbitmq:
+    host: "10.0.1.8"
+  profiles: aws-production
+---
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+  info:
+    enabled: true
+  sensitive: true
+logging:
+  level:
+    root: WARN
+management:
+  info:
+    build:
+      enabled: false
+    git:
+      enabled: false
+services:
+  candidate:
+    host: candidate
+spring:
+  data:
+    mongodb:
+      host: mongodb
+  rabbitmq:
+    host: rabbitmq
+  profiles: docker-production
 ```
 
 All profile property values may be overridden on the command line, or in a `.conf` file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:
@@ -350,6 +320,7 @@ All profile property values may be overridden on the command line, or in a `.con
 java -jar <name_of_jar_file> \
   --spring.profiles.active=aws-production \
   --spring.data.mongodb.host=<new_host_address>
+  -Dlogging.level.root=DEBUG \
   -Djava.security.egd=file:/dev/./urandom
 ```
 

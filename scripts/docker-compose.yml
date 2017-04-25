@@ -6,7 +6,7 @@ services:
     depends_on:
     - voter
     - candidate
-    hostname: voter-lb
+    hostname: voter-api-gateway
     ports:
     - "8080:8080/tcp"
     networks:
@@ -25,7 +25,7 @@ services:
       replicas: 1
       placement:
         constraints:
-        - node.hostname == worker2
+        - node.hostname == worker1
     environment:
     - "CONSUL_SERVER_URL=${CONSUL_SERVER}"
     - "SERVICE_NAME=voter-api-gateway"
@@ -38,7 +38,7 @@ services:
     - rabbitmq
     hostname: candidate
     ports:
-    - 8097:8097/tcp
+    - "8097:8097/tcp"
     networks:
     - demo_overlay_net
     logging:
@@ -72,7 +72,7 @@ services:
     - rabbitmq
     hostname: voter
     ports:
-    - 8099:8099/tcp
+    - "8099:8099/tcp"
     networks:
     - demo_overlay_net
     logging:
@@ -105,7 +105,7 @@ services:
     - --smallfiles
     hostname: mongodb
     ports:
-    - 27017:27017/tcp
+    - "27017:27017/tcp"
     networks:
     - demo_overlay_net
     volumes:
@@ -133,8 +133,8 @@ services:
     image: rabbitmq:management-alpine
     hostname: rabbitmq
     ports:
-    - 5672:5672/tcp
-    - 15672:15672/tcp
+    - "5672:5672/tcp"
+    - "15672:15672/tcp"
     networks:
     - demo_overlay_net
     volumes:
