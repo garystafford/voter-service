@@ -68,7 +68,7 @@ public class VoteControllerTest {
         String election = "2016%20Presidential%20Election";
         String expectedCandidates = "{\"candidates\":[\"Darrell Castle (Constitution Party)\"";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
-                String.format("/voter/candidates?election=%s", election), String.class);
+                String.format("/candidates?election=%s", election), String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).contains(expectedCandidates);
 
@@ -79,7 +79,7 @@ public class VoteControllerTest {
         String expectedVote = "Test Vote";
         Vote vote = new Vote(expectedVote);
         ResponseEntity<Vote> responseEntity =
-                restTemplate.postForEntity("/voter/votes", vote, Vote.class);
+                restTemplate.postForEntity("/votes", vote, Vote.class);
         assertThat(responseEntity.getStatusCode().value() == 201);
         assertThat(responseEntity.getBody().getVote()).isEqualTo(expectedVote);
     }
@@ -92,7 +92,7 @@ public class VoteControllerTest {
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
                 };
         ResponseEntity<Map<String, List<VoteCount>>> responseEntity =
-                restTemplate.exchange("/voter/results", HttpMethod.GET, null, typeRef);
+                restTemplate.exchange("/results", HttpMethod.GET, null, typeRef);
         LinkedHashMap body = ((LinkedHashMap) responseEntity.getBody());
         Collection voteCountCollection = body.values();
         ArrayList voteCountArray = (ArrayList) voteCountCollection.toArray()[0];
@@ -106,7 +106,7 @@ public class VoteControllerTest {
     public void getTotalVotesReturnsSumOfVotes() throws Exception {
         int expectedCount = 35;
         ResponseEntity<VoteCountWinner> responseEntity =
-                restTemplate.getForEntity("/voter/results/votes", VoteCountWinner.class);
+                restTemplate.getForEntity("/results/votes", VoteCountWinner.class);
         VoteCountWinner voteCount = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCount.getCount()).isEqualTo(expectedCount);
@@ -120,7 +120,7 @@ public class VoteControllerTest {
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
                 };
         ResponseEntity<Map<String, List<VoteCount>>> responseEntity =
-                restTemplate.exchange("/voter/winners", HttpMethod.GET, null, typeRef);
+                restTemplate.exchange("/winners", HttpMethod.GET, null, typeRef);
         LinkedHashMap body = ((LinkedHashMap) responseEntity.getBody());
         Collection voteCountCollection = body.values();
         ArrayList voteCountArray = (ArrayList) voteCountCollection.toArray()[0];
@@ -134,7 +134,7 @@ public class VoteControllerTest {
     public void getWinnersVotesReturnsWinnersVoteCount() throws Exception {
         int expectedCount = 14;
         ResponseEntity<VoteCountWinner> responseEntity =
-                restTemplate.getForEntity("/voter/winners/votes", VoteCountWinner.class);
+                restTemplate.getForEntity("/winners/votes", VoteCountWinner.class);
         VoteCountWinner voteCountWinner = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(voteCountWinner.getCount()).isEqualTo(expectedCount);
@@ -146,7 +146,7 @@ public class VoteControllerTest {
         String expectedResponse =
                 "{\"message\":\"Simulation data created!\"}";
         ResponseEntity<String> responseEntity =
-                restTemplate.getForEntity(String.format("/voter/simulation?election=%s", election), String.class);
+                restTemplate.getForEntity(String.format("/simulation?election=%s", election), String.class);
         assertThat(responseEntity.getStatusCode().value() == 200);
         assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
     }
