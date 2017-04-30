@@ -1,5 +1,6 @@
 package com.voter_api.voter.controller;
 
+import com.voter_api.voter.domain.CandidateVoterView;
 import com.voter_api.voter.domain.Vote;
 import com.voter_api.voter.domain.VoteCount;
 import com.voter_api.voter.domain.VoteCountWinner;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,12 +45,12 @@ public class VoteControllerTest {
         // create sample voter test data
         String election = "2016%20Presidential%20Election";
         Map<String, String> candidates = new HashMap<>();
-        candidates.put("Chris Keniston (Veterans Party)", "3");
-        candidates.put("Darrell Castle (Constitution Party)", "2");
-        candidates.put("Donald Trump (Republican Party)", "8");
-        candidates.put("Gary Johnson (Libertarian Party)", "3");
-        candidates.put("Hillary Clinton (Democratic Party)", "14");
-        candidates.put("Jill Stein (Green Party)", "5");
+        candidates.put("Chris Keniston", "3");
+        candidates.put("Darrell Castle", "2");
+        candidates.put("Donald Trump", "8");
+        candidates.put("Gary Johnson", "3");
+        candidates.put("Hillary Clinton", "14");
+        candidates.put("Jill Stein", "5");
         voteController.getSimulation(candidates, election);
     }
 
@@ -63,16 +65,19 @@ public class VoteControllerTest {
         restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
     }
 
-    @Ignore("Broken Test - Need to Fix")
+//    @Ignore("Broken Test - Need to Fix")
     @Test
-    public void getCandidatesReturnsListOfCandidateChoices() throws Exception {
-        // String expectedCandidates = "{\"candidates\":[\"Chris Keniston (Veterans Party)\",\"Darrell Castle (Constitution Party)\",\"Donald Trump (Republican Party)\",\"Gary Johnson (Libertarian Party)\",\"Hillary Clinton (Democratic Party)\",\"Jill Stein (Green Party)\"]}";
-        String election = "2016 Presidential Election";
-        String expectedCandidates = "{\"candidates\":[\"Darrell Castle (Constitution Party)\"";
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
-                String.format("/candidates/election/%s", election), String.class);
+    public void getCandidatesHttpReturnsListOfCandidateChoices() throws Exception {
+        String election = "2016%20Presidential%20Election";
+        ParameterizedTypeReference<Map<String, List<CandidateVoterView>>> typeRef =
+                new ParameterizedTypeReference<Map<String, List<CandidateVoterView>>>() {
+                };
+        ResponseEntity<Map<String, List<CandidateVoterView>>> responseEntity =
+                restTemplate.exchange(String.format("/candidates/election/%s", election),
+                        HttpMethod.GET, null, typeRef);
         assertThat(responseEntity.getStatusCode().value() == 200);
-        assertThat(responseEntity.getBody()).contains(expectedCandidates);
+        assertThat(responseEntity.getBody().containsKey("fullName"));
+        assertThat(responseEntity.getBody().containsValue("Darrell Castle"));
 
     }
 
@@ -89,7 +94,7 @@ public class VoteControllerTest {
 
     @Test
     public void getResultsReturnsListOfExpectedVoteCounts() throws Exception {
-        String expectedVote = "Hillary Clinton (Democratic Party)";
+        String expectedVote = "Hillary Clinton";
         int expectedCount = 14;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
@@ -117,7 +122,7 @@ public class VoteControllerTest {
 
     @Test
     public void getWinnersReturnsCandidatesWithMostVotes() throws Exception {
-        String expectedVote = "Hillary Clinton (Democratic Party)";
+        String expectedVote = "Hillary Clinton";
         int expectedCount = 14;
         ParameterizedTypeReference<Map<String, List<VoteCount>>> typeRef =
                 new ParameterizedTypeReference<Map<String, List<VoteCount>>>() {
