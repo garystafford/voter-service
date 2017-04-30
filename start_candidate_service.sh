@@ -3,7 +3,7 @@
 # Pull and start Candidate service in the background
 # Required to execute Voter unit tests
 
-set -ex
+set -e
 
 git clone --depth 1 --branch build-artifacts \
     "https://github.com/garystafford/candidate-service.git"

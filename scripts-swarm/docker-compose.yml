@@ -1,0 +1,67 @@
+version: '3.0'
+
+services:
+  visualizer:
+    image: manomarks/visualizer:latest
+    hostname: visualizer
+    ports:
+    - "5001:8080/tcp"
+    networks:
+    - demo_overlay_net
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == manager
+    environment:
+      SERVICE_NAME: visualizer
+      SERVICE_TAGS: monitoring
+
+  elk:
+    image: sebp/elk:latest
+    hostname: elk
+    ports:
+    - "5601:5601/tcp"
+    - "9200:9200/tcp"
+    - "5044:5044/tcp"
+    depends_on:
+    - fluentd
+    networks:
+    - demo_overlay_net
+    volumes:
+    - demo_data_vol:/var/lib/elasticsearch
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == worker3
+    environment:
+      SERVICE_NAME: elk
+      SERVICE_TAGS: monitoring
+
+  fluentd:
+    image: garystafford/custom-fluentd:latest
+    hostname: fluentd
+    ports:
+    - "24224:24224/tcp"
+    - "24224:24224/udp"
+    networks:
+    - demo_overlay_net
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+      SERVICE_NAME: fluentd
+      SERVICE_TAGS: monitoring
+
+networks:
+  demo_overlay_net:
+    external: true
+
+volumes:
+  demo_data_vol:
+    external: true

@@ -4,15 +4,15 @@
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a static list candidates (based on the 2016 US Presidential Election), submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
 
 The Voter service is designed to work along with the [Candidate Service](https://github.com/garystafford/candidate-service), as part of a complete API. The Voter service is dependent on the Candidate service to supply a list of candidates. The Candidate service is called by the Voter service, using one of two methods:
-1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates?election={election}` or `/voter/simulation?election={election}` endpoints are called.
-2. [Messaging-based Remote Procedure Call (RPC) IPC](http://www.rabbitmq.com/tutorials/tutorial-six-java.html), when either the Voter service's `/voter/candidates/rpc?election={election}` or `/voter/simulation/rpc?election={election}` endpoints are called.
+1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates/election/{election}` or `/voter/simulation/election/{election}` endpoints are called.
+2. [Messaging-based Remote Procedure Call (RPC) IPC](http://www.rabbitmq.com/tutorials/tutorial-six-java.html), when either the Voter service's `/voter/candidates/rpc/election/{election}` or `/voter/simulation/rpc/election/{election}` endpoints are called.
 
 ## Quick Start for Local Development
 
-The Voter service requires MongoDB to be running locally, on port `27017`. The Voter service also required the Candidate service to be running locally on `8097`. To clone, build, test, and run the Voter service as a JAR file, locally:
+The Voter service requires MongoDB to be running locally, on port `27017`, RabbitMQ running on `5672` and `15672`, and the Candidate service to be running on `8097`. To clone, build, test, and run the Voter service as a JAR file, locally:
 
 ```bash
 git clone --depth 1 --branch rabbitmq \
@@ -22,7 +22,7 @@ cd voter-service
 java -jar build/libs/voter-service-0.3.0.jar
 ```
 ## Quick Start with Docker
-There is a `docker-compose-local.yml` file included in the project. The compose file will spin up single container instances of the Voter service, Candidate service, RabbitMQ, and MongoDB.
+The easiest way to run the Voter API services locally is using the `docker-compose-local.yml` file, included in the project. The Docker Compose file will spin up single container instances of the Voter service, Candidate service, RabbitMQ, and MongoDB.
 
 ```bash
 sh ./stack-deploy-local.sh
@@ -40,23 +40,23 @@ f78ab6fb491b        garystafford/candidate-service:rabbitmq   "java -Dspring.pro
 ## Getting Started with the API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
 1. Create sample candidates: `http http://localhost:8097/candidate/simulation`  
-2. View sample candidates: `http http://localhost:8097/candidate/candidates/summary?election=2016%20Presidential%20Election`  
-3. Create sample voter data: `http http://localhost:8099/voter/simulation?election=2016%20Presidential%20Election`  
+2. View sample candidates: `http http://localhost:8097/candidate/candidates/summary/election/2016%20Presidential%20Election`  
+3. Create sample voter data: `http http://localhost:8099/voter/simulation/election/2016%20Presidential%20Election`  
 4. View sample voter results: `http http://localhost:8099/voter/results`
 
 Alternately, for step 3 above, you can use Service-to-Service RPC IPC with RabbitMQ, to retrieve the candidates:  
-`http http://localhost:8099/voter/simulation/rpc\?election\=2016%20Presidential%20Election`
+`http http://localhost:8099/voter/simulation/rpc/election/2016%20Presidential%20Election`
 
-## Service Endpoints
+## Voter Service Endpoints
 
-By default, the service runs on `localhost`, port `8099`. By default, the service looks for MongoDB on `localhost`, port `27017`. The service uses a context path of `/voter`. All endpoints must be are prefixed with this sub-path.
+The service uses a context path of `/voter`. All endpoints must be are prefixed with this sub-path.
 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
-Create Random Sample Data                                                                                                | GET     | [/voter/simulation?election={election}](http://localhost:8099/voter/simulation?election=)
-Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/voter/simulation/rpc?election={election}](http://localhost:8099/voter/simulation/rpc?election=)
-List Candidates                                                                                                          | GET     | [/voter/candidates?election={election}](http://localhost:8099/voter/candidates?election=)
-List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc?election={election}](http://localhost:8099/voter/candidates/rpc?election=)
+Create Random Sample Data                                                                                                | GET     | [/voter/simulation/election/{election}](http://localhost:8099/voter/simulation/election/{election})
+Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/voter/simulation/rpc/election/{election}](http://localhost:8099/voter/simulation/rpc/election/{election})
+List Candidates                                                                                                          | GET     | [/voter/candidates/election/{election}](http://localhost:8099/voter/candidates/election/{election})
+List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc/election/{election}](http://localhost:8099/voter/candidates/rpc/election/{election})
 Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
 View Voting Results                                                                                                      | GET     | [/voter/results](http://localhost:8099/voter/results)
 View Total Votes                                                                                                         | GET     | [/voter/results/votes](http://localhost:8099/voter/results/votes)
@@ -72,13 +72,14 @@ The [HAL Browser](https://github.com/mikekelly/hal-browser) API browser for the 
 
 ## Voting
 
-Submitting a new vote, requires an HTTP `POST` request to the `/voter/votes` endpoint, as follows:
+Submitting a new vote requires an HTTP `POST` request to the `/voter/votes` endpoint, as follows:
 
 HTTPie
 
 ```text
 http POST http://localhost:8099/voter/votes \
-candidate="Jill Stein (Green Party)"
+  candidate="Jill Stein" \
+  election="2016 Presidential Election"
 ```
 
 cURL
@@ -86,7 +87,7 @@ cURL
 ```text
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "candidate": "Jill Stein (Green Party)" }' \
+  -d '{ "candidate": "Jill Stein", "election": "2016 Presidential Election" }' \
   "http://localhost:8099/voter/votes"
 ```
 
@@ -95,7 +96,7 @@ wget
 ```text
 wget --method POST \
   --header 'content-type: application/json' \
-  --body-data '{ "candidate": "Jill Stein (Green Party)" }' \
+  --body-data '{ "candidate": "Jill Stein", "election": "2016 Presidential Election" }' \
   --no-verbose \
   --output-document - http://localhost:8099/voter/votes
 ```
@@ -104,9 +105,9 @@ wget --method POST \
 
 Using [HTTPie](https://httpie.org/) command line HTTP client.
 
-`http http://localhost:8099/voter/simulation`
+`http http://localhost:8099/voter/simulation/election/2016%20Presidential%20Election`
 or  
-`http http://localhost:8099/voter/simulation/rpc`
+`http http://localhost:8099/voter/simulation/rpc/election/2016%20Presidential%20Election`
 
 ```json
 {
@@ -114,19 +115,28 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/candidates`
+`http http://localhost:8099/voter/candidates/election/2016%20Presidential%20Election`
 or  
-`http http://localhost:8099/voter/candidates/rpc`
+`http http://localhost:8099/voter/candidates/rpc/election/2016%20Presidential%20Election`
 
 ```json
 {
     "candidates": [
-        "Chris Keniston (Veterans Party)",
-        "Darrell Castle (Constitution Party)",
-        "Donald Trump (Republican Party)",
-        "Gary Johnson (Libertarian Party)",
-        "Hillary Clinton (Democratic Party)",
-        "Jill Stein (Green Party)"
+        {
+            "election": "2016 Presidential Election",
+            "fullName": "Darrell Castle",
+            "politicalParty": "Constitution Party"
+        },
+        {
+            "election": "2016 Presidential Election",
+            "fullName": "Hillary Clinton",
+            "politicalParty": "Democratic Party"
+        },
+        {
+            "election": "2016 Presidential Election",
+            "fullName": "Gary Johnson",
+            "politicalParty": "Libertarian Party"
+        }
     ]
 }
 ```
@@ -137,28 +147,20 @@ or
 {
     "results": [
         {
-            "candidate": "Jill Stein (Green Party)",
-            "votes": 18
+            "candidate": "Darrell Castle",
+            "votes": 19
         },
         {
-            "candidate": "Darrell Castle (Constitution Party)",
-            "votes": 17
-        },
-        {
-            "candidate": "Chris Keniston (Veterans Party)",
-            "votes": 16
-        },
-        {
-            "candidate": "Gary Johnson (Libertarian Party)",
+            "candidate": "Donald Trump",
             "votes": 15
         },
         {
-            "candidate": "Donald Trump (Republican Party)",
-            "votes": 7
+            "candidate": "Gary Johnson",
+            "votes": 15
         },
         {
-            "candidate": "Hillary Clinton (Democratic Party)",
-            "votes": 7
+            "candidate": "Jill Stein",
+            "votes": 13
         }
     ]
 }
@@ -178,8 +180,8 @@ or
 {
     "results": [
         {
-            "candidate": "Jill Stein (Green Party)",
-            "votes": 18
+            "candidate": "Darrell Castle",
+            "votes": 19
         }
     ]
 }
@@ -189,23 +191,26 @@ or
 
 ```json
 {
-    "votes": 18
+    "votes": 19
 }
 ```
 
-`http POST http://localhost:8099/voter/votes candidate="Jill Stein (Green Party)"`
+`http POST http://localhost:8099/voter/votes \
+    candidate="Jill Stein" \
+    election="2016 Presidential Election"`
 
 ```json
 {
     "_links": {
         "self": {
-            "href": "http://localhost:8099/voter/votes/5888605326b6f40371a1d016"
+            "href": "http://localhost:8099/voter/votes/590548541b8ebf700f9c2a62"
         },
         "vote": {
-            "href": "http://localhost:8099/voter/votes/5888605326b6f40371a1d016"
+            "href": "http://localhost:8099/voter/votes/590548541b8ebf700f9c2a62"
         }
     },
-    "candidate": "Jill Stein (Green Party)"
+    "candidate": "Jill Stein",
+    "election": "2016 Presidential Election"
 }
 ```
 
