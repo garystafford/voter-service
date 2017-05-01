@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Deploys the voter_stack locally
+# Deploys the voter stack locally
 
 set -e
 
