@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voter_api.voter.domain.CandidateVoterView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import java.util.List;
 
 @Service
 public class CandidateListService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private Environment environment;
 
@@ -88,7 +92,8 @@ public class CandidateListService {
      */
     @SuppressWarnings("unchecked")
     public List<CandidateVoterView> getCandidatesMessageRpc(String election) {
-        System.out.println("Sending RPC request message for list of candidates...");
+        log.debug("Sending RPC request message for list of candidates...");
+
         String requestMessage = election;
         String candidates = (String) rabbitTemplate.convertSendAndReceive(
                 directExchange.getName(), "rpc", requestMessage);
@@ -105,7 +110,7 @@ public class CandidateListService {
             e.printStackTrace();
         }
 
-        System.out.printf("List of %d candidates received...%n", candidatesList.size());
+        log.debug("List of %d candidates received...%n", candidatesList.size());
 
         return candidatesList;
     }
