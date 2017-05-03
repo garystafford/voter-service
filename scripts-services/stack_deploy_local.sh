@@ -1,15 +1,20 @@
 #!/bin/sh
 
-# Deploys the voter stack locally
+# Deploys the voter services locally
+# Not in swarm mode
 
 set -e
 
 export ACTIVE_PROFILE=docker-local
 
+docker-compose pull # ensure latest version are pulled...
+
 docker-compose \
   -f docker-compose-local.yml \
   -p voterstack up \
   --force-recreate -d
+
+docker image prune -y # clean up danglers...
 
 echo "Letting services start-up..."
 sleep 5
