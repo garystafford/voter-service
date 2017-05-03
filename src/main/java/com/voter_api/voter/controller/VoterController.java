@@ -4,9 +4,9 @@ import com.voter_api.voter.domain.CandidateVoterView;
 import com.voter_api.voter.domain.Vote;
 import com.voter_api.voter.domain.VoteCount;
 import com.voter_api.voter.domain.VoteCountWinner;
-import com.voter_api.voter.repository.VoteRepository;
+import com.voter_api.voter.repository.VoterRepository;
 import com.voter_api.voter.service.CandidateListService;
-import com.voter_api.voter.service.VoteSeedDataService;
+import com.voter_api.voter.service.VoterSeedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -29,22 +29,22 @@ import java.util.Map;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @RestController
-public class VoteController {
+public class VoterController {
 
     private MongoTemplate mongoTemplate;
 
-    private VoteRepository voteRepository;
+    private VoterRepository voterRepository;
 
-    private VoteSeedDataService voteSeedDataService;
+    private VoterSeedDataService voterSeedDataService;
 
     private CandidateListService candidateListService;
 
     @Autowired
-    public VoteController(MongoTemplate mongoTemplate, VoteRepository voteRepository,
-                          VoteSeedDataService voteSeedDataService, CandidateListService candidateListService) {
+    public VoterController(MongoTemplate mongoTemplate, VoterRepository voterRepository,
+                           VoterSeedDataService voterSeedDataService, CandidateListService candidateListService) {
         this.mongoTemplate = mongoTemplate;
-        this.voteRepository = voteRepository;
-        this.voteSeedDataService = voteSeedDataService;
+        this.voterRepository = voterRepository;
+        this.voterSeedDataService = voterSeedDataService;
         this.candidateListService = candidateListService;
     }
 
@@ -134,9 +134,9 @@ public class VoteController {
     @RequestMapping(value = "/simulation/election/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> getSimulationHttp(@PathVariable("election") String election) {
 
-        voteRepository.deleteAll();
-        voteSeedDataService.setRandomVotesHttp(election);
-        voteRepository.save(voteSeedDataService.getVotes());
+        voterRepository.deleteAll();
+        voterSeedDataService.setRandomVotesHttp(election);
+        voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
@@ -145,9 +145,9 @@ public class VoteController {
     @RequestMapping(value = "/simulation/rpc/election/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> getSimulationRpc(@PathVariable("election") String election) {
 
-        voteRepository.deleteAll();
-        voteSeedDataService.setRandomVotesRpc(election);
-        voteRepository.save(voteSeedDataService.getVotes());
+        voterRepository.deleteAll();
+        voterSeedDataService.setRandomVotesRpc(election);
+        voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created using RPC!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
@@ -156,8 +156,8 @@ public class VoteController {
     // used by unit tests to create a known data set
     public void getSimulation(Map candidates, String election) {
 
-        voteRepository.deleteAll();
-        voteSeedDataService.votesFromMap(candidates, election);
-        voteRepository.save(voteSeedDataService.getVotes());
+        voterRepository.deleteAll();
+        voterSeedDataService.votesFromMap(candidates, election);
+        voterRepository.save(voterSeedDataService.getVotes());
     }
 }

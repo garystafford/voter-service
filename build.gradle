@@ -43,12 +43,12 @@ repositories {
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-actuator-docs'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.webjars', name: 'hal-browser'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
 

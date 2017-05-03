@@ -88,19 +88,24 @@ public class CandidateListService {
     @SuppressWarnings("unchecked")
     public List<CandidateVoterView> getCandidatesMessageRpc(String election) {
         System.out.println("Sending RPC request message for list of candidates...");
-        String requestMessage = election; //"2016 Presidential Election";
+        String requestMessage = election;
         String candidates = (String) rabbitTemplate.convertSendAndReceive(
                 directExchange.getName(), "rpc", requestMessage);
+
         TypeReference<List<CandidateVoterView>> mapType =
                 new TypeReference<List<CandidateVoterView>>() {};
+
         ObjectMapper objectMapper = new ObjectMapper();
+
         List<CandidateVoterView> candidatesList = null;
         try {
             candidatesList = objectMapper.readValue(candidates, mapType);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("List of " + candidatesList.size() + " candidates received...");
+
         return candidatesList;
     }
 }

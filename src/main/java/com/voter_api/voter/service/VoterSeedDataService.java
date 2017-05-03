@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
-public class VoteSeedDataService {
+public class VoterSeedDataService {
 
     private CandidateListService candidateList;
 
     private List<Vote> votes = new ArrayList<>();
 
     @Autowired
-    public VoteSeedDataService(CandidateListService candidateList) {
+    public VoterSeedDataService(CandidateListService candidateList) {
         this.candidateList = candidateList;
     }
 

@@ -5,7 +5,6 @@ import com.voter_api.voter.domain.Vote;
 import com.voter_api.voter.domain.VoteCount;
 import com.voter_api.voter.domain.VoteCountWinner;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +19,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class VoteControllerTest {
+public class VoterControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private VoteController voteController;
+    private VoterController voterController;
 
     @Autowired
     private Environment environment;
@@ -51,7 +49,7 @@ public class VoteControllerTest {
         candidates.put("Gary Johnson", "3");
         candidates.put("Hillary Clinton", "14");
         candidates.put("Jill Stein", "5");
-        voteController.getSimulation(candidates, election);
+        voterController.getSimulation(candidates, election);
     }
 
     private void createSampleCandidateList() {
