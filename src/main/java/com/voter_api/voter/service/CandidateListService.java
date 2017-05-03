@@ -110,7 +110,7 @@ public class CandidateListService {
             e.printStackTrace();
         }
 
-        log.debug("List of %d candidates received...%n", candidatesList.size());
+        log.debug("List of {} candidates received...", candidatesList.size());
 
         return candidatesList;
     }

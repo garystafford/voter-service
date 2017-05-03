@@ -22,7 +22,9 @@ services:
     port: 8097
     context-path: candidate
 spring:
-  data:
+  application:
+    name: Voter Service
+    data:
     mongodb:
       database: voters
       host: localhost
