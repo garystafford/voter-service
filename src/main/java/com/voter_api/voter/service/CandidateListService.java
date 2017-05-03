@@ -33,12 +33,13 @@ public class CandidateListService {
     private DirectExchange directExchange;
 
     @Autowired
-    public CandidateListService(Environment environment, RabbitTemplate rabbitTemplate, DirectExchange directExchange) {
+    public CandidateListService(Environment environment,
+                                RabbitTemplate rabbitTemplate,
+                                DirectExchange directExchange) {
         this.environment = environment;
         this.rabbitTemplate = rabbitTemplate;
         this.directExchange = directExchange;
     }
-
 
     /**
      * Produces HTTP GET request containing election
@@ -104,7 +105,7 @@ public class CandidateListService {
             e.printStackTrace();
         }
 
-        System.out.println("List of " + candidatesList.size() + " candidates received...");
+        System.out.printf("List of %d candidates received...%n", candidatesList.size());
 
         return candidatesList;
     }
