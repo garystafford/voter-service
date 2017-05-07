@@ -7,23 +7,34 @@
 
 set -e
 
-http http://localhost:8080/candidate/simulation
-http http://localhost:8080/candidate/candidates/summary/election/2016%20Presidential%20Election
+API_GATEWAY="http://localhost:8080"
+ELECTION="2016%20Presidential%20Election"
+TEST_CYCLES=100
+
+http ${API_GATEWAY}/candidate/simulation
+http ${API_GATEWAY}/candidate/candidates/summary/election/${ELECTION}
 
 echo "\nUsing REST HTTP IPC...\n"
-echo $(date +%s)
-for i in {1..50}
+TIME1=$(date +%s)
+for i in $(seq ${TEST_CYCLES})
 do
-  http http://localhost:8080/voter/candidates/election/2016%20Presidential%20Election
+  http ${API_GATEWAY}/voter/candidates/election/${ELECTION}
 done
-echo $(date +%s)
+TIME2=$(date +%s)
+
+TIME3=`expr ${TIME2} - ${TIME1}`
 
 echo "\nUsing Message-based RPC IPC...\n"
-echo $(date +%s)
-for i in {1..50}
+TIME4=$(date +%s)
+for i in $(seq ${TEST_CYCLES})
 do
-  http http://localhost:8080/voter/candidates/rpc/election/2016%20Presidential%20Election
+  http ${API_GATEWAY}/voter/candidates/rpc/election/${ELECTION}
 done
-echo $(date +%s)
+TIME5=$(date +%s)
+
+TIME6=`expr ${TIME4} - ${TIME5}`
+
+echo "\nREST HTTP: ${TIME3} seconds for ${TEST_CYCLES} test cycles"
+echo "  RPC IPC: ${TIME3} seconds for ${TEST_CYCLES} test cycles\n"
 
 echo "\nScript completed...\n"
