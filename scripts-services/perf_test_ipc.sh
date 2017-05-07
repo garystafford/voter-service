@@ -9,7 +9,7 @@ set -e
 
 API_GATEWAY="http://localhost:8080"
 ELECTION="2016%20Presidential%20Election"
-TEST_CYCLES=100
+TEST_CYCLES=250
 
 http ${API_GATEWAY}/candidate/simulation
 http ${API_GATEWAY}/candidate/candidates/summary/election/${ELECTION}
