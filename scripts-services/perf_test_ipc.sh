@@ -35,6 +35,6 @@ TIME5=$(date +%s)
 TIME6=`expr ${TIME4} - ${TIME5}`
 
 echo "\nREST HTTP: ${TIME3} seconds for ${TEST_CYCLES} test cycles"
-echo "  RPC IPC: ${TIME3} seconds for ${TEST_CYCLES} test cycles\n"
+echo "  RPC IPC: ${TIME6} seconds for ${TEST_CYCLES} test cycles\n"
 
 echo "\nScript completed...\n"
