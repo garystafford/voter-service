@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a vote, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
 
 The Voter service is designed to work along with the [Candidate Service](https://github.com/garystafford/candidate-service), as part of a complete API. The Voter service is dependent on the Candidate service to supply a list of candidates. The Candidate service is called by the Voter service, using one of two methods:
 1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates/election/{election}` or `/voter/simulation/election/{election}` endpoints are called.
@@ -72,7 +72,7 @@ The [HAL Browser](https://github.com/mikekelly/hal-browser) API browser for the 
 
 ## Voting
 
-Submitting a new vote requires an HTTP `POST` request to the `/voter/votes` endpoint, as follows:
+Submitting a new candidate requires an HTTP `POST` request to the `/voter/votes` endpoint, as follows:
 
 HTTPie
 
@@ -205,7 +205,7 @@ or
         "self": {
             "href": "http://localhost:8099/voter/votes/590548541b8ebf700f9c2a62"
         },
-        "vote": {
+        "candidate": {
             "href": "http://localhost:8099/voter/votes/590548541b8ebf700f9c2a62"
         }
     },

@@ -14,7 +14,7 @@ docker-compose \
   -p voterstack up \
   --force-recreate -d
 
-docker image prune -y # clean up danglers...
+docker image prune -f # clean up danglers...
 
 echo "Letting services start-up..."
 sleep 5

@@ -1,7 +1,6 @@
-package com.voter_api.voter.domain;
+package com.voterapi.voter.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,8 +11,7 @@ public class Vote {
     @Id
     private String id;
 
-    @JsonProperty("candidate")
-    private String vote;
+    private String candidate;
 
     private String election;
 
@@ -21,8 +19,8 @@ public class Vote {
         //empty constructor
     }
 
-    public Vote(String vote, String election) {
-        this.vote = vote;
+    public Vote(String candidate, String election) {
+        this.candidate = candidate;
         this.election = election;
     }
 
@@ -30,8 +28,8 @@ public class Vote {
         return id;
     }
 
-    public String getVote() {
-        return vote;
+    public String getCandidate() {
+        return candidate;
     }
 
     public String getElection() {
@@ -40,6 +38,6 @@ public class Vote {
 
     @Override
     public String toString() {
-        return String.format("Vote[id=%s, name='%s']", id, getVote());
+        return String.format("Vote[id=%s, name='%s']", id, getCandidate());
     }
 }

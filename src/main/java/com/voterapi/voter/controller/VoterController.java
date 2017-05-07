@@ -1,12 +1,12 @@
-package com.voter_api.voter.controller;
+package com.voterapi.voter.controller;
 
-import com.voter_api.voter.domain.CandidateVoterView;
-import com.voter_api.voter.domain.Vote;
-import com.voter_api.voter.domain.VoteCount;
-import com.voter_api.voter.domain.VoteCountWinner;
-import com.voter_api.voter.repository.VoterRepository;
-import com.voter_api.voter.service.CandidateListService;
-import com.voter_api.voter.service.VoterSeedDataService;
+import com.voterapi.voter.domain.CandidateVoterView;
+import com.voterapi.voter.domain.Vote;
+import com.voterapi.voter.domain.VoteCount;
+import com.voterapi.voter.domain.VoteCountWinner;
+import com.voterapi.voter.repository.VoterRepository;
+import com.voterapi.voter.service.CandidateListService;
+import com.voterapi.voter.service.VoterSeedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -64,9 +64,9 @@ public class VoterController {
     public ResponseEntity<Map<String, List<VoteCount>>> getResults() {
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("vote").count().as("count"),
-                project("count").and("vote").previousOperation(),
-                sort(Sort.Direction.DESC, "count")
+                Aggregation.group("candidate").count().as("votes"),
+                project("votes").and("candidate").previousOperation(),
+                sort(Sort.Direction.DESC, "votes")
         );
 
         AggregationResults<VoteCount> groupResults
@@ -79,7 +79,7 @@ public class VoterController {
     public ResponseEntity<VoteCountWinner> getTotalVotes() {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("vote").exists(true));
+        query.addCriteria(Criteria.where("candidate").exists(true));
 
         Long groupResults =
                 mongoTemplate.count(query, Vote.class);
@@ -92,10 +92,10 @@ public class VoterController {
     public ResponseEntity<Map<String, List<VoteCount>>> getWinners() {
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("vote").count().as("count"),
-                match(Criteria.where("count").is(getWinnersVotesInt())),
-                project("count").and("vote").previousOperation(),
-                sort(Sort.Direction.ASC, "vote")
+                Aggregation.group("candidate").count().as("votes"),
+                match(Criteria.where("votes").is(getWinnersVotesInt())),
+                project("votes").and("candidate").previousOperation(),
+                sort(Sort.Direction.ASC, "candidate")
         );
 
         AggregationResults<VoteCount> groupResults
@@ -115,9 +115,9 @@ public class VoterController {
     private int getWinnersVotesInt() {
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("vote").count().as("count"),
-                project("count"),
-                sort(Sort.Direction.DESC, "count"),
+                Aggregation.group("candidate").count().as("votes"),
+                project("votes"),
+                sort(Sort.Direction.DESC, "votes"),
                 limit(1)
         );
 
@@ -126,9 +126,8 @@ public class VoterController {
         if (groupResults.getMappedResults().isEmpty()) {
             return 0;
         }
-        int result = groupResults.getMappedResults().get(0).getCount();
 
-        return result;
+        return groupResults.getMappedResults().get(0).getVotes();
     }
 
     @RequestMapping(value = "/simulation/election/{election}", method = RequestMethod.GET)

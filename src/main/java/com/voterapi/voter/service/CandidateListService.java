@@ -1,9 +1,9 @@
-package com.voter_api.voter.service;
+package com.voterapi.voter.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.voter_api.voter.domain.CandidateVoterView;
+import com.voterapi.voter.domain.CandidateVoterView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.DirectExchange;
@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 public class CandidateListService {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Environment environment;
 
@@ -66,9 +66,8 @@ public class CandidateListService {
                 new ParameterizedTypeReference<PagedResources<CandidateVoterView>>() {
                 });
         PagedResources<CandidateVoterView> resources = responseEntity.getBody();
-        List<CandidateVoterView> candidates = new ArrayList(resources.getContent());
 
-        return candidates;
+        return new ArrayList(resources.getContent());
     }
 
     private RestTemplate restTemplate() {
@@ -92,7 +91,7 @@ public class CandidateListService {
      */
     @SuppressWarnings("unchecked")
     public List<CandidateVoterView> getCandidatesMessageRpc(String election) {
-        log.debug("Sending RPC request message for list of candidates...");
+        logger.debug("Sending RPC request message for list of candidates...");
 
         String requestMessage = election;
         String candidates = (String) rabbitTemplate.convertSendAndReceive(
@@ -107,10 +106,10 @@ public class CandidateListService {
         try {
             candidatesList = objectMapper.readValue(candidates, mapType);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e));
         }
 
-        log.debug("List of {} candidates received...", candidatesList.size());
+        logger.debug("List of {} candidates received...", candidatesList.size());
 
         return candidatesList;
     }

@@ -1,6 +1,8 @@
-package com.voter_api.voter.utilities;
+package com.voterapi.voter.utilities;
 
 import com.mongodb.CommandResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.Info;
 import org.springframework.boot.actuate.info.InfoContributor;
@@ -15,6 +17,8 @@ import java.util.Map;
 @Component
 public class HostInfoContributor implements InfoContributor {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -24,13 +28,13 @@ public class HostInfoContributor implements InfoContributor {
 
     @Override
     public void contribute(Info.Builder builder) {
-        InetAddress ip = null;
+        InetAddress ip = InetAddress.getLoopbackAddress();
         Map<String, String> hostMap = new HashMap<>();
 
         try {
             ip = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e));
         }
         hostMap.put("ipAddress", ip.getHostAddress());
         hostMap.put("hostname", ip.getHostName());
@@ -39,11 +43,6 @@ public class HostInfoContributor implements InfoContributor {
         hostMap = new HashMap<>();
         CommandResult commandResult = this.mongoTemplate.executeCommand("{ serverStatus: 1 }");
         hostMap.put("hostname", commandResult.getString("host"));
-
-//        MongoClient mongoClient = new MongoClient();
-//        Document buildInfo = mongoClient.getDatabase("admin").runCommand(new Document("currentOp", Boolean.TRUE));
-//
-//        hostMap.put("currentOp", buildInfo.get("inprog", ArrayList.class).get(0).toString());
         builder.withDetail("mongoDbHostInfo", hostMap);
     }
 

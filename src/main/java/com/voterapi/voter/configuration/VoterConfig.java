@@ -1,4 +1,4 @@
-package com.voter_api.voter.configuration;
+package com.voterapi.voter.configuration;
 
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.context.annotation.Bean;

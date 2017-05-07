@@ -1,4 +1,4 @@
-package com.voter_api.voter.domain;
+package com.voterapi.voter.domain;
 
 public class CandidateVoterView {
 

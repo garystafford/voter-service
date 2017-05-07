@@ -1,4 +1,4 @@
-package com.voter_api.voter.utilities;
+package com.voterapi.voter.utilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class SimpleCORSFilter implements Filter {
     private final Logger log = LoggerFactory.getLogger(SimpleCORSFilter.class);
 
     public SimpleCORSFilter() {
-        log.info("SimpleCORSFilter init");
+        log.debug("SimpleCORSFilter init");
     }
 
     @Override

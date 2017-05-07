@@ -1,7 +1,7 @@
-package com.voter_api.voter.service;
+package com.voterapi.voter.service;
 
-import com.voter_api.voter.domain.CandidateVoterView;
-import com.voter_api.voter.domain.Vote;
+import com.voterapi.voter.domain.CandidateVoterView;
+import com.voterapi.voter.domain.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +28,12 @@ public class VoterSeedDataService {
     }
 
     // accepts map of candidates and total votes
-    public void votesFromMap(Map candidates, String election) {
+    public void votesFromMap(Map<String,String> candidates, String election) {
         votes.clear(); // clear previous seed data from list
-        for (Object key : candidates.keySet()) {
-            int value = Integer.parseInt(String.valueOf(candidates.get(key)));
+        for (Map.Entry<String,String> entry : candidates.entrySet()) {
+            String key = entry.getKey();
+            int value = Integer.parseInt(entry.getValue());
+
             for (int i = 0; i < value; i++) {
                 String candidate = String.valueOf(key);
                 votes.add(new Vote(candidate, election));
