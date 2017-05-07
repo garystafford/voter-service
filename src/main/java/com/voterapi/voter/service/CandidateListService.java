@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CandidateListService {
@@ -97,18 +98,20 @@ public class CandidateListService {
         String candidates = (String) rabbitTemplate.convertSendAndReceive(
                 directExchange.getName(), "rpc", requestMessage);
 
-        TypeReference<List<CandidateVoterView>> mapType =
-                new TypeReference<List<CandidateVoterView>>() {};
+        TypeReference<Map<String, List<CandidateVoterView>>> mapType =
+                new TypeReference<Map<String, List<CandidateVoterView>>>() {};
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<CandidateVoterView> candidatesList = null;
+        Map<String, List<CandidateVoterView>> candidatesMap = null;
+
         try {
-            candidatesList = objectMapper.readValue(candidates, mapType);
+            candidatesMap = objectMapper.readValue(candidates, mapType);
         } catch (IOException e) {
             logger.info(String.valueOf(e));
         }
 
+        List<CandidateVoterView> candidatesList  = candidatesMap.get("candidates");
         logger.debug("List of {} candidates received...", candidatesList.size());
 
         return candidatesList;
