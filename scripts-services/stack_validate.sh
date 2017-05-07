@@ -2,8 +2,8 @@
 
 # Checks if Voter Service is up
 
-HOST_IP=$(docker-machine ip worker2)
-ATTEMPTS=16
+HOST_IP=$(docker-machine ip worker1)
+ATTEMPTS=10
 SLEEPTIME=15
 
 until curl -s --head "${HOST_IP}:8099";

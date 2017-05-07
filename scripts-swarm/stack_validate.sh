@@ -3,8 +3,8 @@
 # Checks if ELK is up (last container in stack to start)
 
 HOST_IP=$(docker-machine ip worker3)
-ATTEMPTS=16
-SLEEPTIME=15
+ATTEMPTS=15
+SLEEPTIME=20
 
 until curl -s --head "${HOST_IP}:9200";
 do
