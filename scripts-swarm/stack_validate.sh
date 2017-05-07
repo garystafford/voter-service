@@ -20,3 +20,5 @@ do
   sleep $SLEEPTIME
   let ATTEMPTS-=1
 done
+
+echo "Script completed..."
