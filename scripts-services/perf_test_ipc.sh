@@ -14,7 +14,7 @@ TEST_CYCLES=250
 http ${API_GATEWAY}/candidate/simulation
 http ${API_GATEWAY}/candidate/candidates/summary/election/${ELECTION}
 
-echo "\nUsing REST HTTP IPC...\n"
+echo "Using REST HTTP IPC..."
 TIME1=$(date +%s)
 for i in $(seq ${TEST_CYCLES})
 do
@@ -24,7 +24,7 @@ TIME2=$(date +%s)
 
 TIME3=`expr ${TIME2} - ${TIME1}`
 
-echo "\nUsing Message-based RPC IPC...\n"
+echo "Using Message-based RPC IPC..."
 TIME4=$(date +%s)
 for i in $(seq ${TEST_CYCLES})
 do
@@ -32,9 +32,11 @@ do
 done
 TIME5=$(date +%s)
 
-TIME6=`expr ${TIME4} - ${TIME5}`
+TIME6=`expr ${TIME5} - ${TIME4}`
 
-echo "\nREST HTTP: ${TIME3} seconds for ${TEST_CYCLES} test cycles"
-echo "  RPC IPC: ${TIME6} seconds for ${TEST_CYCLES} test cycles\n"
+echo ""
+echo "REST HTTP: ${TIME3} seconds for ${TEST_CYCLES} test cycles"
+echo "  RPC IPC: ${TIME6} seconds for ${TEST_CYCLES} test cycles"
 
-echo "\nScript completed...\n"
+echo ""
+echo "Script completed..."
