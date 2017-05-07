@@ -2,11 +2,11 @@
 
 # Checks if Voter Service is up
 
-HOST_IP=$(docker-machine ip worker1)
+HOST_IP=$(docker-machine ip worker2)
 ATTEMPTS=10
 SLEEPTIME=15
 
-until curl -s --head "${HOST_IP}:8099";
+until curl -s --head "${HOST_IP}:8099/voter";
 do
   echo "Attempt ${ATTEMPTS}..."
 
@@ -21,4 +21,4 @@ do
   let ATTEMPTS-=1
 done
 
-curl "${HOST_IP}:8099/health"
+curl "${HOST_IP}:8099/voter/health"
