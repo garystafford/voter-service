@@ -23,4 +23,4 @@ done
 
 curl "${HOST_IP}:8099/voter/health"
 
-echo "Script completed..."
+echo "\nScript completed..."
