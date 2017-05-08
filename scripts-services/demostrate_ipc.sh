@@ -6,7 +6,7 @@
 
 set -e
 
-HOST=$1 || localhost
+HOST=${1:-localhost}
 API_GATEWAY="http://${HOST}:8080"
 ELECTION="2016%20Presidential%20Election"
 

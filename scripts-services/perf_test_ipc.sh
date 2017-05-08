@@ -7,8 +7,8 @@
 
 set -e
 
-HOST=$1 || localhost
-TEST_CYCLES=$2 || 25
+HOST=${1:-localhost}
+TEST_CYCLES=${2:-25}
 API_GATEWAY="http://${HOST}:8080"
 ELECTION="2016%20Presidential%20Election"
 
