@@ -11,15 +11,17 @@ HOST=$1 || localhost
 TEST_CYCLES=$2 || 25
 API_GATEWAY="http://${HOST}:8080"
 ELECTION="2016%20Presidential%20Election"
+PARAMS="--pretty=none --headers > /dev/null"
 
-http ${API_GATEWAY}/candidate/simulation --pretty=none
-http ${API_GATEWAY}/candidate/candidates/summary/election/${ELECTION} --pretty=none
+echo "Simulating candidates..."
+http ${API_GATEWAY}/candidate/simulation ${PARAMS}
+http ${API_GATEWAY}/candidate/candidates/summary/election/${ELECTION} ${PARAMS}
 
 echo "Using REST HTTP IPC..."
 TIME1=$(date +%s)
 for i in $(seq ${TEST_CYCLES})
 do
-  http ${API_GATEWAY}/voter/candidates/election/${ELECTION} --pretty=none
+  http ${API_GATEWAY}/voter/candidates/election/${ELECTION} ${PARAMS}
 done
 TIME2=$(date +%s)
 
@@ -29,7 +31,7 @@ echo "Using Message-based RPC IPC..."
 TIME4=$(date +%s)
 for i in $(seq ${TEST_CYCLES})
 do
-  http ${API_GATEWAY}/voter/candidates/rpc/election/${ELECTION} --pretty=none
+  http ${API_GATEWAY}/voter/candidates/rpc/election/${ELECTION} ${PARAMS}
 done
 TIME5=$(date +%s)
 
