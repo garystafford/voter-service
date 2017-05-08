@@ -17,6 +17,8 @@ echo "Simulating candidates..."
 http ${API_GATEWAY}/candidate/simulation ${PARAMS}
 http ${API_GATEWAY}/candidate/candidates/summary/election/${ELECTION} ${PARAMS}
 
+echo "Running ${TEST_CYCLES} test cycles"
+
 echo "Using REST HTTP IPC..."
 TIME1=$(date +%s)
 for i in $(seq ${TEST_CYCLES})
