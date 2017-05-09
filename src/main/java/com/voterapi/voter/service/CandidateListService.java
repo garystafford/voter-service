@@ -131,7 +131,7 @@ public class CandidateListService {
     }
 
     /**
-     * Consume new candidate message, deserialize, and save to MongDB
+     * Consumes a new candidate message, deserializes, and save to MongoDB
      * @param candidateMessage
      */
     @RabbitListener(queues = "#{candidateQueue.name}")

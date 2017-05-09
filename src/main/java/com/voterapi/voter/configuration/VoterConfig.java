@@ -1,6 +1,7 @@
 package com.voterapi.voter.configuration;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,12 @@ public class VoterConfig {
         return new DirectExchange("voter.rpc");
     }
 
+
+    @Bean
+    public Queue candidateQueue() {
+        return new Queue("candidates.queue");
+    }
+
 //    @Bean
 //    public FanoutExchange candidateFanoutExchange() {
 //        return new FanoutExchange("candidate.fanout");
@@ -21,11 +28,6 @@ public class VoterConfig {
 //    public Queue candidateQueue() {
 //        return new AnonymousQueue();
 //    }
-
-    @Bean
-    public Queue candidateQueue() {
-        return new Queue("candidates.queue");
-    }
 
 //    @Bean
 //    public Binding candidateBinding(FanoutExchange candidateFanoutExchange,

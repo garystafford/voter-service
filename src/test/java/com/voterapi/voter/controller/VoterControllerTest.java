@@ -5,7 +5,6 @@ import com.voterapi.voter.domain.Vote;
 import com.voterapi.voter.domain.VoteCount;
 import com.voterapi.voter.domain.VoteCountWinner;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
