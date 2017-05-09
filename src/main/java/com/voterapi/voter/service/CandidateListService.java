@@ -3,14 +3,18 @@ package com.voterapi.voter.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.voterapi.voter.domain.Candidate;
 import com.voterapi.voter.domain.CandidateVoterView;
+import com.voterapi.voter.repository.CandidateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
@@ -33,17 +37,25 @@ public class CandidateListService {
 
     private Environment environment;
 
+    private MongoTemplate mongoTemplate;
+
     private RabbitTemplate rabbitTemplate;
 
     private DirectExchange directExchange;
 
+    private CandidateRepository candidateRepository;
+
     @Autowired
     public CandidateListService(Environment environment,
+                                MongoTemplate mongoTemplate,
                                 RabbitTemplate rabbitTemplate,
-                                DirectExchange directExchange) {
+                                DirectExchange directExchange,
+                                CandidateRepository candidateRepository) {
         this.environment = environment;
+        this.mongoTemplate = mongoTemplate;
         this.rabbitTemplate = rabbitTemplate;
         this.directExchange = directExchange;
+        this.candidateRepository = candidateRepository;
     }
 
     /**
@@ -99,7 +111,8 @@ public class CandidateListService {
                 directExchange.getName(), "rpc", requestMessage);
 
         TypeReference<Map<String, List<CandidateVoterView>>> mapType =
-                new TypeReference<Map<String, List<CandidateVoterView>>>() {};
+                new TypeReference<Map<String, List<CandidateVoterView>>>() {
+                };
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -111,9 +124,32 @@ public class CandidateListService {
             logger.info(String.valueOf(e));
         }
 
-        List<CandidateVoterView> candidatesList  = candidatesMap.get("candidates");
+        List<CandidateVoterView> candidatesList = candidatesMap.get("candidates");
         logger.debug("List of {} candidates received...", candidatesList.size());
 
         return candidatesList;
+    }
+
+    /**
+     * Consume new candidate message, deserialize, and save to MongDB
+     * @param candidateMessage
+     */
+    @RabbitListener(queues = "#{candidateQueue.name}")
+    public void getCandidateMessage(String candidateMessage) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        TypeReference<Candidate> mapType = new TypeReference<Candidate>() {};
+
+        Candidate candidate = null;
+
+        try {
+            candidate = objectMapper.readValue(candidateMessage, mapType);
+        } catch (IOException e) {
+            logger.info(String.valueOf(e));
+        }
+
+        candidateRepository.save(candidate);
+        logger.debug("Candidate {} saved to MongoDB", candidate.toString());
     }
 }
