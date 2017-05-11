@@ -60,9 +60,9 @@ public class VoterController {
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/candidates/queue/election/{election}", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesQueue(@PathVariable("election") String election) {
-        List<CandidateVoterView> results = candidateListService.getCandidatesMessageQueue(election);
+    @RequestMapping(value = "/candidates/db/election/{election}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesDb(@PathVariable("election") String election) {
+        List<CandidateVoterView> results = candidateListService.getCandidatesQueueDb(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
@@ -158,11 +158,11 @@ public class VoterController {
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
 
-    @RequestMapping(value = "/simulation/queue/election/{election}", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> getSimulationQueue(@PathVariable("election") String election) {
+    @RequestMapping(value = "/simulation/db/election/{election}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> getSimulationDb(@PathVariable("election") String election) {
 
         voterRepository.deleteAll();
-        voterSeedDataService.setRandomVotesQueue(election);
+        voterSeedDataService.setRandomVotesDb(election);
         voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created!");

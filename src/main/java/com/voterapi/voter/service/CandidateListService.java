@@ -166,7 +166,7 @@ public class CandidateListService {
      * @param election
      * @return List of candidates
      */
-    public List<CandidateVoterView> getCandidatesMessageQueue(String election) {
+    public List<CandidateVoterView> getCandidatesQueueDb(String election) {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("election").is(election)),
                 project("firstName", "lastName", "politicalParty", "election")
