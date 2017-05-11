@@ -61,9 +61,19 @@ public class VoterSeedDataService {
         votesFromMap(candidates, election);
     }
 
+    public void setRandomVotesQueue(String election) {
+        Map candidates = new HashMap();
+        List<CandidateVoterView> list = candidateList.getCandidatesMessageQueue(election);
+        for (CandidateVoterView aList : list) {
+            candidates.put(aList.getFullName(), getRandomIntAsString(2, 20));
+        }
+        votesFromMap(candidates, election);
+    }
+
     // returns random number as string
     private String getRandomIntAsString(int min, int max) {
         int randomVoteCount = ThreadLocalRandom.current().nextInt(min, max + 1);
         return Integer.toString(randomVoteCount);
     }
+
 }

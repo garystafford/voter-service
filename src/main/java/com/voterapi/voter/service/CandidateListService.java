@@ -14,7 +14,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
@@ -29,6 +34,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 
 @Service
 public class CandidateListService {
@@ -151,5 +159,25 @@ public class CandidateListService {
 
         candidateRepository.save(candidate);
         logger.debug("Candidate {} saved to MongoDB", candidate.toString());
+    }
+
+    /**
+     * Retrieves candidates from MongoDB and transforms to voter view
+     * @param election
+     * @return List of candidates
+     */
+    public List<CandidateVoterView> getCandidatesMessageQueue(String election) {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("election").is(election)),
+                project("firstName", "lastName", "politicalParty", "election")
+                        .andExpression("concat(firstName,' ', lastName)")
+                        .as("fullName"),
+                sort(Sort.Direction.ASC, "lastName")
+        );
+
+        AggregationResults<CandidateVoterView> groupResults
+                = mongoTemplate.aggregate(aggregation, Candidate.class, CandidateVoterView.class);
+
+        return groupResults.getMappedResults();
     }
 }

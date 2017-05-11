@@ -60,6 +60,12 @@ public class VoterController {
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/candidates/queue/election/{election}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesQueue(@PathVariable("election") String election) {
+        List<CandidateVoterView> results = candidateListService.getCandidatesMessageQueue(election);
+        return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/results", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<VoteCount>>> getResults() {
 
@@ -151,6 +157,18 @@ public class VoterController {
         result.put("message", "Simulation data created using RPC!");
         return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
     }
+
+    @RequestMapping(value = "/simulation/queue/election/{election}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> getSimulationQueue(@PathVariable("election") String election) {
+
+        voterRepository.deleteAll();
+        voterSeedDataService.setRandomVotesQueue(election);
+        voterRepository.save(voterSeedDataService.getVotes());
+        Map<String, String> result = new HashMap<>();
+        result.put("message", "Simulation data created!");
+        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+    }
+
 
     // used by unit tests to create a known data set
     public void getSimulation(Map candidates, String election) {
