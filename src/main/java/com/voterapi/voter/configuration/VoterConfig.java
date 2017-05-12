@@ -8,12 +8,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class VoterConfig {
 
+    /**
+     * Used for RPC IPC example
+     *
+     * @return
+     */
     @Bean
     public DirectExchange directExchange() {
         return new DirectExchange("voter.rpc");
     }
 
 
+    /**
+     * Used for eventually consistent example
+     *
+     * @return
+     */
     @Bean
     public Queue candidateQueue() {
         return new Queue("candidates.queue");
