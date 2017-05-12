@@ -24,11 +24,11 @@ services:
 spring:
   application:
     name: Voter Service
-    data:
-      mongodb:
-        database: voters
-        host: localhost
-        port: 27017
+  data:
+    mongodb:
+      database: voters
+      host: localhost
+      port: 27017
   rabbitmq:
     host: localhost
 ---
