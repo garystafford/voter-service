@@ -52,7 +52,6 @@ endpoints:
   info:
     enabled: true
   sensitive: true
-  services: ~
 logging:
   level:
     root: WARN
