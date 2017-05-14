@@ -67,7 +67,7 @@ public class VoterControllerTest {
         restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
     }
 
-//    @Ignore("Broken Test - Need to Fix")
+    //    @Ignore("Broken Test - Need to Fix")
     @Test
     public void getCandidatesHttpReturnsListOfCandidateChoices() throws Exception {
         String election = "2016 Presidential Election";

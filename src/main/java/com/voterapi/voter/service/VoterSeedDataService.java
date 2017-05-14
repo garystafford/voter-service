@@ -28,9 +28,9 @@ public class VoterSeedDataService {
     }
 
     // accepts map of candidates and total votes
-    public void votesFromMap(Map<String,String> candidates, String election) {
+    public void votesFromMap(Map<String, String> candidates, String election) {
         votes.clear(); // clear previous seed data from list
-        for (Map.Entry<String,String> entry : candidates.entrySet()) {
+        for (Map.Entry<String, String> entry : candidates.entrySet()) {
             String key = entry.getKey();
             int value = Integer.parseInt(entry.getValue());
 

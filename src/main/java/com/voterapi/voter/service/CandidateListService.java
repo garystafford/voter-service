@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
@@ -140,6 +139,7 @@ public class CandidateListService {
 
     /**
      * Consumes a new candidate message, deserializes, and save to MongoDB
+     *
      * @param candidateMessage
      */
     @RabbitListener(queues = "#{candidateQueue.name}")
@@ -147,7 +147,8 @@ public class CandidateListService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        TypeReference<Candidate> mapType = new TypeReference<Candidate>() {};
+        TypeReference<Candidate> mapType = new TypeReference<Candidate>() {
+        };
 
         Candidate candidate = null;
 
@@ -163,6 +164,7 @@ public class CandidateListService {
 
     /**
      * Retrieves candidates from MongoDB and transforms to voter view
+     *
      * @param election
      * @return List of candidates
      */
