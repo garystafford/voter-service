@@ -32,6 +32,39 @@ services:
     - "SERVICE_NAME=voter-api-gateway"
     - "SERVICE_TAGS=api gateway"
 
+  election:
+    image: garystafford/election-service:rabbitmq
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: election
+    ports:
+    - "8095:8095/tcp"
+    networks:
+    - demo_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: com.voter.environment,com.voter.active_profile
+        env: SERVICE_NAME,SERVICE_TAGS
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=election"
+    - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar election/election-service.jar"
+
   candidate:
     image: garystafford/candidate-service:rabbitmq
     depends_on:
