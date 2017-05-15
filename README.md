@@ -23,19 +23,20 @@ cd voter-service
 java -jar build/libs/voter-service-0.3.0.jar
 ```
 ## Quick Start with Docker
-The easiest way to run the Voter API services locally is using the `docker-compose-local.yml` file, included in the project. The Docker Compose file will spin up single container instances of the Voter service, Candidate service, RabbitMQ, and MongoDB.
+The easiest way to run the Voter API services locally is using the `docker-compose-local.yml` file, included in the project. The Docker Compose file will spin up single container instances of the Election service, Voter service, Candidate service, RabbitMQ, MongoDB, and the Voter API Gateway.
 
 ```bash
 sh ./stack-deploy-local.sh
 ```
 
 ```text
-COMMAND                  CREATED             STATUS              PORTS                                                                                        NAMES
-6232727faffd        garystafford/voter-api-gateway:latest     "/docker-entrypoin..."   39 seconds ago      Up 38 seconds       0.0.0.0:8080->8080/tcp                                                                       voterstack_voter-api-gateway_1
-97444d209416        garystafford/voter-service:rabbitmq       "java -Dspring.pro..."   40 seconds ago      Up 39 seconds       0.0.0.0:8099->8099/tcp                                                                       voterstack_voter_1
-f78ab6fb491b        garystafford/candidate-service:rabbitmq   "java -Dspring.pro..."   40 seconds ago      Up 39 seconds       0.0.0.0:8097->8097/tcp                                                                       voterstack_candidate_1
-0f851d9d0e4c        rabbitmq:management-alpine                "docker-entrypoint..."   41 seconds ago      Up 40 seconds       4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp, 15671/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp   voterstack_rabbitmq_1
-8238959426a1        mongo:latest                              "docker-entrypoint..."   41 seconds ago      Up 40 seconds       0.0.0.0:27017->27017/tcp                                                                     voterstack_mongodb_1
+CONTAINER ID        IMAGE                                     COMMAND                  CREATED             STATUS              PORTS                                                                                        NAMES
+32d73282ff3d        garystafford/voter-api-gateway:latest     "/docker-entrypoin..."   8 seconds ago       Up 5 seconds        0.0.0.0:8080->8080/tcp                                                                       voterstack_voter-api-gateway_1
+1ece438c5da4        garystafford/candidate-service:rabbitmq   "java -Dspring.pro..."   10 seconds ago      Up 7 seconds        0.0.0.0:8097->8097/tcp                                                                       voterstack_candidate_1
+30391faa3422        garystafford/voter-service:rabbitmq       "java -Dspring.pro..."   10 seconds ago      Up 7 seconds        0.0.0.0:8099->8099/tcp                                                                       voterstack_voter_1
+35063ccfe706        garystafford/election-service:rabbitmq    "java -Dspring.pro..."   12 seconds ago      Up 10 seconds       0.0.0.0:8095->8095/tcp                                                                       voterstack_election_1
+23eae86967a2        rabbitmq:management-alpine                "docker-entrypoint..."   14 seconds ago      Up 11 seconds       4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp, 15671/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp   voterstack_rabbitmq_1
+7e77ddecddbb        mongo:latest                              "docker-entrypoint..."   24 seconds ago      Up 21 seconds       0.0.0.0:27017->27017/tcp                                                                     voterstack_mongodb_1
 ```
 
 ## Getting Started with the API
