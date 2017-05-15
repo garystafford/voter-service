@@ -11,6 +11,8 @@ The Voter service is designed to work along with the [Candidate Service](https:/
 2. [Messaging-based Remote Procedure Call (RPC) IPC](https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp.html), when either the Voter service's `/voter/candidates/rpc/election/{election}` or `/voter/simulation/rpc/election/{election}` endpoints are called.
 3. [Messaging-based Eventual Consistency](https://www.rabbitmq.com/tutorials/tutorial-one-spring-amqp.html), when either the Voter service's `/voter/candidates/db/election/{election}` or `/voter/simulation/db/election/{election}` endpoints are called.
 
+![Voter API Architecture](Message_Queue_Diagram_4.png)
+
 ## Quick Start for Local Development
 
 The Voter service requires MongoDB to be running locally, on port `27017`, RabbitMQ running on `5672` and `15672`, and the Candidate service to be running on `8097`. To clone, build, test, and run the Voter service as a JAR file, locally:
@@ -229,7 +231,7 @@ or
 
 The project's source code is continuously built and tested on every commit to [GitHub](https://github.com/garystafford/voter-service), using [Travis CI](https://travis-ci.org/garystafford/voter-service). If all unit tests pass, the resulting Spring Boot JAR is pushed to the `build-artifacts` branch of the [voter-service](https://github.com/garystafford/voter-service/tree/build-artifacts) GitHub repository. The JAR's filename is incremented with each successful build (i.e. `voter-service-0.2.10.jar`).
 
-![Vote Continuous Integration Pipeline](Voter-CI.png)
+![Vote Continuous Integration Pipeline](voter_flow.png)
 
 ## Spring Profiles
 
