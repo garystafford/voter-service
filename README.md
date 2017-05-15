@@ -11,7 +11,7 @@ The Voter service is designed to work along with the [Candidate Service](https:/
 2. [Messaging-based Remote Procedure Call (RPC) IPC](https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp.html), when either the Voter service's `/voter/candidates/rpc/election/{election}` or `/voter/simulation/rpc/election/{election}` endpoints are called.
 3. [Messaging-based Eventual Consistency](https://www.rabbitmq.com/tutorials/tutorial-one-spring-amqp.html), when either the Voter service's `/voter/candidates/db/election/{election}` or `/voter/simulation/db/election/{election}` endpoints are called.
 
-![Voter API Architecture](Message_Queue_Diagram_4.png)
+![Voter API Architecture](Message_Queue_Diagram_Final.png)
 
 ## Quick Start for Local Development
 
