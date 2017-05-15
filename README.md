@@ -231,7 +231,7 @@ or
 
 The project's source code is continuously built and tested on every commit to [GitHub](https://github.com/garystafford/voter-service), using [Travis CI](https://travis-ci.org/garystafford/voter-service). If all unit tests pass, the resulting Spring Boot JAR is pushed to the `build-artifacts` branch of the [voter-service](https://github.com/garystafford/voter-service/tree/build-artifacts) GitHub repository. The JAR's filename is incremented with each successful build (i.e. `voter-service-0.2.10.jar`).
 
-![Vote Continuous Integration Pipeline](voter_flow.png)
+![Vote Continuous Integration Pipeline](voter_flow_2.png)
 
 ## Spring Profiles
 
