@@ -15,6 +15,21 @@ services:
     networks:
     - demo_overlay_net
 
+  election:
+    image: garystafford/election-service:rabbitmq
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: election
+    ports:
+    - "8095:8095/tcp"
+    networks:
+    - demo_overlay_net
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar election/election-service.jar"
+
   candidate:
     image: garystafford/candidate-service:rabbitmq
     depends_on:
