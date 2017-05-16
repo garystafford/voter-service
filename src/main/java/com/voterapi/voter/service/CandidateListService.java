@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
@@ -123,7 +120,7 @@ public class CandidateListService {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Map<String, List<CandidateVoterView>> candidatesMap = null;
+        Map<String, List<CandidateVoterView>> candidatesMap = new HashMap<>();
 
         try {
             candidatesMap = objectMapper.readValue(candidates, mapType);
@@ -132,7 +129,10 @@ public class CandidateListService {
         }
 
         List<CandidateVoterView> candidatesList = candidatesMap.get("candidates");
-        logger.debug("List of {} candidates received...", candidatesList.size());
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("List of {} candidates received...", candidatesList.size());
+        }
 
         return candidatesList;
     }
@@ -150,7 +150,7 @@ public class CandidateListService {
         TypeReference<Candidate> mapType = new TypeReference<Candidate>() {
         };
 
-        Candidate candidate = null;
+        Candidate candidate = new Candidate();
 
         try {
             candidate = objectMapper.readValue(candidateMessage, mapType);
@@ -159,7 +159,9 @@ public class CandidateListService {
         }
 
         candidateRepository.save(candidate);
-        logger.debug("Candidate {} saved to MongoDB", candidate.toString());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Candidate {} saved to MongoDB", candidate.toString());
+        }
     }
 
     /**

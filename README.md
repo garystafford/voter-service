@@ -116,7 +116,7 @@ Using [HTTPie](https://httpie.org/) command line HTTP client.
 `http http://localhost:8099/voter/simulation/election/2016%20Presidential%20Election`
 or  
 `http http://localhost:8099/voter/simulation/rpc/election/2016%20Presidential%20Election`
-or
+or  
 `http http://localhost:8099/voter/simulation/db/election/2016%20Presidential%20Election`
 
 
