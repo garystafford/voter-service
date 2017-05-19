@@ -4,6 +4,7 @@ import com.voterapi.voter.domain.CandidateVoterView;
 import com.voterapi.voter.domain.Vote;
 import com.voterapi.voter.domain.VoteCount;
 import com.voterapi.voter.domain.VoteCountWinner;
+import com.voterapi.voter.repository.CandidateRepository;
 import com.voterapi.voter.repository.VoterRepository;
 import com.voterapi.voter.service.CandidateListService;
 import com.voterapi.voter.service.VoterSeedDataService;
@@ -35,14 +36,20 @@ public class VoterController {
 
     private VoterRepository voterRepository;
 
+    private CandidateRepository candidateRepository;
+
     private VoterSeedDataService voterSeedDataService;
 
     private CandidateListService candidateListService;
 
     @Autowired
-    public VoterController(MongoTemplate mongoTemplate, VoterRepository voterRepository,
-                           VoterSeedDataService voterSeedDataService, CandidateListService candidateListService) {
+    public VoterController(MongoTemplate mongoTemplate,
+                           VoterRepository voterRepository,
+                           CandidateRepository candidateRepository,
+                           VoterSeedDataService voterSeedDataService,
+                           CandidateListService candidateListService) {
         this.mongoTemplate = mongoTemplate;
+        this.candidateRepository = candidateRepository;
         this.voterRepository = voterRepository;
         this.voterSeedDataService = voterSeedDataService;
         this.candidateListService = candidateListService;
@@ -64,6 +71,24 @@ public class VoterController {
     public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesDb(@PathVariable("election") String election) {
         List<CandidateVoterView> results = candidateListService.getCandidatesQueueDb(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/votes/drop", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> deleteAllVotes() {
+
+        voterRepository.deleteAll();
+        Map<String, String> result = new HashMap<>();
+        result.put("message", "All votes deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @RequestMapping(value = "/candidates/drop", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> deleteAllCandidates() {
+
+        candidateRepository.deleteAll();
+        Map<String, String> result = new HashMap<>();
+        result.put("message", "All candidates deleted!");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @RequestMapping(value = "/results", method = RequestMethod.GET)
@@ -91,7 +116,7 @@ public class VoterController {
                 mongoTemplate.count(query, Vote.class);
         VoteCountWinner result = new VoteCountWinner(groupResults.intValue());
 
-        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @RequestMapping(value = "/winners", method = RequestMethod.GET)
@@ -115,7 +140,7 @@ public class VoterController {
 
         VoteCountWinner result = new VoteCountWinner(getWinnersVotesInt());
 
-        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     private int getWinnersVotesInt() {
@@ -144,7 +169,7 @@ public class VoterController {
         voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created!");
-        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @RequestMapping(value = "/simulation/rpc/election/{election}", method = RequestMethod.GET)
@@ -155,7 +180,7 @@ public class VoterController {
         voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created using RPC!");
-        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @RequestMapping(value = "/simulation/db/election/{election}", method = RequestMethod.GET)
@@ -166,9 +191,8 @@ public class VoterController {
         voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
         result.put("message", "Simulation data created using eventual consistency!");
-        return ResponseEntity.status(HttpStatus.OK).body(result); // return 200 with payload
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-
 
     // used by unit tests to create a known data set
     public void getSimulation(Map candidates, String election) {
