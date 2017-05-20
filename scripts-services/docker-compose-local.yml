@@ -4,11 +4,22 @@
 version: '3.0'
 
 services:
-  voter-api-gateway:
+  client:
+    image: garystafford/voter-client:rabbitmq
+    depends_on:
+    - gateway
+    hostname: client
+    ports:
+    - "9090:9090/tcp"
+    networks:
+    - demo_overlay_net
+
+  gateway:
     image: garystafford/voter-api-gateway:latest
     depends_on:
-    - voter
+    - election
     - candidate
+    - voter
     hostname: voter-api-gateway
     ports:
     - "8080:8080/tcp"
