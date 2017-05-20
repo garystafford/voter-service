@@ -3,12 +3,40 @@
 version: '3.0'
 
 services:
-  voter-api-gateway:
+  client:
+    image: garystafford/voter-client:rabbitmq
+    depends_on:
+    - gateway
+    hostname: client
+    ports:
+    - "9090:9090/tcp"
+    networks:
+    - demo_overlay_net
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.{{.Name}}
+        fluentd-address: localhost:24224
+        labels: com.voter.environment
+        env: SERVICE_NAME,SERVICE_TAGS
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=voter-client"
+    - "SERVICE_TAGS=web-client"
+
+  gateway:
     image: garystafford/voter-api-gateway:latest
     depends_on:
-    - voter
+    - election
     - candidate
-    hostname: voter-api-gateway
+    - voter
+    hostname: gateway
     ports:
     - "8080:8080/tcp"
     networks:
@@ -29,7 +57,7 @@ services:
         constraints:
         - node.hostname == worker1
     environment:
-    - "SERVICE_NAME=voter-api-gateway"
+    - "SERVICE_NAME=gateway"
     - "SERVICE_TAGS=api gateway"
 
   election:
