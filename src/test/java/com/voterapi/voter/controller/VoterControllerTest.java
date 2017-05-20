@@ -160,17 +160,17 @@ public class VoterControllerTest {
     }
 
     @Test
-    public void deleteAllVotesReturnsExpectedMessage() throws Exception {
+    public void deleteAllVotesReturnsExpectedStatusCode() throws Exception {
         ResponseEntity<Void> responseEntity =
-                restTemplate.getForEntity(String.format("/votes/drop"), Void.class);
+                restTemplate.postForEntity("/votes/drop", null, Void.class);
         assertThat(responseEntity.getStatusCode().value() == 204).isTrue();
         assertThat(responseEntity.getBody()).isEqualTo(null);
     }
 
     @Test
-    public void deleteAllCandidatesReturnsExpectedMessage() throws Exception {
+    public void deleteAllCandidatesReturnsExpectedStatusCode() throws Exception {
         ResponseEntity<Void> responseEntity =
-                restTemplate.getForEntity(String.format("/candidates/drop"), Void.class);
+                restTemplate.postForEntity("/candidates/drop", null, Void.class);
         assertThat(responseEntity.getStatusCode().value() == 204).isTrue();
         assertThat(responseEntity.getBody()).isEqualTo(null);
     }

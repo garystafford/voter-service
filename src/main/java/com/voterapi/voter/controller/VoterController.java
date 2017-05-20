@@ -73,14 +73,14 @@ public class VoterController {
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/votes/drop", method = RequestMethod.GET)
+    @RequestMapping(value = "/votes/drop", method = RequestMethod.POST)
     public ResponseEntity<Void> deleteAllVotes() {
 
         voterRepository.deleteAll();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @RequestMapping(value = "/candidates/drop", method = RequestMethod.GET)
+    @RequestMapping(value = "/candidates/drop", method = RequestMethod.POST)
     public ResponseEntity<Void> deleteAllCandidates() {
 
         candidateRepository.deleteAll();
