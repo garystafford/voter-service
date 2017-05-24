@@ -11,7 +11,7 @@ docker-compose pull # ensure latest version are pulled...
 
 docker-compose \
   -f docker-compose-local.yml \
-  -p voterstack up \
+  -p demostack up \
   --force-recreate -d
 
 docker image prune -f # clean up danglers...
