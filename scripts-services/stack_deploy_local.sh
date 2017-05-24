@@ -21,4 +21,6 @@ sleep 5
 
 docker ps
 
+sh ./stack_validate.sh localhost
+
 echo "Script completed..."

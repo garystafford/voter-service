@@ -2,7 +2,7 @@
 
 # Checks if ELK is up (last container in stack to start)
 
-HOST_IP=$(docker-machine ip worker3)
+HOST_IP=${1:-$(docker-machine ip worker3)}
 ATTEMPTS=15
 SLEEPTIME=20
 

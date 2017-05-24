@@ -2,11 +2,11 @@
 
 # Checks if Voter Service is up
 
-HOST_IP=$(docker-machine ip worker2)
+HOST_IP=${1:-$(docker-machine ip worker2)}
 ATTEMPTS=10
 SLEEPTIME=15
 
-until curl -s --head "${HOST_IP}:8099/voter";
+until curl -s --head "${HOST_IP}:8080/voter/info";
 do
   echo "Attempt ${ATTEMPTS}..."
 
@@ -22,6 +22,8 @@ do
 done
 
 curl "${HOST_IP}:8099/voter/health"
+echo ""
+curl "${HOST_IP}:8099/voter/info"
 
 echo ""
 echo "Script completed..."
