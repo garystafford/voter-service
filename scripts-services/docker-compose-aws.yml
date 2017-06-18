@@ -1,0 +1,176 @@
+# Deploy Voter Stack to Docker for AWS Swarm (swarm mode)
+
+version: '3.0'
+
+services:
+  client:
+    image: garystafford/voter-client:rabbitmq
+    depends_on:
+    - gateway
+    hostname: client
+    ports:
+    - "9090:9090/tcp"
+    networks:
+    - demo_overlay_net
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=voter-client"
+    - "SERVICE_TAGS=web-client"
+
+  gateway:
+    image: garystafford/voter-api-gateway:latest
+    depends_on:
+    - election
+    - candidate
+    - voter
+    hostname: gateway
+    ports:
+    - "8080:8080/tcp"
+    networks:
+    - demo_overlay_net
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=gateway"
+    - "SERVICE_TAGS=api gateway"
+
+  election:
+    image: garystafford/election-service:rabbitmq
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: election
+    ports:
+    - "8095:8095/tcp"
+    networks:
+    - demo_overlay_net
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=election"
+    - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar election/election-service.jar"
+
+  candidate:
+    image: garystafford/candidate-service:rabbitmq
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: candidate
+    ports:
+    - "8097:8097/tcp"
+    networks:
+    - demo_overlay_net
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=candidate"
+    - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar candidate/candidate-service.jar"
+
+  voter:
+    image: garystafford/voter-service:rabbitmq
+    depends_on:
+    - mongodb
+    - rabbitmq
+    hostname: voter
+    ports:
+    - "8099:8099/tcp"
+    networks:
+    - demo_overlay_net
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=voter"
+    - "SERVICE_TAGS=service"
+    command: "java -Dspring.profiles.active=${ACTIVE_PROFILE} \
+      -Dlogging.level.root=DEBUG \
+      -Djava.security.egd=file:/dev/./urandom \
+      -jar voter/voter-service.jar"
+
+  mongodb:
+    image: mongo:latest
+    command:
+    - --smallfiles
+    hostname: mongodb
+    ports:
+    - "27017:27017/tcp"
+    networks:
+    - demo_overlay_net
+    volumes:
+    - demo_data_vol:/data/db
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=mongodb"
+    - "SERVICE_TAGS=database"
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    hostname: rabbitmq
+    ports:
+    - "5672:5672/tcp"
+    - "15672:15672/tcp"
+    networks:
+    - demo_overlay_net
+    volumes:
+    - demo_data_vol:/data/db
+    labels:
+      com.voter.environment: ${ENVIRONMENT}
+      com.voter.active_profile: ${ACTIVE_PROFILE}
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.role == worker
+    environment:
+    - "SERVICE_NAME=rabbitmq"
+    - "SERVICE_TAGS=messaging"
+
+networks:
+  demo_overlay_net:
+
+volumes:
+  demo_data_vol:
