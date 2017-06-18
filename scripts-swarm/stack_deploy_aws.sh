@@ -1,12 +1,10 @@
 #!/bin/sh
 
-# Deploys the monitoring_stack to the Docker swarm cluster
+# Deploy to Docker for AWS Swarm (swarm mode)
 
 set -e
 
-eval $(docker-machine env manager1)
-
-docker stack deploy --compose-file=docker-compose.yml monitoring_stack
+docker stack deploy --compose-file=docker-compose-aws.yml monitoring_stack
 
 echo "Letting services start-up..."
 sleep 5
