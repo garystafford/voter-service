@@ -19,7 +19,7 @@ server:
 services:
   candidate:
     host: localhost
-    port: 8097
+    port: 8080
     context-path: candidate
 spring:
   application:
@@ -73,8 +73,6 @@ services:
   candidate:
     host: candidate
     port: 8080
-server:
-  port: 8080
 spring:
   data:
     mongodb:
@@ -103,8 +101,6 @@ services:
   candidate:
     host: candidate
     port: 8080
-server:
-  port: 8080
 spring:
   data:
     mongodb:
