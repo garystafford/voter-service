@@ -7,9 +7,9 @@
 
 set -e
 
-HOST=${1:-localhost}
+HOST=${1:-localhost:8080}
 TEST_CYCLES=${2:-25}
-API_GATEWAY="http://${HOST}:8080"
+API_GATEWAY="http://${HOST}"
 ELECTION="2016%20Presidential%20Election"
 
 echo "Simulating candidates..."
