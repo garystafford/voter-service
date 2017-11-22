@@ -5,3 +5,9 @@ docker-compose `
   -f docker-compose-local.yml `
   -p demostack up `
   --force-recreate -d
+
+curl -X POST \
+  http://localhost:8090/candidate/candidates `
+  -H 'content-type: application/json' `
+  -d '{"firstName": "Hillary", "lastName": "Clinton", "politicalParty": "Democratic Party", "election": "2016 Presidential Election"}
+'
