@@ -31,7 +31,7 @@ services:
     - "SERVICE_TAGS=web-client"
 
   gateway:
-    image: garystafford/voter-api-gateway:latest
+    image: garystafford/voter-api-gateway:rabbitmq
     depends_on:
     - election
     - candidate

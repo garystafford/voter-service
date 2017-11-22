@@ -14,7 +14,7 @@ services:
     - demo_overlay_net
 
   gateway:
-    image: garystafford/voter-api-gateway:latest
+    image: garystafford/voter-api-gateway:rabbitmq
     depends_on:
     - election
     - candidate
