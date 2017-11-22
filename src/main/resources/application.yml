@@ -72,7 +72,6 @@ spring:
 services:
   candidate:
     host: candidate
-    port: 8080
 spring:
   data:
     mongodb:
