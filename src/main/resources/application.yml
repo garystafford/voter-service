@@ -69,6 +69,20 @@ spring:
     host: "10.0.1.8"
   profiles: aws-production
 ---
+services:
+  candidate:
+    host: candidate
+    port: 8080
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      host: mongodb
+  rabbitmq:
+    host: rabbitmq
+  profiles: docker-aks
+---
 endpoints:
   enabled: false
   health:
@@ -89,6 +103,8 @@ services:
   candidate:
     host: candidate
     port: 8080
+server:
+  port: 8080
 spring:
   data:
     mongodb:
