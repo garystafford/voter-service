@@ -14,12 +14,12 @@ management:
     git:
       mode: full
 server:
-  port: 8080
+  port: 8099
   context-path: /voter
 services:
   candidate:
     host: localhost
-    port: 8080
+    port: 8097
     context-path: candidate
 spring:
   application:
@@ -44,8 +44,6 @@ spring:
   profiles: docker-local
 ---
 endpoints:
-  candidate:
-    host: candidate
   enabled: false
   health:
     enabled: true
@@ -61,6 +59,9 @@ management:
       enabled: false
     git:
       enabled: false
+services:
+  candidate:
+    host: candidate
 spring:
   data:
     mongodb:
@@ -69,9 +70,12 @@ spring:
     host: "10.0.1.8"
   profiles: aws-production
 ---
+server:
+  port: 8080
 services:
   candidate:
     host: candidate
+    port: 8080
 spring:
   data:
     mongodb:
@@ -99,7 +103,6 @@ management:
 services:
   candidate:
     host: candidate
-    port: 8080
 spring:
   data:
     mongodb:
