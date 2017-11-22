@@ -9,5 +9,4 @@ docker-compose `
 curl -X POST \
   http://localhost:8090/candidate/candidates `
   -H 'content-type: application/json' `
-  -d '{"firstName": "Hillary", "lastName": "Clinton", "politicalParty": "Democratic Party", "election": "2016 Presidential Election"}
-'
+  -d '{"firstName": "Hillary", "lastName": "Clinton", "politicalParty": "Democratic Party", "election": "2016 Presidential Election"}'
