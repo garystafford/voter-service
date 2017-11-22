@@ -33,6 +33,6 @@ IMAGE="garystafford/voter-service"
 docker build -t ${IMAGE}:rabbitmq .
 docker push ${IMAGE}:rabbitmq
 
-IMAGE_TAG="0.3.${TRAVIS_BUILD_NUMBER}"
+IMAGE_TAG="0.4.${TRAVIS_BUILD_NUMBER}"
 docker tag ${IMAGE}:rabbitmq ${IMAGE}:${IMAGE_TAG}
 docker push ${IMAGE}:${IMAGE_TAG}

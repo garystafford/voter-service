@@ -9,7 +9,7 @@ services:
     - gateway
     hostname: client
     ports:
-    - "9090:9090/tcp"
+    - "9090:8080/tcp"
     networks:
     - demo_overlay_net
     labels:
@@ -53,7 +53,7 @@ services:
     - rabbitmq
     hostname: election
     ports:
-    - "8095:8095/tcp"
+    - "8095:8080/tcp"
     networks:
     - demo_overlay_net
     labels:
@@ -79,7 +79,7 @@ services:
     - rabbitmq
     hostname: candidate
     ports:
-    - "8097:8097/tcp"
+    - "8097:8080/tcp"
     networks:
     - demo_overlay_net
     labels:
@@ -105,7 +105,7 @@ services:
     - rabbitmq
     hostname: voter
     ports:
-    - "8099:8099/tcp"
+    - "8099:8080/tcp"
     networks:
     - demo_overlay_net
     labels:
