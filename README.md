@@ -51,7 +51,7 @@ The easiest way to get started with the Candidate and Voter services API, using 
 Alternately, for step 3 above, you can use service-to-service RPC IPC with RabbitMQ, to retrieve the candidates:  
 `http http://localhost:8099/voter/simulation/rpc/election/2016%20Presidential%20Election`
 
-Alternately, for step 3 above, you can use eventual consistency using RabbitMQ, to retrieve the candidates from MongoDB:  
+Alternately, for step 3 above, you can use eventual consistency using RabbitMQ, to retrieve the candidates from MongoDB (assumes candidates are already be in MongoDB):  
 `http http://localhost:8099/voter/simulation/db/election/2016%20Presidential%20Election`
 
 ## Voter Service Endpoints

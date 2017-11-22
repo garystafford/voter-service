@@ -6,6 +6,7 @@
 set -e
 
 export ACTIVE_PROFILE=docker-local
+export ENVIRONMENT=development
 
 docker-compose pull # ensure latest version are pulled...
 

@@ -21,7 +21,7 @@ services:
     - voter
     hostname: voter-api-gateway
     ports:
-    - "8080:8080/tcp"
+    - "8090:8080/tcp"
     networks:
     - demo_overlay_net
 
