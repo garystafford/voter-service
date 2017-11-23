@@ -9,7 +9,7 @@ services:
     - gateway
     hostname: client
     ports:
-    - "9090:8080/tcp"
+    - "80:8080/tcp"
     networks:
     - demo_overlay_net
 
