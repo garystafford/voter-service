@@ -29,7 +29,7 @@ springBoot {
 }
 
 def application_name = 'voter-service'
-def major = '0.4'
+def major = '0.5'
 def minor = System.env.TRAVIS_BUILD_NUMBER ?: '0'
 def artifact_version = major + '.' + minor
 
@@ -45,6 +45,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'com.microsoft.azure', name: 'azure-servicebus', version: '1.1.0'
     compile group: 'org.springframework.boot', name: 'spring-boot-actuator-docs'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
