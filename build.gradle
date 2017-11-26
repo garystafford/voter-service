@@ -48,7 +48,6 @@ dependencies {
     compile group: 'com.microsoft.azure', name: 'azure-servicebus', version: '1.1.0'
     compile group: 'org.springframework.boot', name: 'spring-boot-actuator-docs'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'

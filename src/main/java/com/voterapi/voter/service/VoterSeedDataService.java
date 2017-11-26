@@ -41,26 +41,6 @@ public class VoterSeedDataService {
         }
     }
 
-    // generates random number of total votes for each candidate using HTTP
-    public void setRandomVotesHttp(String election) {
-        Map candidates = new HashMap();
-        List<CandidateVoterView> list = candidateList.getCandidatesSyncHttp(election);
-        for (CandidateVoterView aList : list) {
-            candidates.put(aList.getFullName(), getRandomIntAsString(2, 20));
-        }
-        votesFromMap(candidates, election);
-    }
-
-    // generates random number of total votes for each candidate using RPC
-    public void setRandomVotesRpc(String election) {
-        Map candidates = new HashMap();
-        List<CandidateVoterView> list = candidateList.getCandidatesMessageRpc(election);
-        for (CandidateVoterView aList : list) {
-            candidates.put(aList.getFullName(), getRandomIntAsString(2, 20));
-        }
-        votesFromMap(candidates, election);
-    }
-
     // generates random number of total votes for each candidate using Queue to DB
     public void setRandomVotesDb(String election) {
         Map candidates = new HashMap();
@@ -76,5 +56,4 @@ public class VoterSeedDataService {
         int randomVoteCount = ThreadLocalRandom.current().nextInt(min, max + 1);
         return Integer.toString(randomVoteCount);
     }
-
 }

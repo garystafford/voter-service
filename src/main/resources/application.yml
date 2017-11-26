@@ -1,3 +1,6 @@
+azure:
+  service-bus:
+    connection-string: sensitive_set_get_from_env_var
 endpoints:
   enabled: true
   sensitive: false
@@ -16,11 +19,6 @@ management:
 server:
   port: 8099
   context-path: /voter
-services:
-  candidate:
-    host: localhost
-    port: 8097
-    context-path: candidate
 spring:
   application:
     name: Voter Service
@@ -29,18 +27,13 @@ spring:
       database: voters
       host: localhost
       port: 27017
-  rabbitmq:
-    host: localhost
 ---
-services:
-  candidate:
-    host: candidate
+server:
+  port: 8080
 spring:
   data:
     mongodb:
       host: mongodb
-  rabbitmq:
-    host: rabbitmq
   profiles: docker-local
 ---
 endpoints:
@@ -59,29 +52,20 @@ management:
       enabled: false
     git:
       enabled: false
-services:
-  candidate:
-    host: candidate
+server:
+  port: 8080
 spring:
   data:
     mongodb:
       host: "10.0.1.6"
-  rabbitmq:
-    host: "10.0.1.8"
   profiles: aws-production
 ---
 server:
   port: 8080
-services:
-  candidate:
-    host: candidate
-    port: 8080
 spring:
   data:
     mongodb:
       host: mongodb
-  rabbitmq:
-    host: rabbitmq
   profiles: docker-aks
 ---
 endpoints:
@@ -100,13 +84,10 @@ management:
       enabled: false
     git:
       enabled: false
-services:
-  candidate:
-    host: candidate
+server:
+  port: 8080
 spring:
   data:
     mongodb:
       host: mongodb
-  rabbitmq:
-    host: rabbitmq
   profiles: docker-production
