@@ -34,38 +34,6 @@ spring:
   data:
     mongodb:
       host: mongodb
-  profiles: docker-local
----
-endpoints:
-  enabled: false
-  health:
-    enabled: true
-  info:
-    enabled: true
-  sensitive: true
-logging:
-  level:
-    root: WARN
-management:
-  info:
-    build:
-      enabled: false
-    git:
-      enabled: false
-server:
-  port: 8080
-spring:
-  data:
-    mongodb:
-      host: "10.0.1.6"
-  profiles: aws-production
----
-server:
-  port: 8080
-spring:
-  data:
-    mongodb:
-      host: mongodb
   profiles: docker-aks
 ---
 endpoints:

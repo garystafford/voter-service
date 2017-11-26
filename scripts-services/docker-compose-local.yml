@@ -82,17 +82,6 @@ services:
     networks:
     - demo_overlay_net
 
-  rabbitmq:
-    image: rabbitmq:management-alpine
-    hostname: rabbitmq
-    ports:
-    - "5672:5672/tcp"
-    - "15672:15672/tcp"
-    volumes:
-    - demo_data_vol:/data/db
-    networks:
-    - demo_overlay_net
-
 networks:
   demo_overlay_net:
 
