@@ -32,6 +32,8 @@ spring:
   rabbitmq:
     host: localhost
 ---
+server:
+  port: 8080
 services:
   candidate:
     host: candidate
@@ -59,6 +61,8 @@ management:
       enabled: false
     git:
       enabled: false
+server:
+  port: 8080
 services:
   candidate:
     host: candidate
@@ -100,6 +104,8 @@ management:
       enabled: false
     git:
       enabled: false
+server:
+  port: 8080
 services:
   candidate:
     host: candidate
