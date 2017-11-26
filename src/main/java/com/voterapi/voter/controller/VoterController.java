@@ -87,11 +87,12 @@ public class VoterController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @RequestMapping(value = "/results", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<VoteCount>>> getResults() {
+    @RequestMapping(value = "/results/{election}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<VoteCount>>> getResults(@PathVariable("election") String election) {
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("candidate").count().as("votes"),
+                match(Criteria.where("election").is(election)),
+                group("candidate").count().as("votes"),
                 project("votes").and("candidate").previousOperation(),
                 sort(Sort.Direction.DESC, "votes")
         );
@@ -102,11 +103,12 @@ public class VoterController {
         return new ResponseEntity<>(Collections.singletonMap("results", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/results/votes", method = RequestMethod.GET)
-    public ResponseEntity<VoteCountWinner> getTotalVotes() {
+    @RequestMapping(value = "/results/{election}/votes", method = RequestMethod.GET)
+    public ResponseEntity<VoteCountWinner> getTotalVotes(@PathVariable("election") String election) {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("candidate").exists(true));
+        query.addCriteria(Criteria.where("election").is(election));
 
         Long groupResults =
                 mongoTemplate.count(query, Vote.class);
@@ -115,12 +117,13 @@ public class VoterController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @RequestMapping(value = "/winners", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<VoteCount>>> getWinners() {
+    @RequestMapping(value = "/winners/{election}", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, List<VoteCount>>> getWinners(@PathVariable("election") String election) {
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("candidate").count().as("votes"),
-                match(Criteria.where("votes").is(getWinnersVotesInt())),
+                match(Criteria.where("election").is(election)),
+                group("candidate").count().as("votes"),
+                match(Criteria.where("votes").is(getWinnersVotesInt(election))),
                 project("votes").and("candidate").previousOperation(),
                 sort(Sort.Direction.ASC, "candidate")
         );
@@ -131,18 +134,19 @@ public class VoterController {
         return new ResponseEntity<>(Collections.singletonMap("results", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/winners/votes", method = RequestMethod.GET)
-    public ResponseEntity<VoteCountWinner> getWinnersVotes() {
+    @RequestMapping(value = "/winners/{election}/votes", method = RequestMethod.GET)
+    public ResponseEntity<VoteCountWinner> getWinnersVotes(@PathVariable("election") String election) {
 
-        VoteCountWinner result = new VoteCountWinner(getWinnersVotesInt());
+        VoteCountWinner result = new VoteCountWinner(getWinnersVotesInt(election));
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    private int getWinnersVotesInt() {
+    private int getWinnersVotesInt(String election) {
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("candidate").count().as("votes"),
+                match(Criteria.where("election").is(election)),
+                group("candidate").count().as("votes"),
                 project("votes"),
                 sort(Sort.Direction.DESC, "votes"),
                 limit(1)

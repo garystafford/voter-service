@@ -66,10 +66,10 @@ List Candidates                                                                 
 List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc/election/{election}](http://localhost:8099/voter/candidates/rpc/election/{election})
 List Candidates (using Message Queue and Database)                                                                       | GET     | [/voter/candidates/db/election/{election}](http://localhost:8099/voter/candidates/db/election/{election})
 Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
-View Voting Results                                                                                                      | GET     | [/voter/results](http://localhost:8099/voter/results)
-View Total Votes                                                                                                         | GET     | [/voter/results/votes](http://localhost:8099/voter/results/votes)
-View Winner(s)                                                                                                           | GET     | [/voter/winners](http://localhost:8099/voter/winners)
-View Winning Vote Count                                                                                                  | GET     | [/voter/winners/votes](http://localhost:8099/voter/winners/votes)
+View Voting Results                                                                                                      | GET     | [/voter/results/{election}](http://localhost:8099/voter/results/{election})
+View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)
+View Winner(s)                                                                                                           | GET     | [/voter/winners/{election}](http://localhost:8099/voter/winners/{election})
+View Winning Vote Count                                                                                                  | GET     | [/voter/winners/{election}/votes](http://localhost:8099/voter/winners/{election}/votes)
 Service Info                                                                                                             | GET     | [/voter/info](http://localhost:8099/voter/info)
 Service Health                                                                                                           | GET     | [/voter/health](http://localhost:8099/voter/health)
 Service Metrics                                                                                                          | GET     | [/voter/metrics](http://localhost:8099/voter/metrics)
@@ -154,7 +154,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/results`
+`http http://localhost:8099/voter/results/2016%20Presidential%20Election`
 
 ```json
 {
@@ -179,7 +179,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/results/votes`
+`http http://localhost:8099/voter/results/2016%20Presidential%20Election/votes`
 
 ```json
 {
@@ -187,7 +187,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/winners`
+`http http://localhost:8099/voter/winners/2016%20Presidential%20Election`
 
 ```json
 {
@@ -200,7 +200,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/winners/votes`
+`http http://localhost:8099/voter/winners/2016%20Presidential%20Election/votes`
 
 ```json
 {

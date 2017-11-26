@@ -3,15 +3,15 @@
 version: '3.0'
 
 services:
-  client:
-    image: garystafford/voter-client:rabbitmq
-    depends_on:
-    - gateway
-    hostname: client
-    ports:
-    - "80:8080/tcp"
-    networks:
-    - demo_overlay_net
+#  client:
+#    image: garystafford/voter-client:rabbitmq
+#    depends_on:
+#    - gateway
+#    hostname: client
+#    ports:
+#    - "80:8080/tcp"
+#    networks:
+#    - demo_overlay_net
 
   gateway:
     image: garystafford/voter-api-gateway:rabbitmq
