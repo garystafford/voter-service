@@ -55,19 +55,19 @@ public class VoterController {
         this.candidateListService = candidateListService;
     }
 
-    @RequestMapping(value = "/candidates/election/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/candidates/http/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesHttp(@PathVariable("election") String election) {
         List<CandidateVoterView> results = candidateListService.getCandidatesSyncHttp(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/candidates/rpc/election/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/candidates/rpc/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesRpc(@PathVariable("election") String election) {
         List<CandidateVoterView> results = candidateListService.getCandidatesMessageRpc(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/candidates/db/election/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/candidates/db/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesDb(@PathVariable("election") String election) {
         List<CandidateVoterView> results = candidateListService.getCandidatesQueueDb(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
@@ -161,7 +161,7 @@ public class VoterController {
         return groupResults.getMappedResults().get(0).getVotes();
     }
 
-    @RequestMapping(value = "/simulation/election/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/simulation/http/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> getSimulationHttp(@PathVariable("election") String election) {
 
         voterRepository.deleteAll();
@@ -172,7 +172,7 @@ public class VoterController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @RequestMapping(value = "/simulation/rpc/election/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/simulation/rpc/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> getSimulationRpc(@PathVariable("election") String election) {
 
         voterRepository.deleteAll();
@@ -183,7 +183,7 @@ public class VoterController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @RequestMapping(value = "/simulation/db/election/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/simulation/db/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> getSimulationDb(@PathVariable("election") String election) {
 
         voterRepository.deleteAll();
