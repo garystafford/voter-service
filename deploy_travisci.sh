@@ -12,6 +12,9 @@
 
 #set -x
 
+SERVICE_NAME=${1:-voter}
+BRANCH=${2:-kub-aks}
+
 # Builds and deploys JAR build artifact to GitHub (acts as binary repository)
 cd build/libs
 git init
@@ -29,10 +32,7 @@ docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
 set -ex
 
 sleep 120 # wait for automated Docker Hub build to finish...
-IMAGE="garystafford/voter-service"
-docker build -t ${IMAGE}:rabbitmq .
-docker push ${IMAGE}:rabbitmq
-
-IMAGE_TAG="0.4.${TRAVIS_BUILD_NUMBER}"
-docker tag ${IMAGE}:rabbitmq ${IMAGE}:${IMAGE_TAG}
+IMAGE="garystafford/${SERVICE_NAME}-service"
+IMAGE_TAG="${BRANCH}-0.5.${TRAVIS_BUILD_NUMBER}"
+docker build -t ${IMAGE}:${IMAGE_TAG} .
 docker push ${IMAGE}:${IMAGE_TAG}
