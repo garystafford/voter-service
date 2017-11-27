@@ -17,14 +17,14 @@ management:
     git:
       mode: full
 server:
-  port: 8099
+  port: 8095
   context-path: /voter
 spring:
   application:
     name: Voter Service
   data:
     mongodb:
-      database: voters
+      database: voter
       host: localhost
       port: 27017
 ---
@@ -34,28 +34,4 @@ spring:
   data:
     mongodb:
       host: mongodb
-  profiles: docker-aks
----
-endpoints:
-  enabled: false
-  health:
-    enabled: true
-  info:
-    enabled: true
-  sensitive: true
-logging:
-  level:
-    root: WARN
-management:
-  info:
-    build:
-      enabled: false
-    git:
-      enabled: false
-server:
-  port: 8080
-spring:
-  data:
-    mongodb:
-      host: mongodb
-  profiles: docker-production
+  profiles: kub-aks
