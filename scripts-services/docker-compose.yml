@@ -4,7 +4,7 @@ version: '3.0'
 
 services:
   client:
-    image: garystafford/voter-client:rabbitmq
+    image: garystafford/voter-client:rabbitmq-0.4.55
     depends_on:
     - gateway
     hostname: client
@@ -61,7 +61,7 @@ services:
     - "SERVICE_TAGS=api gateway"
 
   election:
-    image: garystafford/election-service:rabbitmq
+    image: garystafford/election-service:rabbitmq-0.4.29
     depends_on:
     - mongodb
     - rabbitmq
@@ -94,7 +94,7 @@ services:
       -jar election/election-service.jar"
 
   candidate:
-    image: garystafford/candidate-service:rabbitmq
+    image: garystafford/candidate-service:rabbitmq-0.4.112
     depends_on:
     - mongodb
     - rabbitmq
@@ -127,7 +127,7 @@ services:
       -jar candidate/candidate-service.jar"
 
   voter:
-    image: garystafford/voter-service:rabbitmq
+    image: garystafford/voter-service:rabbitmq-0.4.234
     depends_on:
     - mongodb
     - rabbitmq
