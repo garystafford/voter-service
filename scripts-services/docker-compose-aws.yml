@@ -31,7 +31,7 @@ services:
     - voter
     hostname: gateway
     ports:
-    - "8090:8080/tcp"
+    - "8080:8080/tcp"
     networks:
     - demo_overlay_net
     labels:
