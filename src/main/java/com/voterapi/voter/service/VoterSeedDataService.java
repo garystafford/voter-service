@@ -15,7 +15,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class VoterSeedDataService {
 
     private CandidateListService candidateList;
-
     private List<Vote> votes = new ArrayList<>();
 
     @Autowired

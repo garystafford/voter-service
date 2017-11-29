@@ -24,14 +24,9 @@ spring:
     name: Voter Service
   data:
     mongodb:
-      database: voter
-      host: localhost
-      port: 27017
+      uri: <sensitive_set_get_from_env_var>
 ---
 server:
   port: 8080
 spring:
-  data:
-    mongodb:
-      host: mongodb
   profiles: kub-aks
