@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=rabbitmq)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
+[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=kub-aks)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
 
 # Voter Service
 
@@ -7,9 +7,9 @@
 The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
 
 The Voter service is designed to work along with the [Candidate Service](https://github.com/garystafford/candidate-service), as part of a complete API. The Voter service is dependent on the Candidate service to supply a list of candidates. The Candidate service is called by the Voter service, using one of three methods:
-1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates/election/{election}` or `/voter/simulation/election/{election}` endpoints are called.
-2. [Messaging-based Remote Procedure Call (RPC) IPC](https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp.html), when either the Voter service's `/voter/candidates/rpc/election/{election}` or `/voter/simulation/rpc/election/{election}` endpoints are called.
-3. [Messaging-based Eventual Consistency](https://www.rabbitmq.com/tutorials/tutorial-one-spring-amqp.html), when either the Voter service's `/voter/candidates/db/election/{election}` or `/voter/simulation/db/election/{election}` endpoints are called.
+1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates/http/{election}` or `/voter/simulation/http/{election}` endpoints are called.
+2. [Messaging-based Remote Procedure Call (RPC) IPC](https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp.html), when either the Voter service's `/voter/candidates/rpc/{election}` or `/voter/simulation/rpc/{election}` endpoints are called.
+3. [Messaging-based Eventual Consistency](https://www.rabbitmq.com/tutorials/tutorial-one-spring-amqp.html), when either the Voter service's `/voter/candidates/db/{election}` or `/voter/simulation/db/{election}` endpoints are called.
 
 ![Voter API Architecture](Message_Queue_Diagram_Final.png)
 
@@ -44,15 +44,15 @@ CONTAINER ID        IMAGE                                     COMMAND           
 ## Getting Started with the API
 The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
 1. Create sample candidates: `http http://localhost:8097/candidate/simulation`  
-2. View sample candidates: `http http://localhost:8097/candidate/candidates/summary/election/2016%20Presidential%20Election`  
-3. Create sample voter data: `http http://localhost:8099/voter/simulation/election/2016%20Presidential%20Election`  
+2. View sample candidates: `http http://localhost:8097/candidate/candidates/summary/2016%20Presidential%20Election`  
+3. Create sample voter data: `http http://localhost:8099/voter/simulation/http/2016%20Presidential%20Election`  
 4. View sample voter results: `http http://localhost:8099/voter/results`
 
 Alternately, for step 3 above, you can use service-to-service RPC IPC with RabbitMQ, to retrieve the candidates:  
-`http http://localhost:8099/voter/simulation/rpc/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/simulation/rpc/2016%20Presidential%20Election`
 
 Alternately, for step 3 above, you can use eventual consistency using RabbitMQ, to retrieve the candidates from MongoDB (assumes candidates are already be in MongoDB):  
-`http http://localhost:8099/voter/simulation/db/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/simulation/db/2016%20Presidential%20Election`
 
 ## Voter Service Endpoints
 
@@ -60,16 +60,17 @@ The service uses a context path of `/voter`. All endpoints must be are prefixed 
 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
-Create Random Sample Data                                                                                                | GET     | [/voter/simulation/election/{election}](http://localhost:8099/voter/simulation/election/{election})
-Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/voter/simulation/rpc/election/{election}](http://localhost:8099/voter/simulation/rpc/election/{election})
-List Candidates                                                                                                          | GET     | [/voter/candidates/election/{election}](http://localhost:8099/voter/candidates/election/{election})
-List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc/election/{election}](http://localhost:8099/voter/candidates/rpc/election/{election})
-List Candidates (using Message Queue and Database)                                                                       | GET     | [/voter/candidates/db/election/{election}](http://localhost:8099/voter/candidates/db/election/{election})
+Create Random Sample Data (using HTTP)                                                                                   | GET     | [/voter/simulation/http/{election}](http://localhost:8099/voter/simulation/http/{election})
+Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/voter/simulation/rpc/{election}](http://localhost:8099/voter/simulation/rpc/{election})
+Create Random Sample Data (using Eventual Consistency)                                                                   | GET     | [/voter/simulation/db/{election}](http://localhost:8099/voter/simulation/db/{election})
+List Candidates (using HTTP)                                                                                             | GET     | [/voter/candidates/http/{election}](http://localhost:8099/voter/candidates/http/{election})
+List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc/{election}](http://localhost:8099/voter/candidates/rpc/{election})
+List Candidates (using Eventual Consistency)                                                                             | GET     | [/voter/candidates/db/{election}](http://localhost:8099/voter/candidates/db/{election})
 Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
-View Voting Results                                                                                                      | GET     | [/voter/results](http://localhost:8099/voter/results)
-View Total Votes                                                                                                         | GET     | [/voter/results/votes](http://localhost:8099/voter/results/votes)
-View Winner(s)                                                                                                           | GET     | [/voter/winners](http://localhost:8099/voter/winners)
-View Winning Vote Count                                                                                                  | GET     | [/voter/winners/votes](http://localhost:8099/voter/winners/votes)
+View Voting Results                                                                                                      | GET     | [/voter/results/{election}](http://localhost:8099/voter/results/{election})
+View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)
+View Winner(s)                                                                                                           | GET     | [/voter/winners/{election}](http://localhost:8099/voter/winners/{election})
+View Winning Vote Count                                                                                                  | GET     | [/voter/winners/{election}/votes](http://localhost:8099/voter/winners/{election}/votes)
 Service Info                                                                                                             | GET     | [/voter/info](http://localhost:8099/voter/info)
 Service Health                                                                                                           | GET     | [/voter/health](http://localhost:8099/voter/health)
 Service Metrics                                                                                                          | GET     | [/voter/metrics](http://localhost:8099/voter/metrics)
@@ -113,11 +114,11 @@ wget --method POST \
 
 Using [HTTPie](https://httpie.org/) command line HTTP client.
 
-`http http://localhost:8099/voter/simulation/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/simulation/http/2016%20Presidential%20Election`
 or  
-`http http://localhost:8099/voter/simulation/rpc/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/simulation/rpc/2016%20Presidential%20Election`
 or  
-`http http://localhost:8099/voter/simulation/db/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/simulation/db/2016%20Presidential%20Election`
 
 
 ```json
@@ -126,11 +127,11 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/candidates/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/candidates/http/2016%20Presidential%20Election`
 or  
-`http http://localhost:8099/voter/candidates/rpc/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/candidates/rpc/2016%20Presidential%20Election`
 or  
-`http http://localhost:8099/voter/candidates/db/election/2016%20Presidential%20Election`
+`http http://localhost:8099/voter/candidates/db/2016%20Presidential%20Election`
 
 ```json
 {
@@ -154,7 +155,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/results`
+`http http://localhost:8099/voter/results/2016%20Presidential%20Election`
 
 ```json
 {
@@ -179,7 +180,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/results/votes`
+`http http://localhost:8099/voter/results/2016%20Presidential%20Election/votes`
 
 ```json
 {
@@ -187,7 +188,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/winners`
+`http http://localhost:8099/voter/winners/2016%20Presidential%20Election`
 
 ```json
 {
@@ -200,7 +201,7 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/winners/votes`
+`http http://localhost:8099/voter/winners/2016%20Presidential%20Election/votes`
 
 ```json
 {
