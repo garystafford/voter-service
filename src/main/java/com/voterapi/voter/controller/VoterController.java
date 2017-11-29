@@ -6,7 +6,7 @@ import com.voterapi.voter.domain.VoteCount;
 import com.voterapi.voter.domain.VoteCountWinner;
 import com.voterapi.voter.repository.CandidateRepository;
 import com.voterapi.voter.repository.VoterRepository;
-import com.voterapi.voter.service.CandidateListService;
+import com.voterapi.voter.service.CandidateService;
 import com.voterapi.voter.service.VoterSeedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -36,24 +36,24 @@ public class VoterController {
     private VoterRepository voterRepository;
     private CandidateRepository candidateRepository;
     private VoterSeedDataService voterSeedDataService;
-    private CandidateListService candidateListService;
+    private CandidateService candidateService;
 
     @Autowired
     public VoterController(MongoTemplate mongoTemplate,
                            VoterRepository voterRepository,
                            CandidateRepository candidateRepository,
                            VoterSeedDataService voterSeedDataService,
-                           CandidateListService candidateListService) {
+                           CandidateService candidateService) {
         this.mongoTemplate = mongoTemplate;
         this.candidateRepository = candidateRepository;
         this.voterRepository = voterRepository;
         this.voterSeedDataService = voterSeedDataService;
-        this.candidateListService = candidateListService;
+        this.candidateService = candidateService;
     }
 
     @RequestMapping(value = "/candidates/db/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesDb(@PathVariable("election") String election) {
-        List<CandidateVoterView> results = candidateListService.getCandidatesQueueDb(election);
+        List<CandidateVoterView> results = candidateService.getCandidatesQueueDb(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 

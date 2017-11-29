@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -28,21 +28,21 @@ import java.util.concurrent.CompletableFuture;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 
-@Service
-public class CandidateListService {
+@Component
+public class CandidateService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private Environment environment;
     private MongoTemplate mongoTemplate;
     private CandidateRepository candidateRepository;
+    private Environment environment;
 
     @Autowired
-    public CandidateListService(Environment environment,
-                                MongoTemplate mongoTemplate,
-                                CandidateRepository candidateRepository) {
-        this.environment = environment;
+    public CandidateService(MongoTemplate mongoTemplate,
+                            CandidateRepository candidateRepository,
+                            Environment environment) {
         this.mongoTemplate = mongoTemplate;
         this.candidateRepository = candidateRepository;
+        this.environment = environment;
 
         getAzureServiceBusCandidateQueueMessages();
     }
@@ -130,5 +130,4 @@ public class CandidateListService {
         }
 
     }
-
 }

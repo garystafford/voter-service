@@ -149,17 +149,6 @@ public class VoterControllerTest {
     }
 
     @Test
-    public void getSimulationReturnsExpectedMessage() throws Exception {
-        String election = "2012 Presidential Election";
-        String expectedResponse =
-                "{\"message\":\"Simulation data created!\"}";
-        ResponseEntity<String> responseEntity =
-                restTemplate.getForEntity(String.format("/simulation/election/%s", election), String.class);
-        assertThat(responseEntity.getStatusCode().value() == 200).isTrue();
-        assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
-    }
-
-    @Test
     public void deleteAllVotesReturnsExpectedStatusCode() throws Exception {
         ResponseEntity<Void> responseEntity =
                 restTemplate.postForEntity("/votes/drop", null, Void.class);

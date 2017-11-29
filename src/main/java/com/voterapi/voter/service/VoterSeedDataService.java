@@ -3,7 +3,7 @@ package com.voterapi.voter.service;
 import com.voterapi.voter.domain.CandidateVoterView;
 import com.voterapi.voter.domain.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Service
+@Component
 public class VoterSeedDataService {
 
-    private CandidateListService candidateList;
+    private CandidateService candidateList;
     private List<Vote> votes = new ArrayList<>();
 
     @Autowired
-    public VoterSeedDataService(CandidateListService candidateList) {
+    public VoterSeedDataService(CandidateService candidateList) {
         this.candidateList = candidateList;
     }
 
