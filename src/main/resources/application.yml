@@ -17,7 +17,7 @@ management:
     git:
       mode: full
 server:
-  port: 8095
+  port: 8099
   context-path: /voter
 spring:
   application:

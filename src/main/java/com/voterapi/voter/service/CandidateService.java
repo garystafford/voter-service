@@ -53,10 +53,10 @@ public class CandidateService {
      * @param candidate
      * @return List of candidates
      */
-    public List<CandidateVoterView> getCandidatesQueueDb(String candidate) {
+    public List<CandidateVoterView> getCandidatesQueueDb(String election) {
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("candidate").is(candidate)),
-                project("firstName", "lastName", "politicalParty", "candidate")
+                Aggregation.match(Criteria.where("election").is(election)),
+                project("firstName", "lastName", "politicalParty", "election")
                         .andExpression("concat(firstName,' ', lastName)")
                         .as("fullName"),
                 sort(Sort.Direction.ASC, "lastName")
