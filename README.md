@@ -4,55 +4,9 @@
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by [MongoDB](https://www.mongodb.com/). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service. API users can also create random voting data by calling the `/voter/simulation` endpoint.
-
-The Voter service is designed to work along with the [Candidate Service](https://github.com/garystafford/candidate-service), as part of a complete API. The Voter service is dependent on the Candidate service to supply a list of candidates. The Candidate service is called by the Voter service, using one of three methods:
-1. [HTTP-based Synchronous IPC](https://www.nginx.com/blog/building-microservices-inter-process-communication/), when either the Voter service's `/voter/candidates/http/{election}` or `/voter/simulation/http/{election}` endpoints are called.
-2. [Messaging-based Remote Procedure Call (RPC) IPC](https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp.html), when either the Voter service's `/voter/candidates/rpc/{election}` or `/voter/simulation/rpc/{election}` endpoints are called.
-3. [Messaging-based Eventual Consistency](https://www.rabbitmq.com/tutorials/tutorial-one-spring-amqp.html), when either the Voter service's `/voter/candidates/db/{election}` or `/voter/simulation/db/{election}` endpoints are called.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by Azure CosmosDB (MongoDB) and Azure Service Bus. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
 
 ![Voter API Architecture](Message_Queue_Diagram_Final.png)
-
-## Quick Start for Local Development
-
-The Voter service requires MongoDB to be running locally, on port `27017`, RabbitMQ running on `5672` and `15672`, and the Candidate service to be running on `8097`. To clone, build, test, and run the Voter service as a JAR file, locally:
-
-```bash
-git clone --depth 1 --branch rabbitmq \
-  https://github.com/garystafford/voter-service.git
-cd voter-service
-./gradlew clean cleanTest build
-java -jar build/libs/voter-service-0.3.0.jar
-```
-## Quick Start with Docker
-The easiest way to run the Voter API services locally is using the `docker-compose-local.yml` file, included in the project. The Docker Compose file will spin up single container instances of the Election service, Voter service, Candidate service, RabbitMQ, MongoDB, and the Voter API Gateway.
-
-```bash
-sh ./stack-deploy-local.sh
-```
-
-```text
-CONTAINER ID        IMAGE                                     COMMAND                  CREATED             STATUS              PORTS                                                                                        NAMES
-32d73282ff3d        garystafford/voter-api-gateway:latest     "/docker-entrypoin..."   8 seconds ago       Up 5 seconds        0.0.0.0:8080->8080/tcp                                                                       voterstack_voter-api-gateway_1
-1ece438c5da4        garystafford/candidate-service:rabbitmq   "java -Dspring.pro..."   10 seconds ago      Up 7 seconds        0.0.0.0:8097->8097/tcp                                                                       voterstack_candidate_1
-30391faa3422        garystafford/voter-service:rabbitmq       "java -Dspring.pro..."   10 seconds ago      Up 7 seconds        0.0.0.0:8099->8099/tcp                                                                       voterstack_voter_1
-35063ccfe706        garystafford/election-service:rabbitmq    "java -Dspring.pro..."   12 seconds ago      Up 10 seconds       0.0.0.0:8095->8095/tcp                                                                       voterstack_election_1
-23eae86967a2        rabbitmq:management-alpine                "docker-entrypoint..."   14 seconds ago      Up 11 seconds       4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp, 15671/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp   voterstack_rabbitmq_1
-7e77ddecddbb        mongo:latest                              "docker-entrypoint..."   24 seconds ago      Up 21 seconds       0.0.0.0:27017->27017/tcp                                                                     voterstack_mongodb_1
-```
-
-## Getting Started with the API
-The easiest way to get started with the Candidate and Voter services API, using [HTTPie](https://httpie.org/) from the command line:  
-1. Create sample candidates: `http http://localhost:8097/candidate/simulation`  
-2. View sample candidates: `http http://localhost:8097/candidate/candidates/summary/2016%20Presidential%20Election`  
-3. Create sample voter data: `http http://localhost:8099/voter/simulation/http/2016%20Presidential%20Election`  
-4. View sample voter results: `http http://localhost:8099/voter/results`
-
-Alternately, for step 3 above, you can use service-to-service RPC IPC with RabbitMQ, to retrieve the candidates:  
-`http http://localhost:8099/voter/simulation/rpc/2016%20Presidential%20Election`
-
-Alternately, for step 3 above, you can use eventual consistency using RabbitMQ, to retrieve the candidates from MongoDB (assumes candidates are already be in MongoDB):  
-`http http://localhost:8099/voter/simulation/db/2016%20Presidential%20Election`
 
 ## Voter Service Endpoints
 
@@ -60,12 +14,8 @@ The service uses a context path of `/voter`. All endpoints must be are prefixed 
 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
-Create Random Sample Data (using HTTP)                                                                                   | GET     | [/voter/simulation/http/{election}](http://localhost:8099/voter/simulation/http/{election})
-Create Random Sample Data (using RPC Messaging)                                                                          | GET     | [/voter/simulation/rpc/{election}](http://localhost:8099/voter/simulation/rpc/{election})
-Create Random Sample Data (using Eventual Consistency)                                                                   | GET     | [/voter/simulation/db/{election}](http://localhost:8099/voter/simulation/db/{election})
-List Candidates (using HTTP)                                                                                             | GET     | [/voter/candidates/http/{election}](http://localhost:8099/voter/candidates/http/{election})
-List Candidates (using RPC Messaging)                                                                                    | GET     | [/voter/candidates/rpc/{election}](http://localhost:8099/voter/candidates/rpc/{election})
-List Candidates (using Eventual Consistency)                                                                             | GET     | [/voter/candidates/db/{election}](http://localhost:8099/voter/candidates/db/{election})
+Create Random Sample Data                                                                                                | GET     | [/voter/simulation/{election}](http://localhost:8099/voter/simulation/{election})
+List Candidates                                                                                                          | GET     | [/voter/candidates/db/{election}](http://localhost:8099/voter/candidates/db/{election})
 Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
 View Voting Results                                                                                                      | GET     | [/voter/results/{election}](http://localhost:8099/voter/results/{election})
 View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)
@@ -112,14 +62,9 @@ wget --method POST \
 
 ## Sample Output
 
-Using [HTTPie](https://httpie.org/) command line HTTP client.
+API users can also create random voting data by calling the `/voter/simulation` endpoint. Using [HTTPie](https://httpie.org/) command line HTTP client.
 
-`http http://localhost:8099/voter/simulation/http/2016%20Presidential%20Election`
-or  
-`http http://localhost:8099/voter/simulation/rpc/2016%20Presidential%20Election`
-or  
-`http http://localhost:8099/voter/simulation/db/2016%20Presidential%20Election`
-
+`http http://localhost:8099/voter/simulation/2016%20Presidential%20Election`
 
 ```json
 {
@@ -127,10 +72,6 @@ or
 }
 ```
 
-`http http://localhost:8099/voter/candidates/http/2016%20Presidential%20Election`
-or  
-`http http://localhost:8099/voter/candidates/rpc/2016%20Presidential%20Election`
-or  
 `http http://localhost:8099/voter/candidates/db/2016%20Presidential%20Election`
 
 ```json
@@ -227,132 +168,3 @@ or
     "election": "2016 Presidential Election"
 }
 ```
-
-## Continuous Integration
-
-The project's source code is continuously built and tested on every commit to [GitHub](https://github.com/garystafford/voter-service), using [Travis CI](https://travis-ci.org/garystafford/voter-service). If all unit tests pass, the resulting Spring Boot JAR is pushed to the `build-artifacts` branch of the [voter-service](https://github.com/garystafford/voter-service/tree/build-artifacts) GitHub repository. The JAR's filename is incremented with each successful build (i.e. `voter-service-0.2.10.jar`).
-
-![Vote Continuous Integration Pipeline](voter_flow_2.png)
-
-## Spring Profiles
-
-The Voter service includes several Spring Boot Profiles, in a multi-profile YAML document: `src/main/resources/application.yml`. The profiles are `default`, `docker-development`, `docker-production`, and `aws-production`. You will need to ensure your MongoDB instance is available at that `host` address and port of the profile you choose, or you may override the profile's properties.
-
-
-```yaml
-endpoints:
-  enabled: true
-  sensitive: false
-info:
-  java:
-    source: "${java.version}"
-logging:
-  level:
-    root: INFO
-management:
-  info:
-    build:
-      enabled: true
-    git:
-      mode: full
-server:
-  port: 8099
-  context-path: /voter
-services:
-  candidate:
-    host: localhost
-    port: 8097
-    context-path: candidate
-spring:
-  data:
-    mongodb:
-      database: voters
-      host: localhost
-      port: 27017
-  rabbitmq:
-    host: localhost
----
-services:
-  candidate:
-    host: candidate
-spring:
-  data:
-    mongodb:
-      host: mongodb
-  rabbitmq:
-    host: rabbitmq
-  profiles: docker-local
----
-endpoints:
-  candidate:
-    host: candidate
-  enabled: false
-  health:
-    enabled: true
-  info:
-    enabled: true
-  sensitive: true
-  services: ~
-logging:
-  level:
-    root: WARN
-management:
-  info:
-    build:
-      enabled: false
-    git:
-      enabled: false
-spring:
-  data:
-    mongodb:
-      host: "10.0.1.6"
-  rabbitmq:
-    host: "10.0.1.8"
-  profiles: aws-production
----
-endpoints:
-  enabled: false
-  health:
-    enabled: true
-  info:
-    enabled: true
-  sensitive: true
-logging:
-  level:
-    root: WARN
-management:
-  info:
-    build:
-      enabled: false
-    git:
-      enabled: false
-services:
-  candidate:
-    host: candidate
-spring:
-  data:
-    mongodb:
-      host: mongodb
-  rabbitmq:
-    host: rabbitmq
-  profiles: docker-production
-```
-
-All profile property values may be overridden on the command line, or in a `.conf` file. For example, to start the Voter service with the `aws-production` profile, but override the `mongodb.host` value with a new host address, you might use the following command:
-
-```bash
-java -jar <name_of_jar_file> \
-  --spring.profiles.active=aws-production \
-  --spring.data.mongodb.host=<new_host_address>
-  -Dlogging.level.root=DEBUG \
-  -Djava.security.egd=file:/dev/./urandom
-```
-
-## References
-
-- [Spring Data MongoDB - Reference Documentation](http://docs.spring.io/spring-data/mongodb/docs/current/reference/html/)
-- [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
-- [Spring Boot Testing](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-testing)
-- [Installing Spring Boot applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html#deployment-install)
-- [Externalized Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
-- [2016 Presidential Candidates](http://www.politics1.com/p2016.htm)
