@@ -24,7 +24,7 @@ spring:
     name: Voter Service
   data:
     mongodb:
-      uri: <sensitive_set_get_from_env_var>
+      uri: mongodb://localhost:27017/votes
 ---
 server:
   port: 8080
