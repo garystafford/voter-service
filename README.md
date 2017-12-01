@@ -15,7 +15,7 @@ The service uses a context path of `/voter`. All endpoints must be are prefixed 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
 Create Random Sample Data                                                                                                | GET     | [/voter/simulation/{election}](http://localhost:8099/voter/simulation/{election})
-List Candidates                                                                                                          | GET     | [/voter/candidates/db/{election}](http://localhost:8099/voter/candidates/db/{election})
+List Candidates                                                                                                          | GET     | [/voter/candidates/{election}](http://localhost:8099/voter/candidates/db/{election})
 Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
 View Voting Results                                                                                                      | GET     | [/voter/results/{election}](http://localhost:8099/voter/results/{election})
 View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)

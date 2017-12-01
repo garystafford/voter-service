@@ -51,20 +51,20 @@ public class VoterController {
         this.candidateService = candidateService;
     }
 
-    @RequestMapping(value = "/candidates/db/{election}", method = RequestMethod.GET)
+    @RequestMapping(value = "/candidates/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, List<CandidateVoterView>>> getCandidatesDb(@PathVariable("election") String election) {
         List<CandidateVoterView> results = candidateService.getCandidatesQueueDb(election);
         return new ResponseEntity<>(Collections.singletonMap("candidates", results), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/votes/drop", method = RequestMethod.POST)
+    @RequestMapping(value = "/drop/votes", method = RequestMethod.POST)
     public ResponseEntity<Void> deleteAllVotes() {
 
         voterRepository.deleteAll();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @RequestMapping(value = "/candidates/drop", method = RequestMethod.POST)
+    @RequestMapping(value = "/drop/candidates", method = RequestMethod.POST)
     public ResponseEntity<Void> deleteAllCandidates() {
 
         candidateRepository.deleteAll();
