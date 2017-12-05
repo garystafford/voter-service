@@ -36,7 +36,7 @@ public class VoterControllerTest {
     @Before
     public void setup() {
         createSampleVoterResults();
-        createSampleCandidateList();
+//        createSampleCandidateList();
     }
 
     private void createSampleVoterResults() {
@@ -52,22 +52,21 @@ public class VoterControllerTest {
         voterController.getSimulation(candidates, election);
     }
 
-    private void createSampleCandidateList() {
-        // create sample list of candidates by calling the candidate service
-        String election = "2016 Presidential Election";
-        String candidateServiceHostname = environment.getProperty("services.candidate.host");
-        String candidateServicePort = environment.getProperty("services.candidate.port");
-        String candidateContextPath = environment.getProperty("services.candidate.context-path");
-        String candidateServiceResourceUrl = String.format("http://%s:%s/%s/candidates/simulation",
-                candidateServiceHostname, candidateServicePort, candidateContextPath, election);
-        restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
+//    private void createSampleCandidateList() {
+//        // create sample list of candidates by calling the candidate service
+//        String election = "2016 Presidential Election";
+//        String candidateServiceHostname = environment.getProperty("services.candidate.host");
+//        String candidateServicePort = environment.getProperty("services.candidate.port");
+//        String candidateContextPath = environment.getProperty("services.candidate.context-path");
+//        String candidateServiceResourceUrl = String.format("http://%s:%s/%s/candidates/simulation",
+//                candidateServiceHostname, candidateServicePort, candidateContextPath, election);
+//        restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
+//
+//        candidateServiceResourceUrl = String.format("http://%s:%s/%s/candidates/summary/election/%s",
+//                candidateServiceHostname, candidateServicePort, candidateContextPath, election);
+//        restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
+//    }
 
-        candidateServiceResourceUrl = String.format("http://%s:%s/%s/candidates/summary/election/%s",
-                candidateServiceHostname, candidateServicePort, candidateContextPath, election);
-        restTemplate.getForEntity(candidateServiceResourceUrl, String.class);
-    }
-
-    //    @Ignore("Broken Test - Need to Fix")
     @Test
     public void getCandidatesHttpReturnsListOfCandidateChoices() throws Exception {
         String election = "2016 Presidential Election";
@@ -151,7 +150,7 @@ public class VoterControllerTest {
     @Test
     public void deleteAllVotesReturnsExpectedStatusCode() throws Exception {
         ResponseEntity<Void> responseEntity =
-                restTemplate.postForEntity("/votes/drop", null, Void.class);
+                restTemplate.postForEntity("/drop/votes", null, Void.class);
         assertThat(responseEntity.getStatusCode().value() == 204).isTrue();
         assertThat(responseEntity.getBody()).isEqualTo(null);
     }
@@ -159,7 +158,7 @@ public class VoterControllerTest {
     @Test
     public void deleteAllCandidatesReturnsExpectedStatusCode() throws Exception {
         ResponseEntity<Void> responseEntity =
-                restTemplate.postForEntity("/candidates/drop", null, Void.class);
+                restTemplate.postForEntity("/drop/candidates", null, Void.class);
         assertThat(responseEntity.getStatusCode().value() == 204).isTrue();
         assertThat(responseEntity.getBody()).isEqualTo(null);
     }
