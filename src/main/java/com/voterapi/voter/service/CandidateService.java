@@ -50,7 +50,7 @@ public class CandidateService {
     /**
      * Retrieves candidates from MongoDB and transforms to voter view
      *
-     * @param candidate
+     * @param election
      * @return List of candidates
      */
     public List<CandidateVoterView> getCandidatesQueueDb(String election) {

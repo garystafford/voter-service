@@ -34,7 +34,7 @@ public class HostInfoContributor implements InfoContributor {
         try {
             ip = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            logger.info(String.valueOf(e));
+            logger.error(String.valueOf(e.getStackTrace()));
         }
         hostMap.put("ipAddress", ip.getHostAddress());
         hostMap.put("hostname", ip.getHostName());
