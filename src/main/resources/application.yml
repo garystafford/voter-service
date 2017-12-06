@@ -26,7 +26,21 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/votes
 ---
-server:
-  port: 8080
 spring:
   profiles: kub-aks
+server:
+  port: 8080
+logging:
+  level:
+    root: INFO
+management:
+  info:
+    build:
+      enabled: true
+    git:
+      mode: simple
+endpoints:
+  env:
+    keys-to-sanitize: .*password.*,.*secret.*,.*azure.service-bus.connection-string.*, .*AZURE_SERVICE_BUS_CONNECTION_STRING.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*
+  configprops:
+    keys-to-sanitize: .*password.*,.*secret.*,.*azure.service-bus.connection-string.*, .*AZURE_SERVICE_BUS_CONNECTION_STRING.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*
