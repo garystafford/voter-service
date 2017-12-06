@@ -1,19 +1,12 @@
 sudo: required
 language: java
 jdk: oraclejdk8
-services:
-- mongodb
-- docker
 before_install:
 - chmod +x gradlew
 before_deploy:
-- chmod ugo+x start_candidate_service.sh
 - chmod ugo+x deploy_travisci.sh
-before_script:
-- sleep 15
 script:
-- sh start_candidate_service.sh
-- "./gradlew clean cleanTest build --console=rich"
+- "./gradlew clean cleanTest build --info"
 - sh ./deploy_travisci.sh
 env:
   global:
