@@ -4,9 +4,9 @@
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by Azure CosmosDB (MongoDB) and Azure Service Bus. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by Azure Cosmos DB (type: MongoDB) and Azure Service Bus. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
 
-![Voter API Architecture](Message_Queue_Diagram_Final.png)
+![Architecture](AKS_SB_CosmosDB.png)
 
 ## Voter Service Endpoints
 
