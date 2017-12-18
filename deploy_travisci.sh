@@ -13,7 +13,7 @@
 #set -x
 
 SERVICE_NAME=${1:-voter}
-BRANCH=${2:-kub-aks}
+BRANCH=${2:-gke}
 
 # Builds and deploys JAR build artifact to GitHub (acts as binary repository)
 cd build/libs
@@ -23,7 +23,7 @@ git config user.email "${COMMIT_AUTHOR_EMAIL}"
 
 git add *.jar
 git commit -m "Deploy Travis CI Build #${TRAVIS_BUILD_NUMBER} artifacts to GitHub"
-git push --force --quiet "https://${GH_TOKEN}@${GH_ARTIFACT_REPO}" master:build-artifacts-kub-aks
+git push --force --quiet "https://${GH_TOKEN}@${GH_ARTIFACT_REPO}" master:build-artifacts-${BRANCH}
 
 # Builds immutable Docker Image, deploying the JAR, above.
 cd -
@@ -33,6 +33,6 @@ set -ex
 
 sleep 120 # wait for automated Docker Hub build to finish...
 IMAGE="garystafford/${SERVICE_NAME}-service"
-IMAGE_TAG="${BRANCH}-0.5.${TRAVIS_BUILD_NUMBER}"
+IMAGE_TAG="${BRANCH}-0.6.${TRAVIS_BUILD_NUMBER}"
 docker build -t ${IMAGE}:${IMAGE_TAG} .
 docker push ${IMAGE}:${IMAGE_TAG}

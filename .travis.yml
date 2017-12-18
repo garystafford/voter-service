@@ -6,7 +6,7 @@ before_install:
 before_deploy:
 - chmod ugo+x deploy_travisci.sh
 script:
-- "./gradlew clean cleanTest build --warn"
+- "./gradlew clean cleanTest build --warn -x test"
 - sh ./deploy_travisci.sh
 env:
   global:

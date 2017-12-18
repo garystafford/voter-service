@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=kub-aks)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
+[![Build Status](https://travis-ci.org/garystafford/voter-service.svg?branch=gke)](https://travis-ci.org/garystafford/voter-service) [![Dependencies](https://app.updateimpact.com/badge/817200262778327040/voter-service.svg?config=compile)](https://app.updateimpact.com/latest/817200262778327040/voter-service) [![Layers](https://images.microbadger.com/badges/image/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own image badge on microbadger.com") [![Version](https://images.microbadger.com/badges/version/garystafford/voter-service.svg)](https://microbadger.com/images/garystafford/voter-service "Get your own version badge on microbadger.com")
 
 # Voter Service
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by Azure Cosmos DB (type: MongoDB) and Azure Service Bus. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by MongoDB Atlas on GCP and RabbitMQ on GCP (using Compose). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
 
 ![Architecture](AKS_SB_CosmosDB.png)
 
@@ -21,6 +21,8 @@ View Voting Results                                                             
 View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)
 View Winner(s)                                                                                                           | GET     | [/voter/winners/{election}](http://localhost:8099/voter/winners/{election})
 View Winning Vote Count                                                                                                  | GET     | [/voter/winners/{election}/votes](http://localhost:8099/voter/winners/{election}/votes)
+Drop All Candidates                                                                                                      | POST    | [/drop/candidates](http://localhost:8099/voter/drop/candidates)
+Drop All Votes                                                                                                           | POST    | [/drop/votes](http://localhost:8099/voter/drop/votes)
 Service Info                                                                                                             | GET     | [/voter/info](http://localhost:8099/voter/info)
 Service Health                                                                                                           | GET     | [/voter/health](http://localhost:8099/voter/health)
 Service Metrics                                                                                                          | GET     | [/voter/metrics](http://localhost:8099/voter/metrics)

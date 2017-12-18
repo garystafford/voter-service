@@ -1,6 +1,3 @@
-azure:
-  service-bus:
-    connection-string: sensitive_set_get_from_env_var
 endpoints:
   enabled: true
   sensitive: false
@@ -25,6 +22,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/votes
+  rabbitmq:
+    host: localhost
 ---
 spring:
   profiles: kub-aks
@@ -41,6 +40,6 @@ management:
       mode: simple
 endpoints:
   env:
-    keys-to-sanitize: .*password.*,.*secret.*,.*azure.service-bus.connection-string.*, .*AZURE_SERVICE_BUS_CONNECTION_STRING.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*
+    keys-to-sanitize: .*password.*,.*secret.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*, .*spring.rabbitmq.host.*, .*SPRING_RABBITMQ_HOST.*
   configprops:
-    keys-to-sanitize: .*password.*,.*secret.*,.*azure.service-bus.connection-string.*, .*AZURE_SERVICE_BUS_CONNECTION_STRING.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*
+    keys-to-sanitize: .*password.*,.*secret.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*, .*spring.rabbitmq.host.*, .*SPRING_RABBITMQ_HOST.*

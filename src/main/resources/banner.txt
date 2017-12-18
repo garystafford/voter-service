@@ -6,4 +6,4 @@ __      ______ _______ ______ _____
    \  / | |__| | | |  | |____| | \ \
     \/   \____/  |_|  |______|_|  \_\
 
-   :: Spring Boot Voter Service ::
+     :: Spring Boot Microservice ::
