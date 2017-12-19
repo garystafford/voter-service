@@ -21,7 +21,7 @@ spring:
     name: Voter Service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/votes
+      uri: mongodb://localhost:27017/voter
   rabbitmq:
     host: localhost
 ---
@@ -40,6 +40,6 @@ management:
       mode: simple
 endpoints:
   env:
-    keys-to-sanitize: .*password.*,.*secret.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*, .*spring.rabbitmq.host.*, .*SPRING_RABBITMQ_HOST.*
+    keys-to-sanitize: .*password.*,.*secret.*,.*username.*,.*token.*,.*spring.data.mongodb.uri.*,.*SPRING_DATA_MONGODB_URI.*,.*spring.rabbitmq.username.*,.*SPRING_RABBITMQ_USERNAME.*,.*spring.rabbitmq.password.*,.*SPRING_RABBITMQ_PASSWORD.*
   configprops:
-    keys-to-sanitize: .*password.*,.*secret.*, .*spring.data.mongodb.uri.*, .*SPRING_DATA_MONGODB_URI.*, .*spring.rabbitmq.host.*, .*SPRING_RABBITMQ_HOST.*
+    keys-to-sanitize: .*password.*,.*secret.*,.*username.*,.*token.*,.*spring.data.mongodb.uri.*,.*SPRING_DATA_MONGODB_URI.*,.*spring.rabbitmq.username.*,.*SPRING_RABBITMQ_USERNAME.*,.*spring.rabbitmq.password.*,.*SPRING_RABBITMQ_PASSWORD.*
