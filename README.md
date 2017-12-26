@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by MongoDB, using Atlas on GCP, and RabbitMQ, using CloudAMQP on GCP. The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
+The Voter [Spring Boot](https://projects.spring.io/spring-boot/) Service is a RESTful Web Service, backed by MongoDB, using Atlas on GCP, and RabbitMQ, using CloudAMQP on GCP. It is part of the Voter API (see diagram below). The Voter service exposes several HTTP API endpoints, listed below. API users can review a list candidates, submit a candidate, view voting results, and inspect technical information about the running service.
 
 ![Architecture](GKE_AMPQ_v1.png)
 
@@ -25,8 +25,8 @@ View Voting Results                                                             
 View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)
 View Winner(s)                                                                                                           | GET     | [/voter/winners/{election}](http://localhost:8099/voter/winners/{election})
 View Winning Vote Count                                                                                                  | GET     | [/voter/winners/{election}/votes](http://localhost:8099/voter/winners/{election}/votes)
-Drop All Candidates                                                                                                      | POST    | [/drop/candidates](http://localhost:8099/voter/drop/candidates)
-Drop All Votes                                                                                                           | POST    | [/drop/votes](http://localhost:8099/voter/drop/votes)
+Drop All Candidates                                                                                                      | POST    | [/voter/drop/candidates](http://localhost:8099/voter/drop/candidates)
+Drop All Votes                                                                                                           | POST    | [/voter/drop/votes](http://localhost:8099/voter/drop/votes)
 Service Info                                                                                                             | GET     | [/voter/info](http://localhost:8099/voter/info)
 Service Health                                                                                                           | GET     | [/voter/health](http://localhost:8099/voter/health)
 Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `voter/actuator`, `voter/metrics`, `voter/env`, `voter/configprops`, etc.
