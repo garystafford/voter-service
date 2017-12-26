@@ -40,7 +40,7 @@ Submitting a new candidate requires an HTTP `POST` request to the `/voter/votes`
 
 HTTPie
 
-```text
+```bash
 http POST http://localhost:8099/voter/votes \
   candidate="Jill Stein" \
   election="2016 Presidential Election"
@@ -48,7 +48,7 @@ http POST http://localhost:8099/voter/votes \
 
 cURL
 
-```text
+```bash
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{ "candidate": "Jill Stein", "election": "2016 Presidential Election" }' \
@@ -57,7 +57,7 @@ curl -X POST \
 
 wget
 
-```text
+```bash
 wget --method POST \
   --header 'content-type: application/json' \
   --body-data '{ "candidate": "Jill Stein", "election": "2016 Presidential Election" }' \
@@ -155,9 +155,11 @@ API users can also create random voting data by calling the `/voter/simulation` 
 }
 ```
 
-`http POST http://localhost:8099/voter/votes \
+```bash
+http POST http://localhost:8099/voter/votes \
     candidate="Jill Stein" \
-    election="2016 Presidential Election"`
+    election="2016 Presidential Election"
+```
 
 ```json
 {
