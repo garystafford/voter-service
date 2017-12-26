@@ -69,7 +69,9 @@ wget --method POST \
 
 API users can also create random voting data by calling the `/voter/simulation` endpoint. Using [HTTPie](https://httpie.org/) command line HTTP client.
 
-`http http://localhost:8099/voter/simulation/2016%20Presidential%20Election`
+```bash
+http http://localhost:8099/voter/simulation/2016%20Presidential%20Election
+```
 
 ```json
 {
@@ -77,7 +79,9 @@ API users can also create random voting data by calling the `/voter/simulation` 
 }
 ```
 
-`http http://localhost:8099/voter/candidates/db/2016%20Presidential%20Election`
+```bash
+http http://localhost:8099/voter/candidates/db/2016%20Presidential%20Election
+```
 
 ```json
 {
@@ -101,7 +105,9 @@ API users can also create random voting data by calling the `/voter/simulation` 
 }
 ```
 
-`http http://localhost:8099/voter/results/2016%20Presidential%20Election`
+```bash
+http http://localhost:8099/voter/results/2016%20Presidential%20Election
+```
 
 ```json
 {
@@ -126,7 +132,9 @@ API users can also create random voting data by calling the `/voter/simulation` 
 }
 ```
 
-`http http://localhost:8099/voter/results/2016%20Presidential%20Election/votes`
+```bash
+http http://localhost:8099/voter/results/2016%20Presidential%20Election/votes
+```
 
 ```json
 {
@@ -134,7 +142,9 @@ API users can also create random voting data by calling the `/voter/simulation` 
 }
 ```
 
-`http http://localhost:8099/voter/winners/2016%20Presidential%20Election`
+```bash
+http http://localhost:8099/voter/winners/2016%20Presidential%20Election
+```
 
 ```json
 {
@@ -147,7 +157,9 @@ API users can also create random voting data by calling the `/voter/simulation` 
 }
 ```
 
-`http http://localhost:8099/voter/winners/2016%20Presidential%20Election/votes`
+```bash
+http http://localhost:8099/voter/winners/2016%20Presidential%20Election/votes
+```
 
 ```json
 {
