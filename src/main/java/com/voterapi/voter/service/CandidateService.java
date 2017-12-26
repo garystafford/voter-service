@@ -65,10 +65,10 @@ public class CandidateService {
     /**
      * Consumes a new candidate message, deserialize, and save to MongoDB
      *
-     * @param candidateMessage
+     * @param candidateCreatedMessage
      */
-    @RabbitListener(queues = "#{candidateQueue.name}")
-    public void getCandidateMessage(String candidateMessage) {
+    @RabbitListener(queues = "#{candidateCreatedQueue.name}")
+    public void getCandidateMessage(String candidateCreatedMessage) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -78,7 +78,7 @@ public class CandidateService {
         Candidate candidate = new Candidate();
 
         try {
-            candidate = objectMapper.readValue(candidateMessage, mapType);
+            candidate = objectMapper.readValue(candidateCreatedMessage, mapType);
         } catch (IOException e) {
             logger.error(String.valueOf(e));
         }

@@ -14,9 +14,13 @@ The service uses a context path of `/voter`. All endpoints must be are prefixed 
 
 Purpose                                                                                                                  | Method  | Endpoint
 ------------------------------------------------------------------------------------------------------------------------ | :------ | :-----------------------------------------------------
-Create Random Sample Data                                                                                                | GET     | [/voter/simulation/{election}](http://localhost:8099/voter/simulation/{election})
+List All Service Endpoints                                                                                               | GET     | [/voter/mappings](http://localhost:8099/voter/mappings)
+Create Vote                                                                                                              | POST    | [/voter/voters](http://localhost:8099/voter/voters)
+Read Vote                                                                                                                | GET     | [/voter/voters/{id}](http://localhost:8099/voter/voters/{id})
+Read Votes                                                                                                               | GET     | [/voter/voters](http://localhost:8099/voter/voters)
+Update Vote                                                                                                              | PUT     | [/voter/voters/{id}](http://localhost:8099/voter/voters/{id})
+Delete Vote                                                                                                              | DELETE  | [/voter/voters/{id}](http://localhost:8099/voter/voters/{id})
 List Candidates                                                                                                          | GET     | [/voter/candidates/{election}](http://localhost:8099/voter/candidates/db/{election})
-Submit Vote                                                                                                              | POST    | [/voter/votes](http://localhost:8099/voter/votes)
 View Voting Results                                                                                                      | GET     | [/voter/results/{election}](http://localhost:8099/voter/results/{election})
 View Total Votes                                                                                                         | GET     | [/voter/results/{election}/votes](http://localhost:8099/voter/results/{election}/votes)
 View Winner(s)                                                                                                           | GET     | [/voter/winners/{election}](http://localhost:8099/voter/winners/{election})
@@ -25,9 +29,8 @@ Drop All Candidates                                                             
 Drop All Votes                                                                                                           | POST    | [/drop/votes](http://localhost:8099/voter/drop/votes)
 Service Info                                                                                                             | GET     | [/voter/info](http://localhost:8099/voter/info)
 Service Health                                                                                                           | GET     | [/voter/health](http://localhost:8099/voter/health)
-Service Metrics                                                                                                          | GET     | [/voter/metrics](http://localhost:8099/voter/metrics)
-Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `/actuator`, `/mappings`, `/env`, `/configprops`, etc.
-Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/voter/votes`                                         | Various | DELETE, PATCH, PUT, page sort, size, etc.
+Other [Spring Actuator](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints | GET     | `voter/actuator`, `voter/metrics`, `voter/env`, `voter/configprops`, etc.
+Other [HATEOAS](https://spring.io/guides/gs/rest-hateoas) endpoints for `/voter/votes`                                   | Various | page sort, size, etc.
 
 The [HAL Browser](https://github.com/mikekelly/hal-browser) API browser for the `hal+json` media type is installed alongside the service. It can be accessed at `http://localhost:8099/voter/actuator/`.
 
