@@ -148,7 +148,7 @@ public class VoterController {
     @RequestMapping(value = "/simulation/{election}", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> getSimulationDb(@PathVariable("election") String election) {
 
-        voterRepository.deleteAll();
+        // voterRepository.deleteAll();
         voterSeedDataService.setRandomVotesDb(election);
         voterRepository.save(voterSeedDataService.getVotes());
         Map<String, String> result = new HashMap<>();
