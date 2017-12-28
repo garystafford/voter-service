@@ -45,7 +45,7 @@ public class VoterSeedDataService {
         Map candidates = new HashMap();
         List<CandidateVoterView> list = candidateList.getCandidatesQueueDb(election);
         for (CandidateVoterView aList : list) {
-            candidates.put(aList.getFullName(), getRandomIntAsString(2, 20));
+            candidates.put(aList.getFullName(), getRandomIntAsString(3, 25));
         }
         votesFromMap(candidates, election);
     }
